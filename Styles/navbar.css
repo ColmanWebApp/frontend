@@ -1,0 +1,33 @@
+@import url("../Styles/globalStyle.css");
+
+.navbar-input-wrapper {
+    position: relative;
+    color: #1a1a1a;
+}
+.navbar-input-wrapper::before {
+    position: absolute;
+    content: "\f002";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    z-index: 1;
+    font-size: 1.3em;
+    top: 50%;
+    transform: translate(0.75rem, -50%);
+}
+.navbar-input-wrapper input {
+    border: 1px solid white;
+    outline: none;
+}
+
+.icon-wrapper {
+    color: white;
+    border: 0.15rem solid white;
+    width: 2.25rem;
+    height: 2.25rem;
+    cursor: pointer;
+}
+
+.icon-wrapper:hover {
+    background: white;
+    color: #111;
+}
