@@ -1,5 +1,9 @@
 @import url("../Styles/globalStyle.css");
 
+#navbar {
+    --transition-time: 200ms;
+}
+
 .navbar-input-wrapper {
     position: relative;
     color: #1a1a1a;
@@ -25,9 +29,17 @@
     width: 2.25rem;
     height: 2.25rem;
     cursor: pointer;
+    transition: background var(--transition-time) ease-in-out, color var(--transition-time) ease-in-out;
 }
 
 .icon-wrapper:hover {
     background: white;
     color: #111;
+}
+
+.nav-item a {
+    transition: color var(--transition-time) ease-in-out;
+}
+.nav-item a:hover {
+    color: #888888 !important;
 }
