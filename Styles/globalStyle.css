@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('./navbar.css');
+@import url('./footer.css');
 
 * {
     padding: 0;
@@ -8,6 +10,12 @@
 }
 
 body {
-    min-height: 100%;
+    min-height: 100vh;
     background: #111111 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+#content {
+    flex: 1;
 }

@@ -46,5 +46,5 @@ const onSearch = (event) => {
 }
 
 
-// createNavbar();
+createNavbar();
 userBtnsCreator();
