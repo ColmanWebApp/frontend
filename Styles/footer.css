@@ -1,0 +1,14 @@
+@import url("globalStyle.css");
+
+#footer {
+    position: relative;
+    bottom: 0;
+}
+
+#footer .container-fluid {
+    background: #1a1a1a;
+}
+
+#footer .copyright-text {
+    color: #888888;
+}
