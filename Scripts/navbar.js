@@ -51,6 +51,9 @@ const createNavbar = ()=> {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+            <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Authentication failed. Please try again.
+              </div>
           <div class="email input-wrapper mb-3">
             <i class="fa-solid fa-envelope input-icon"></i>
             <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="login-email" id="login-email" placeholder="Email">
@@ -76,6 +79,9 @@ const createNavbar = ()=> {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+            <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Oops! Something went wrong. Please try again.
+              </div>
             <div class="email input-wrapper mb-3">
                 <i class="fa-solid fa-user input-icon"></i>
                 <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="signup-email" id="signup-fullname" placeholder="Full Name">
@@ -153,6 +159,9 @@ const onSearch = (event) => {
 const resetModalsInputs = () => {
     document.querySelectorAll(".modal-input").forEach(element => {
         element.value = "";
+    });
+    document.querySelectorAll(".modal-body .alert").forEach(element => {
+        element.classList.add("d-none");
     });
 }
 
