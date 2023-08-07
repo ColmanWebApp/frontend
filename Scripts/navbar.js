@@ -92,7 +92,7 @@ const createNavbar = ()=> {
           </div>
           <div class="password input-wrapper mb-3">
             <i class="fa-solid fa-lock input-icon"></i>
-            <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="signup-password" id="signup-password" placeholder="Password">
+            <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="signup-password" id="signup-password" placeholder="Password - at least 8 characters">
           </div>
           <div class="login-btn d-flex flex-column align-items-center">
             <button class="btn text-light w-100 modal-btn rounded-pill" onclick="onSignup()">Signup</button>
