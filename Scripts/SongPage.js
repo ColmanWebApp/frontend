@@ -22,8 +22,8 @@ function createCard(song) {
               <p class="card-text m-0 p-0 fs-4">${song.duration}</p>
               ${preview}
             </div>
-            <div class="d-flex justify-content-end add-to-cart mt-5">
-              <div class="price fs-5">${song.price}$</div>
+            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5">
+              <div class="price fs-5 me-3">${song.price}$</div>
               <div class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5">Add to cart </div>
             </div>
         </div>
