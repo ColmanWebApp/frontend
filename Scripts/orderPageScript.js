@@ -35,7 +35,7 @@ const onDeleteFromCart = (event)=> {
 const createCartList = ()=> {
     const list = document.querySelector("#cart-list");
     list.innerHTML = ""
-    const numOfListItems = 3; // todo: get the value from local-storage
+    const numOfListItems = 0; // todo: get the value from local-storage
 
     if(numOfListItems === 0) { // cart is empty
         list.innerHTML = 
@@ -49,7 +49,7 @@ const createCartList = ()=> {
         let shipping = 0
         for (let index = 0; index < numOfListItems; index++) {
             let itemPrice = 19.99 + index
-            addListItem("https://picsum.photos/200", "very long song title with a lot of words", itemPrice, index)
+            addListItem("https://picsum.photos/200", "Song Title", itemPrice, index)
             subtotal += itemPrice
         }
         subtotal = subtotal.toFixed(2)
