@@ -6,7 +6,7 @@ function createCard(song) {
     <p id="preview-text" class="p-0 m-0 ms-3">Preview</p>
     </div>`
   const card =`
-  <div class="card song-card d-flex justify-content-center align-items-center mb-3">
+  <div class="card song-card d-flex justify-content-center align-items-center mb-3 border-0">
     <div class="row song-items rounded-4 overflow-hidden w-75">
       <div class="col-md-4 m-0 p-0">
         <img src="${song.album_image}" class="img-fluid object-fit-cover h-100 w-100" alt=${song.title}" image">
