@@ -3,7 +3,7 @@ const addListItem = (imgUrl, title, price, itemID) => {
     price = parseFloat(price);
     price = price.toFixed(2)
     list.innerHTML += 
-    `<div class="col-12 list-item rounded-2 overflow-hidden">
+    `<div class="col-12 list-item rounded-2 overflow-hidden position-relative mb-3">
     <div class="row d-flex align-items-center">
         <div class="col-3 m-0 p-0">
             <img class="w-100" src=${imgUrl} alt="">
@@ -35,7 +35,7 @@ const onDeleteFromCart = (event)=> {
 const createCartList = ()=> {
     const list = document.querySelector("#cart-list");
     list.innerHTML = ""
-    const numOfListItems = 0; // todo: get the value from local-storage
+    const numOfListItems = 5; // todo: get the value from local-storage
 
     if(numOfListItems === 0) { // cart is empty
         list.innerHTML = 

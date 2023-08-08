@@ -1,7 +1,6 @@
 #order-page-content {
     background-color: #1a1a1a;
     border-radius: 1rem;
-    /* background-color: #fff; */
 }
 
 #order-summary {
@@ -9,9 +8,7 @@
 }
 
 .list-item {
-    position: relative;
     background-color: #252525;
-    margin-bottom: 1rem;
     color: #999999;
 }
 
