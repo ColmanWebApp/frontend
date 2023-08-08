@@ -9,7 +9,8 @@
 }
 
 .list-item {
-    background-color: #222222;
+    position: relative;
+    background-color: #252525;
     margin-bottom: 1rem;
     color: #999999;
 }
@@ -20,7 +21,7 @@
 
 i.fa-trash {
     cursor: pointer;
-    transition: color 200ms ease-in-out;
+    transition: color 100ms ease-in-out;
 }
 
 i.fa-trash:hover {
