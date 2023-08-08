@@ -1,0 +1,17 @@
+@import url("globalStyle.css");
+
+#footer .container-fluid {
+    background: #1a1a1a;
+}
+
+#footer .copyright-text {
+    color: #888888;
+}
+
+#back-to-top-btn {
+    color: #A7C4BC;
+}
+
+#back-to-top-btn:hover {
+    color: white;
+}
