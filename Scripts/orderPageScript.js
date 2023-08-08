@@ -22,11 +22,8 @@ const addListItem = (imgUrl, title, price, itemID) => {
 const fillOrderSummary = (totalItems, subtotal, shipping, total)=> {
     document.querySelector("#num-of-items").innerHTML = `${totalItems}`
     document.querySelector("#subtotal").innerHTML = `${subtotal}$`
-    document.querySelector("#shipping").innerHTML = shipping
-    if(shipping !== "Free"){
-        document.querySelector("#shipping").innerHTML += "$"
-    }
-    document.querySelector("#total").innerHTML = `${total}$`
+    document.querySelector("#shipping").innerHTML = `${shipping}${shipping!== "Free" ? "$" : ""}`
+    document.querySelector("#total").innerHTML = `${total.toFixed(2)}$`
 }
 
 const onDeleteFromCart = (event)=> {
@@ -48,12 +45,13 @@ const createCartList = ()=> {
     }else {
         let subtotal = 0
         let discount = 0
+        let shipping = 0
         for (let index = 0; index < numOfListItems; index++) {
             addListItem("https://picsum.photos/200", "Song Title", 19.99, index)
             subtotal += 19.99
         }
         subtotal = subtotal.toFixed(2)
-        fillOrderSummary(numOfListItems, subtotal, "Free", subtotal-discount);
+        fillOrderSummary(numOfListItems, subtotal, shipping === 0 ? "Free" : shipping.toFixed(2), subtotal - discount + shipping);
     }
 }
 
