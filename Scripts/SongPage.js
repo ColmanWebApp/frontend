@@ -1,37 +1,54 @@
-
-function createCard(title,album,artist,genere,year,duration,price){
-    const item=`
-    <div class="song-container container">
-        <div class="row h-100">
-            <div class="col-3 song-image"></div>
-            <div class="col-9">
-                <div class="song-info">
-                        <h1>${title}</h1>
-                    <div class="song-description">
-                        <p>${album}</p>
-                        <p>${artist}</p>
-                        <p>${genere}</p>
-                        <p>${year}</p>
-                        <p>${duration}</p>
-                        <div class="row d-flex preview">
-                                <div class="col-1 preview-button btn btn-outline-light">Play</div>
-                                 <div class="col-1 preview-text">Preview</div>
-                        </div> 
-                    </div>
-                    <div class="row add-to-cart d-flex justify-content-end">
-                        <div class="col-1 price">${price}$</div>
-                        <div class="col-3 add-to-cart-button btn btn-outline-light">Add to cart</div>
-
-                    </div>
-                </div>
+function createCard(song) {
+  let preview="";
+  if(song.preview_url)
+    preview=`<div id="preview-bar" class="d-flex align-items-center mt-3">
+    <video id="preview-sound-bar"controls name="media"><source src=${song.preview_url} type="audio/mpeg"></video>
+    <p id="preview-text" class="p-0 m-0 ms-3">Preview</p>
+    </div>`
+  const card =`
+  <div class="card song-card d-flex justify-content-center align-items-center mb-3">
+    <div class="row song-items rounded-4 overflow-hidden w-75">
+      <div class="col-md-4 m-0 p-0">
+        <img src="${song.album_image}" class="img-fluid object-fit-cover h-100 w-100" alt=${song.title}" image">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body song-info p-5">
+            <div class="song-description ">
+              <h1 class="card-title text-light fw-bold">${song.title}</h1>
+              <p class="card-text m-0 p-0 fs-4">${song.album}</p>
+              <p class="card-text m-0 p-0 fs-4">${song.artist}</p>
+              <p class="card-text m-0 p-0 fs-4">${song.genre}</p>
+              <p class="card-text m-0 p-0 fs-4">${song.year}</p>
+              <p class="card-text m-0 p-0 fs-4">${song.duration}</p>
+              ${preview}
+            </div>
+            <div class="d-flex justify-content-end add-to-cart mt-5">
+              <div class="price fs-5">${song.price}$</div>
+              <div class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5">Add to cart </div>
             </div>
         </div>
-    </div>`
-    const card=$(item)
-    $(".SongCard").append(card)
+      </div>
+    </div>
+  </div>`;
+  $(".song-container").append(card);
 }
-$(document).ready(function(){
-    createCard("Lehem Havita","chilldugo","quzzaa","shlakot","6969","69:69","99.99")
-    createCard("Lehem ","chill","quaa","ot","6969","69:69","99.99")
-    createCard(" Havita","dugo","quzz","shlak","6969","69:69","99.99")
-})
+$(document).ready( function () {
+  const songId="64d2a2af3a54f70b2c2883f3";
+  const myJson={
+    url:`http://localhost:6969/songs/${songId}/`,
+    type:'GET',
+    contentType:'application/json',
+    secure:true,
+    cors:true,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  }
+  $.ajax(myJson)
+  .done(function(res){
+    createCard(res);
+  })
+  .fail(function(error){
+    console.log("failed",error);
+  });
+});

@@ -1,60 +1,16 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-body{
+.song-card{
     background-color: #111111;
-}
-.song-container{
+} 
+.song-items{
     background-color:#1A1A1A;
-    height:31.125rem;
-    border-radius:  1rem;
-    overflow:hidden;
-    margin-top:15.625rem;
-}
-.song-image{
-    background-image:url("https://media.discordapp.net/attachments/1077350051396997289/1137041855016599574/image.png?width=468&height=676");
-    background-size: cover;
 }
 .song-info{
-    padding-left: 2.125rem;
-    padding-right: 2.125rem;
-    padding-top:3.125rem;
     color: #999999;
 }
-.song-info h1{
-    color:white;
-    font-size: 2.5rem;
+#preview-sound-bar{
+    height: 2rem;
+    width: 20rem;
 }
-.song-description{
-    padding-top: 1.25rem;
-}
-p{
-    margin: 0;
-    padding:0;
-    font-size:1.5625rem;
-}
-.preview{
-    margin-top: 1.25rem;
-}
-.preview-button{
-    margin-right: 0.3125rem;
-    border-radius: 18.75rem;
-}
-.preview-text{
-    padding-top:0.4375rem;
-    font-size: 1rem;
-}
-.add-to-cart{
-    margin-top: 1.875rem;
-}
-.add-to-cart-button{
-    border-radius: 6.75rem;
-    font-size: 1.25rem;
-}
-.price{
-    margin-right: 0.625rem;
-    padding-top:0.53125rem;
-    font-size: 1.25rem;
+#preview-text{
+    font-size: 16px;
 }
