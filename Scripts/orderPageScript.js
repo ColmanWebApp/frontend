@@ -4,19 +4,19 @@ const addListItem = (imgUrl, title, price, itemID) => {
     price = price.toFixed(2)
     list.innerHTML += 
     `<div class="col-12 list-item rounded-2 overflow-hidden position-relative mb-3">
-    <div class="row d-flex align-items-center">
-        <div class="col-3 m-0 p-0">
-            <img class="w-100" src=${imgUrl} alt="">
+        <div class="row d-flex align-items-center">
+            <div class="col-3 m-0 p-0">
+                <img class="w-100" src=${imgUrl} alt="">
+            </div>
+            <div class="col-9 px-4 d-flex h-100 align-items-center justify-content-between">
+                <span class="list-item-title fw-semibold text-light col-6 col-md-7 col-lg-9">${title}</span>
+                <span>
+                    <span class="price me-3">${price}$</span>
+                    <i class="fa-solid fa-trash" attr_id=${itemID} onclick="onDeleteFromCart(this)"></i>
+                </span>
+            </div>
         </div>
-        <div class="col-9 px-4 d-flex h-100 align-items-center justify-content-between">
-            <span class="list-item-title fw-semibold text-light col-6 col-md-7 col-lg-9">${title}</span>
-            <span>
-                <span class="price me-3">${price}$</span>
-                <i class="fa-solid fa-trash" attr_id=${itemID} onclick="onDeleteFromCart(this)"></i>
-            </span>
-        </div>
-    </div>
-</div>`
+    </div>`
 }
 
 const fillOrderSummary = (totalItems, subtotal, shipping, total)=> {
@@ -35,7 +35,9 @@ const onCheckout = ()=> {
     const cartOnStorage = localStorage.getItem("cart")
     console.log(`on checkout clicked, cartOnStorage: ${cartOnStorage}`);
     // todo: Ajax -> create order
-    // todo: remove cart from local storage
+
+    localStorage.removeItem("cart")
+    createCartList()
 }
 
 const createCartList = ()=> {
@@ -54,7 +56,7 @@ const createCartList = ()=> {
         let discount = 0
         let shipping = 0
         for (let index = 0; index < cartList.length; index++) {
-            let itemPrice = 19.99 + index
+            let itemPrice = Math.random()*20
             addListItem("https://picsum.photos/200", "Song Title", itemPrice, cartList[index])
             subtotal += itemPrice
         }
@@ -74,9 +76,10 @@ const removeItemFromCart = (itemID)=> {
 }
 
 const addToLocalStorage = ()=> {
-    const cart = [0,1,2,3,4]    
+    const cart = ["0","1","2","3","4"]
     localStorage.setItem("cart", cart);
 }
 
-addToLocalStorage();
+// addToLocalStorage();
+// localStorage.clear()
 createCartList();
