@@ -28,33 +28,55 @@ const fillOrderSummary = (totalItems, subtotal, shipping, total)=> {
 
 const onDeleteFromCart = (event)=> {
     console.log("item id:",event.getAttribute("attr_id"));
-    // todo: delete item from local storage and re-create the cartList
-    createCartList()
+    removeItemFromCart(event.getAttribute("attr_id"))
+}
+
+const onCheckout = ()=> {
+    const cartOnStorage = localStorage.getItem("cart")
+    console.log(`on checkout clicked, cartOnStorage: ${cartOnStorage}`);
+    // todo: Ajax -> create order
+    // todo: remove cart from local storage
 }
 
 const createCartList = ()=> {
+    const cart = localStorage.getItem("cart");
     const list = document.querySelector("#cart-list");
     list.innerHTML = ""
-    const numOfListItems = 5; // todo: get the value from local-storage
-
-    if(numOfListItems === 0) { // cart is empty
+    if(cart === null || cart.length === 0) { // cart is empty
         list.innerHTML = 
         `<div class="alert alert-primary" role="alert">
             Your cart is empty. Please start shopping to add items.
         </div>`
         fillOrderSummary(0,0,"Free",0)
     }else {
+        const cartList = cart.split(",");
         let subtotal = 0
         let discount = 0
         let shipping = 0
-        for (let index = 0; index < numOfListItems; index++) {
+        for (let index = 0; index < cartList.length; index++) {
             let itemPrice = 19.99 + index
             addListItem("https://picsum.photos/200", "Song Title", itemPrice, index)
             subtotal += itemPrice
         }
         subtotal = subtotal.toFixed(2)
-        fillOrderSummary(numOfListItems, subtotal, shipping === 0 ? "Free" : shipping.toFixed(2), subtotal - discount + shipping);
+        fillOrderSummary(cartList.length, subtotal, shipping === 0 ? "Free" : shipping.toFixed(2), subtotal - discount + shipping);
     }
 }
 
+const removeItemFromCart = (itemID)=> {
+    cart = localStorage.getItem("cart").split(",");
+    const newCart = cart.filter((id)=> id != itemID);
+    localStorage.setItem("cart", newCart);
+    if(localStorage.getItem("cart").length === 0) {
+        localStorage.removeItem("cart")
+    }
+    createCartList()
+}
+
+const addToLocalStorage = ()=> {
+    const cart = [0,1,2,3,4]    
+    localStorage.setItem("cart", cart);
+}
+
+// addToLocalStorage();
 createCartList();
