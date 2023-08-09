@@ -37,6 +37,7 @@ const onCheckout = ()=> {
     // todo: Ajax -> create order
 
     removeItemFromCart(null, true);
+    // todo: redirect to home page
 }
 
 const createCartList = ()=> {
@@ -56,7 +57,7 @@ const createCartList = ()=> {
         let shipping = 0
         for (let index = 0; index < cartList.length; index++) {
             let itemPrice = Math.random()*20
-            addListItem("https://picsum.photos/200", "Song Title", itemPrice, cartList[index])
+            addListItem(`https://picsum.photos/${200+index*100}`, "Song Title", itemPrice, cartList[index])
             subtotal += itemPrice
         }
         subtotal = subtotal.toFixed(2)
