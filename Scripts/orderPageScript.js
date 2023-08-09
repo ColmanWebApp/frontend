@@ -55,7 +55,7 @@ const createCartList = ()=> {
         let shipping = 0
         for (let index = 0; index < cartList.length; index++) {
             let itemPrice = 19.99 + index
-            addListItem("https://picsum.photos/200", "Song Title", itemPrice, index)
+            addListItem("https://picsum.photos/200", "Song Title", itemPrice, cartList[index])
             subtotal += itemPrice
         }
         subtotal = subtotal.toFixed(2)
@@ -78,5 +78,5 @@ const addToLocalStorage = ()=> {
     localStorage.setItem("cart", cart);
 }
 
-// addToLocalStorage();
+addToLocalStorage();
 createCartList();
