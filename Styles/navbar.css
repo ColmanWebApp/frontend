@@ -43,3 +43,41 @@
 .nav-item a:hover {
     color: #888888 !important;
 }
+
+.modal-btn {
+    background: #5C9EAD;
+}
+
+.modal-btn:hover {
+    background: #4D7F95;
+}
+
+.text-under-modal-btn {
+    font-size: 0.8rem;
+    color: #A7A7A7;
+}
+
+.text-under-modal-btn:hover {
+    color: #111111;
+}
+
+.modal-input {
+    background-color: #F2F2F2;
+    border: 1px solid #CCCCCC;
+    color: #111111;
+    outline: 0;
+}
+.modal-input::placeholder {
+    color: #A7A7A7;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translate(1rem, -50%);
+    color: #A7A7A7;
+}
