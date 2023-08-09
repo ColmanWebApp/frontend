@@ -36,8 +36,7 @@ const onCheckout = ()=> {
     console.log(`on checkout clicked, cartOnStorage: ${cartOnStorage}`);
     // todo: Ajax -> create order
 
-    localStorage.removeItem("cart")
-    createCartList()
+    removeItemFromCart(null, true);
 }
 
 const createCartList = ()=> {
@@ -65,21 +64,27 @@ const createCartList = ()=> {
     }
 }
 
-const removeItemFromCart = (itemID)=> {
-    cart = localStorage.getItem("cart").split(",");
-    const newCart = cart.filter((id)=> id != itemID);
-    localStorage.setItem("cart", newCart);
-    if(localStorage.getItem("cart").length === 0) {
-        localStorage.removeItem("cart")
+const removeItemFromCart = (itemID, removeAll = false)=> {
+    if(!removeAll){
+        cart = localStorage.getItem("cart").split(",");
+        const newCart = cart.filter((id)=> id != itemID);
+        localStorage.setItem("cart", newCart);
+        if(localStorage.getItem("cart").length === 0) {
+            localStorage.removeItem("cart")
+        }
+    }else {
+        localStorage.removeItem("cart");
     }
     createCartList()
+    updateNavbar()
 }
 
 const addToLocalStorage = ()=> {
     const cart = ["0","1","2","3","4"]
     localStorage.setItem("cart", cart);
+    updateNavbar()
 }
 
-// addToLocalStorage();
+addToLocalStorage();
 // localStorage.clear()
 createCartList();
