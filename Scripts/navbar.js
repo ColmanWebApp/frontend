@@ -1,6 +1,7 @@
-const createNavbar = ()=> {
-    document.querySelector('#navbar').innerHTML =
-    ` <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
+const createNavbar = () => {
+  document.querySelector(
+    "#navbar"
+  ).innerHTML = ` <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
     <div class="container-fluid">
       <div class="flex-grow-1">
         <a class="navbar-brand fs-3 fw-bold" href="#">MusicApp</a>
@@ -107,84 +108,148 @@ const createNavbar = ()=> {
         </div>
       </div>
     </div>
-  </div>`
+  </div>`;
 
   updateNavbar();
-}
+};
 
-const userBtnsCreator = ()=> {
-    const connected = isMemberConnected();
-    document.querySelectorAll('.not-connected-nav-item').forEach(element => {
-        if(connected) {
-            element.classList.add('d-none');
-        }
-        else{
-            element.classList.remove('d-none');
-        }
-    });
-    
-    document.querySelectorAll('.connected-nav-item').forEach(element => {
-        if(connected) {
-            element.classList.remove('d-none');
-        }
-        else{
-            element.classList.add('d-none');
-        }
-    });
-}
+const userBtnsCreator = () => {
+  const connected = isMemberConnected();
+  document.querySelectorAll(".not-connected-nav-item").forEach((element) => {
+    if (connected) {
+      element.classList.add("d-none");
+    } else {
+      element.classList.remove("d-none");
+    }
+  });
 
-const updateNavbar = ()=> {
-  userBtnsCreator()
-  if(isMemberConnected){
+  document.querySelectorAll(".connected-nav-item").forEach((element) => {
+    if (connected) {
+      element.classList.remove("d-none");
+    } else {
+      element.classList.add("d-none");
+    }
+  });
+};
+
+const updateNavbar = () => {
+  userBtnsCreator();
+  if (isMemberConnected) {
     const cart = localStorage.getItem("cart");
     let cartLength;
-    if(cart === null || cart.length === 0){
+    if (cart === null || cart.length === 0) {
       cartLength = 0;
-    }else {
+    } else {
       cartLength = cart.split(",").length;
     }
-    document.querySelector("#cart-badge").innerHTML = cartLength
+    document.querySelector("#cart-badge").innerHTML = cartLength;
   }
+};
+
+const isMemberConnected = () => {
+  const userToken = localStorage.getItem("user");
+  return userToken !== null && userToken.length > 0;
+};
+
+const onLogout = () => {
+  localStorage.removeItem("user")
+  updateNavbar()
+};
+
+const onLogin = () => {
+  const emailInput = document.querySelector("#login-email");
+  const passwordInput = document.querySelector("#login-password");
+  // todo: login request to backend -> if true: redirect to home page, else: show an error to the user
+  if (emailInput.value === "" || passwordInput.value === "") {
+    showModalError();
+    return;
+  }
+  // if (passwordInput.value.length < 8) {
+  //   showModalError();
+  //   return;
+  // }
+
+  loginRequest(emailInput.value, passwordInput.value)
+  
+};
+
+const loginRequest = (email, password)=> {
+  $.ajax({
+    url: "http://localhost:6969/auth/login",
+    type: "POST",
+    contentType: "application/json",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: JSON.stringify({
+      email: email,
+      password: password,
+    }),
+    success: function (res) {
+      localStorage.setItem("user", res.token);
+      $(".btn-close").click();
+      updateNavbar();
+    },
+  }).fail(function () {
+    showModalError();
+    return;
+  });
 }
 
-const isMemberConnected = ()=> {
-    let connected = true; // check if connected
-    return connected;
-}
+const onSignup = () => {
+  const fullnameInput = document.querySelector("#signup-fullname");
+  const emailInput = document.querySelector("#signup-email");
+  const passwordInput = document.querySelector("#signup-password");
+  // todo: signup request to backend -> if true: redirect to home page and connect, else: show an error to the user
+  $.ajax({
+    url: "http://localhost:6969/auth/register",
+    type: "POST",
+    contentType: "application/json",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: JSON.stringify({
+      name: fullnameInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+    }),
+    success: function (res) {
+      loginRequest(emailInput.value, passwordInput.value)
+      $(".btn-close").click();
+      updateNavbar();
+    },
+  }).fail(function () {
+    showModalError();
+    return;
+  });
 
-const onLogout = ()=> {
-    console.log('logout btn on navbar clicked');
-}
 
-const onLogin = ()=> {
-    const emailInput = document.querySelector("#login-email");
-    const passwordInput = document.querySelector("#login-password");
-    // todo: login request to backend -> if true: redirect to home page, else: show an error to the user
-    console.log("email: " + emailInput.value);
-    console.log("password:" + passwordInput.value);
-}
-
-const onSignup = ()=> {
-    const fullnameInput = document.querySelector("#signup-fullname");
-    const emailInput = document.querySelector("#signup-email");
-    const passwordInput = document.querySelector("#signup-password");
-    // todo: signup request to backend -> if true: redirect to home page and connect, else: show an error to the user
-    console.log("full name: " + fullnameInput.value);
-    console.log("email: " + emailInput.value);
-    console.log("password:" + passwordInput.value);
-}
+  console.log("full name: " + fullnameInput.value);
+  console.log("email: " + emailInput.value);
+  console.log("password:" + passwordInput.value);
+};
 
 const onSearch = (event) => {
-    console.log(event.value);
-}
+  console.log(event.value);
+};
 
 const resetModalsInputs = () => {
-    document.querySelectorAll(".modal-input").forEach(element => {
-        element.value = "";
-    });
-    document.querySelectorAll(".modal-body .alert").forEach(element => {
-        element.classList.add("d-none");
-    });
-}
+  document.querySelectorAll(".modal-input").forEach((element) => {
+    element.value = "";
+  });
+  document.querySelectorAll(".modal-body .alert").forEach((element) => {
+    element.classList.add("d-none");
+  });
+};
+
+const showModalError = () => {
+  document.querySelectorAll(".modal-body .alert").forEach((element) => {
+    element.classList.remove("d-none");
+  });
+};
 
 createNavbar();
