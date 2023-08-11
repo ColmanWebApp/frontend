@@ -60,7 +60,7 @@ const onCheckout = () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: JSON.stringify({
-      user: String(localStorage.getItem("user")),
+      token: String(localStorage.getItem("user")),
       songs: songsIdsArr,
     }),
   })
@@ -94,24 +94,34 @@ const createCartList = () => {
     var subtotal = 0.0;
     let discount = 0.0;
     let shipping = 0.0;
-    for (let index = 0; index < cartList.length; index++) {
-      $.ajax({
-        url: `http://localhost:6969/songs/${cartList[index]}`,
-        type: "GET",
-        contentType: "application/json",
-        secure: true,
-        cors: true,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    $.ajax({
+      // url: `http://localhost:6969/songs/get-songs`,
+      url: `http://localhost:6969/songs/`,
+      type: "GET",
+      secure: true,
+      cors: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      // data: {
+      //   ids: cartList
+      // },
+    })
+      .fail(function (err) {
+        console.log(`failed: ${err}`);
+        window.location.replace("./404.html");
+        return;
       })
-        .fail(function () {
-          console.log("something when wront");
-          return;
-        })
-        .done(function (res) {
-          addListItem(res.album_image, res.title, res.price, res._id);
-          subtotal = subtotal - 0 + parseFloat(res.price);
+      .done(function (res) {
+        for (let index = 0; index < res.length; index++) {
+          const element = res[index];
+          addListItem(
+            element.album_image,
+            element.title,
+            element.price,
+            element._id
+          );
+          subtotal = subtotal - 0 + parseFloat(element.price);
           subtotal = subtotal.toFixed(2);
           fillOrderSummary(
             cartList.length,
@@ -119,8 +129,8 @@ const createCartList = () => {
             shipping === 0 ? "Free" : shipping.toFixed(2),
             subtotal - discount + shipping
           );
-        });
-    }
+        }
+      });
   }
 };
 
@@ -145,6 +155,6 @@ const addToLocalStorage = () => {
   updateNavbar();
 };
 
-addToLocalStorage();
+// addToLocalStorage();
 // localStorage.clear()
 createCartList();
