@@ -61,7 +61,8 @@ const onCheckout = () => {
     },
     data: JSON.stringify({
       token: String(localStorage.getItem("user")),
-      songs: songsIdsArr,
+      order: {songs: songsIdsArr}
+      
     }),
   })
     .fail(function () {
@@ -71,7 +72,7 @@ const onCheckout = () => {
     .done(function () {
       localStorage.removeItem("cart");
       updateNavbar();
-      window.location.replace("/");
+      window.location.replace("./index.html");
       console.log("finish success");
     });
 
@@ -95,17 +96,16 @@ const createCartList = () => {
     let discount = 0.0;
     let shipping = 0.0;
     $.ajax({
-      // url: `http://localhost:6969/songs/get-songs`,
-      url: `http://localhost:6969/songs/`,
-      type: "GET",
+      url: `http://localhost:6969/songs/get-songs`,
+      type: "POST",
       secure: true,
       cors: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      // data: {
-      //   ids: cartList
-      // },
+      data: {
+        ids: cartList
+      },
     })
       .fail(function (err) {
         console.log(`failed: ${err}`);
