@@ -1,0 +1,40 @@
+#order-page-content {
+    background-color: #1a1a1a;
+    border-radius: 1rem;
+}
+
+#order-summary {
+    border-color: #999999 !important;
+}
+
+.list-item {
+    background-color: #252525;
+    color: #999999;
+}
+
+.list-item:last-child {
+    margin-bottom: 0;
+}
+
+i.fa-trash {
+    cursor: pointer;
+    transition: color 100ms ease-in-out;
+}
+
+i.fa-trash:hover {
+    color: red;
+}
+
+@media only screen and (max-width: 992px) {
+    #order-summary {
+        border-top: 2px solid;
+        border-right: 0;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    #order-summary {
+        border-top: 0;
+        border-right: 2px solid;
+    }
+}
