@@ -137,10 +137,10 @@ const createCartList = () => {
 
 const removeItemFromCart = (itemID, removeAll = false) => {
   if (!removeAll) {
-    cart = localStorage.getItem("cart").split(",");
+    cart = JSON.parse(localStorage.getItem("cart"));
     const newCart = cart.filter((id) => id != itemID);
-    localStorage.setItem("cart", newCart);
-    if (localStorage.getItem("cart").length === 0) {
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    if (cart.length === 0) {
       localStorage.removeItem("cart");
     }
   } else {
