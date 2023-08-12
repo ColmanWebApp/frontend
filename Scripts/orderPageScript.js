@@ -138,8 +138,8 @@ const createCartList = () => {
 const removeItemFromCart = (itemID, removeAll = false) => {
   if (!removeAll) {
     cart = JSON.parse(localStorage.getItem("cart"));
-    const newCart = cart.filter((id) => id != itemID);
-    localStorage.setItem("cart", JSON.stringify(newCart));
+    cart = cart.filter((id) => id != itemID);
+    localStorage.setItem("cart", JSON.stringify(cart));
     if (cart.length === 0) {
       localStorage.removeItem("cart");
     }
