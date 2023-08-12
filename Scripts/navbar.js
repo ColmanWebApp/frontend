@@ -4,7 +4,7 @@ const createNavbar = () => {
   ).innerHTML = ` <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
   <div class="container-fluid">
     <div class="flex-grow-1">
-      <a class="navbar-brand fs-3 fw-bold" href="/">MusicApp</a>
+      <a class="navbar-brand fs-3 fw-bold" href="/frontend/Pages/">MusicApp</a>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
