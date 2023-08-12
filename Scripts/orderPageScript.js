@@ -81,7 +81,8 @@ const onCheckout = () => {
 };
 
 const createCartList = () => {
-  const cart = localStorage.getItem("cart");
+  const cart = JSON.parse(localStorage.getItem("cart"));
+  // console.log(cart);
   const list = document.querySelector("#cart-list");
   list.innerHTML = "";
   if (cart === null || cart.length === 0) {
@@ -91,7 +92,7 @@ const createCartList = () => {
         </div>`;
     fillOrderSummary(0, 0, "Free", 0);
   } else {
-    const cartList = cart.split(",");
+    // const cartList = cart.split(",");
     var subtotal = 0.0;
     let discount = 0.0;
     let shipping = 0.0;
@@ -104,7 +105,7 @@ const createCartList = () => {
         "Access-Control-Allow-Origin": "*",
       },
       data: {
-        ids: cartList
+        ids: cart
       },
     })
       .fail(function (err) {
@@ -124,7 +125,7 @@ const createCartList = () => {
           subtotal = subtotal - 0 + parseFloat(element.price);
           subtotal = subtotal.toFixed(2);
           fillOrderSummary(
-            cartList.length,
+            cart.length,
             subtotal,
             shipping === 0 ? "Free" : shipping.toFixed(2),
             subtotal - discount + shipping
@@ -151,7 +152,7 @@ const removeItemFromCart = (itemID, removeAll = false) => {
 
 const addToLocalStorage = () => {
   const cart = ["64d2a2af3a54f70b2c2883f3", "64ccda0c5fad016c15f71c3d"];
-  localStorage.setItem("cart", cart);
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateNavbar();
 };
 
