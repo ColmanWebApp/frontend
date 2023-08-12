@@ -135,12 +135,12 @@ const userBtnsCreator = () => {
 const updateNavbar = () => {
   userBtnsCreator();
   if (isMemberConnected) {
-    const cart = localStorage.getItem("cart");
+    const cart = JSON.parse(localStorage.getItem("cart"));
     let cartLength;
     if (cart === null || cart.length === 0) {
       cartLength = 0;
     } else {
-      cartLength = cart.split(",").length;
+      cartLength = cart.length;
     }
     document.querySelector("#cart-badge").innerHTML = cartLength;
   }
