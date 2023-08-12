@@ -24,7 +24,7 @@ function createCard(song) {
             </div>
             <div class="d-flex align-items-center justify-content-end add-to-cart mt-5">
               <div class="price fs-5 me-3">${song.price}$</div>
-              <div class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5">Add to cart </div>
+              <div onclick="addToCart('${song._id}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>
             </div>
         </div>
       </div>
@@ -32,23 +32,50 @@ function createCard(song) {
   </div>`;
   $(".song-container").append(card);
 }
-$(document).ready( function () {
-  const songId="64d2a2af3a54f70b2c2883f3";
-  const myJson={
-    url:`http://localhost:6969/songs/${songId}/`,
-    type:'GET',
-    contentType:'application/json',
-    secure:true,
-    cors:true,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
+ function addToCart(songId){
+  if(!localStorage.getItem("token"))
+  {
+    alert("You need to sign in,in order to add a song to the cart");
+    return;
   }
-  $.ajax(myJson)
-  .done(function(res){
-    createCard(res);
-  })
-  .fail(function(error){
-    console.log("failed",error);
-  });
+  if(!songId)// or syntax= if (song==null)
+  {
+    alert("Invalid song");
+    return;
+  }
+  const songsInCart= JSON.parse(localStorage.getItem("cart") || "[]"); // סינטקס בטח לא טוב-תביא לי מהלוקל סטורג' את העגלה-השירים שיש בה, אם אין תביא לי מערך ריק, תפרסר לגייסון ואז יש לנו את השירים בפורמט גייסון?
+  if(songsInCart.includes(songId))
+  {
+    alert("The song is already in the cart");
+    return;
+  }
+  songsInCart.push(songId);
+  localStorage.setItem("cart",JSON.stringify(songsInCart));
+}
+$(document).ready( function () {
+  const urlParams=window.location.search;
+  const searchParams=new URLSearchParams(urlParams);
+  if(searchParams.has("songId")) // add !
+    //window.location.replace("/"); // remove from //
+  console.log("no Id found")
+  else{
+    const songId= "64d67fed31b4f0938ee6d7a8"; // add later searchParams.get("songId")
+    const myJson={
+      url:`http://localhost:6969/songs/${songId}/`,
+      type:'GET',
+      contentType:'application/json',
+      secure:true,
+      cors:true,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    }
+    $.ajax(myJson)
+    .done(function(res){
+      createCard(res);
+    })
+    .fail(function(error){
+      console.log("failed",error);
+    });
+  }
 });
