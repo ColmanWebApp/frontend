@@ -25,6 +25,15 @@ i.fa-trash:hover {
     color: red;
 }
 
+.btn-facebook {
+    background-color: #4267B2;
+    color: white;
+}
+
+.btn-facebook:hover {
+    background-color: #3b5998;
+}
+
 @media only screen and (max-width: 992px) {
     #order-summary {
         border-top: 2px solid;

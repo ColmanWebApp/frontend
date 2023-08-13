@@ -47,7 +47,7 @@
                 <div class="col-12">
                   <button
                     class="btn btn-light rounded-pill w-100"
-                    onclick="onCheckout()"
+                    onclick="onCheckout()" data-bs-toggle="modal" data-bs-target="#checkout-modal"
                   >
                     Checkout
                   </button>
@@ -67,6 +67,25 @@
                   <!-- JS will add the items -->
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="checkout-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Checkout</h1>
+            </div>
+            <div class="modal-body">
+              <p>You bought the following songs: </p>
+              <ul id="songs-list-modal"></ul>
+              <button type="button" class="btn btn-facebook btn-primary">Publish on Facebook</button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="{window.location.replace(`./`)}">Back To Home</button>
             </div>
           </div>
         </div>
