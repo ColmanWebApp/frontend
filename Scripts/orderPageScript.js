@@ -161,7 +161,13 @@ const addToLocalStorage = () => {
   updateNavbar();
 };
 
-addToLocalStorage();
+const handlePermissions = ()=> {
+  if(!localStorage.getItem("user"))
+    window.location.replace("./index.html")
+}
+
+// addToLocalStorage();
+handlePermissions();
 // localStorage.clear()
 createCartList();
 
