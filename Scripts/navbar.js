@@ -152,8 +152,9 @@ const isMemberConnected = () => {
 };
 
 const onLogout = () => {
-  localStorage.removeItem("user");
+  localStorage.clear()
   updateNavbar();
+  window.location.reload()
 };
 
 const onLogin = () => {
