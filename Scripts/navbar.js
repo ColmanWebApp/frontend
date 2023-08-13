@@ -190,6 +190,7 @@ const loginRequest = (email, password) => {
       localStorage.setItem("user", res.token);
       $(".btn-close").click();
       updateNavbar();
+      window.location.reload()
     },
   }).fail(function () {
     showModalError();
