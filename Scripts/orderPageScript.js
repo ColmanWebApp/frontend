@@ -33,7 +33,7 @@ const onDeleteFromCart = (event) => {
 };
 
 const onCheckout = () => {
-  const cartOnStorage = localStorage.getItem("cart");
+  const cartOnStorage = JSON.parse(localStorage.getItem("cart"));
   const userToken = localStorage.getItem("user");
   if (
     cartOnStorage === null ||
@@ -43,36 +43,40 @@ const onCheckout = () => {
   ) {
     return;
   }
-  const splitedCart = cartOnStorage.split(",");
-  const songsIdsArr = [];
-  for (let i = 0; i < splitedCart.length; i++) {
-    songsIdsArr.push(String(splitedCart[i]));
-  }
+  // const splitedCart = cartOnStorage.split(",");
+  // const songsIdsArr = [];
+  // for (let i = 0; i < splitedCart.length; i++) {
+  //   songsIdsArr.push(String(splitedCart[i]));
+  // }
   console.log(`checkout clicked - after validate localstorage`);
   // todo: Ajax -> create order
   $.ajax({
     url: "http://localhost:6969/orders",
     type: "POST",
-    contentType: "application/json",
+    // contentType: "application/json",
     secure: true,
     cors: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    data: JSON.stringify({
+    data: {
       token: String(localStorage.getItem("user")),
-      order: {songs: songsIdsArr}
-      
-    }),
+      order: { songs: cartOnStorage },
+    },
   })
     .fail(function () {
+      const checkoutModalContent = document.querySelector("#checkout-modal .modal-body")
+      checkoutModalContent.innerHTML = `Something went wrong!<br>Try again later...`
       console.log("something when wront");
       return;
     })
     .done(function () {
       localStorage.removeItem("cart");
       updateNavbar();
-      window.location.replace("./index.html");
+      const checkoutModalSongsListElement = document.querySelector("#songs-list-modal")
+      songsFromDB.forEach(element => {
+        checkoutModalSongsListElement.innerHTML += `<li>${element.title}</li>`
+      });
       console.log("finish success");
     });
 
@@ -105,7 +109,7 @@ const createCartList = () => {
         "Access-Control-Allow-Origin": "*",
       },
       data: {
-        ids: cart
+        ids: cart,
       },
     })
       .fail(function (err) {
@@ -114,6 +118,7 @@ const createCartList = () => {
         return;
       })
       .done(function (res) {
+        songsFromDB = res;
         for (let index = 0; index < res.length; index++) {
           const element = res[index];
           addListItem(
@@ -156,6 +161,9 @@ const addToLocalStorage = () => {
   updateNavbar();
 };
 
-// addToLocalStorage();
+addToLocalStorage();
 // localStorage.clear()
 createCartList();
+
+// --- GLOBAL VARS ---
+let songsFromDB;
