@@ -24,8 +24,127 @@
   <body>
     <div id="navbar"></div>
 
-    <div id="content" class="text-light">
-        <h1>Profile</h1>
+    <div id="content" class="text-light p-5">
+      <div class="container">
+        <button class="btn mx-0 px-0 link-light">Back</button>
+        <div class="container-fluid bg-1a rounded-3 p-5">
+          <div class="row d-flex justify-content-between">
+            <div class="col-auto">
+              <div class="row">
+                <h1>Hi <span id="user-full-name">Tal Mekler</span>,</h1>
+              </div>
+              <div
+                class="row d-flex align-items-center justify-content-between"
+              >
+                <div class="col-auto">
+                  <p class="fs-4 p-0 m-0 text-99" id="user-email">
+                    Mekler@gmail.com
+                  </p>
+                </div>
+                <div class="col">
+                  <button class="btn btn-outline-light rounded-pill px-5">
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-outline-primary rounded-pill px-5">
+                Admin Panel
+              </button>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-lg-6">
+              <p class="m-0 p-0 text-light fs-3 fw-semibold mb-3">
+                My Songs (<span id="num-of-songs">6</span>):
+              </p>
+              <div class="container-fluid" id="my-songs-list">
+                <a
+                  href="#"
+                  class="text-decoration-none song-item row p-2 d-flex align-items-center justify-content-between rounded-3"
+                >
+                  <div class="col-auto">
+                    <p class="m-0 p-0 fs-5 fw-medium text-light">Song Title</p>
+                  </div>
+                  <div class="col-auto">
+                    <p class="m-0 p-0 text-99">Artist</p>
+                  </div>
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none song-item row rounded-3 p-2 d-flex align-items-center"
+                >
+                  <div class="col-auto">
+                    <p class="m-0 p-0 fs-5 fw-medium text-light">Song Title</p>
+                  </div>
+                  <div class="col-auto">
+                    <p class="m-0 p-0 text-99">Artist</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <p class="m-0 p-0 text-light fs-3 fw-semibold mb-3">
+                My Orders (<span id="num-of-orders">3</span>):
+              </p>
+              <div class="container-fluid" id="my-orders-list">
+
+                <div class="order-item row p-2 rounded-3 collapsed" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+                  <div class="col-12">
+                    <div class="row d-flex align-items-center justify-content-between">
+                      <div class="col-auto">
+                        <span class="text-99 me-4 fs-5">12.08.2023</span>
+                        <span class="text-99 me-4">2 Songs</span>
+                        <span class="text-99">39.98$</span>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fa-solid fa-chevron-down"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapse" id="collapseExample">
+                    <div class="p-2">
+                    <span class="me-3 fw-medium">Song Title</span>
+                    <span class="me-3 text-99">Artist</span>
+                    <span class="text-99">19.99$</span>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="order-item row p-2 rounded-3 collapsed" data-bs-toggle="collapse" data-bs-target="#collapseExample2">
+                  <div class="col-12">
+                    <div class="row d-flex align-items-center justify-content-between">
+                      <div class="col-auto">
+                        <span class="text-99 me-4 fs-5">12.08.2023</span>
+                        <span class="text-99 me-4">2 Songs</span>
+                        <span class="text-99">39.98$</span>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fa-solid fa-chevron-down"></i>
+                      </div>
+                    </div>
+                  </div>
+                    <div class="collapse" id="collapseExample2">
+                      <div class="px-2 py-1">
+                      <span class="me-3 fw-medium">Song Title</span>
+                      <span class="me-3 text-99">Artist</span>
+                      <span class="text-99">19.99$</span>
+                    </div>
+                    <div class="px-2 py-1">
+                      <span class="me-3 fw-medium">Song Title</span>
+                      <span class="me-3 text-99">Artist</span>
+                      <span class="text-99">19.99$</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="footer"></div>
@@ -37,5 +156,6 @@
     ></script>
     <script src="../Scripts/navbar.js"></script>
     <script src="../Scripts/footer.js"></script>
+    <script src="../Scripts/profilePageScripts.js"></script>
   </body>
 </html>
