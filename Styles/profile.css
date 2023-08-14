@@ -7,8 +7,13 @@
     border: 1px solid #999999;
 }
 
+
 .song-item, .order-item {
     margin-bottom: 0.5rem;
+}
+
+.order-item{
+    cursor: pointer;
 }
 
 .order-item i {

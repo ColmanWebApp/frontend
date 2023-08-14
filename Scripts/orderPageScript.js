@@ -166,7 +166,7 @@ const handlePermissions = ()=> {
     window.location.replace("./index.html")
 }
 
-// addToLocalStorage();
+addToLocalStorage();
 handlePermissions();
 // localStorage.clear()
 createCartList();

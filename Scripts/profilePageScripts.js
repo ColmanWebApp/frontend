@@ -11,7 +11,7 @@ const setMySongs = () => {
 
 const createSongItem = (songTitle, artist, songId) => {
   const a = document.createElement("a");
-  a.href = "#";
+  a.href = "#"; // todo: add correct link to song page
   a.classList +=
     "text-decoration-none song-item row p-2 d-flex align-items-center justify-content-between rounded-3";
   a.innerHTML = `<div class="col-9">
@@ -51,7 +51,7 @@ const createOrderItem = (date, songs, orderId) => {
     </div>
   </div>
 </div>
-<div class="collapse px-3 py-1" id="${orderId}">
+<div class="collapse px-3" id="${orderId}">
     ${createSongsForOrder(songs)}
 </div>`;
 
@@ -100,6 +100,7 @@ const myOrders = [
       { id: 3, title: "Song #3", artist: "artist", price: 19.99 },
       { id: 4, title: "Song #4", artist: "artist", price: 19.99 },
       { id: 5, title: "Song #5", artist: "artist", price: 19.99 },
+      { id: 6, title: "Song #5", artist: "artist", price: 19.99 },
     ],
     id: "order-1",
   },
@@ -111,7 +112,25 @@ const myOrders = [
     ],
     id: "order-2",
   },
+  {
+    date: "14.08.2023",
+    songs: [
+      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+      { id: 3, title: "Song #2", artist: "artist", price: 19.99 },
+    ],
+    id: "order-3",
+  },
 ];
 
+const handlePermissions = ()=> {
+    const user = localStorage.getItem("user")
+    if(!user || user.length <= 0) {
+        window.location.replace("./")
+    }
+
+}
+
+handlePermissions()
 setMySongs();
 setMyOrders();
