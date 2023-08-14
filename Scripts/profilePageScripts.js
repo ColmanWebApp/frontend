@@ -59,96 +59,107 @@ const createOrderItem = (date, songs, orderId) => {
 };
 
 const createSongsForOrder = (songs) => {
-    let songsForOrders = ""
+  let songsForOrders = "";
 
-    songs.forEach(element => {
-        songsForOrders += `<div class="px-2 py-0 d-flex justify-content-between">
+  songs.forEach((element) => {
+    songsForOrders += `<div class="px-2 py-0 d-flex justify-content-between">
         <span class="me-3 fw-medium">${element.title}</span>
         <span class="me-3 text-99">${element.artist}</span>
         <span class="text-99">${element.price}$</span>
-    </div>`
-    });
+    </div>`;
+  });
 
-    return songsForOrders
-}
+  return songsForOrders;
+};
 
+const getTotalPrice = (songs) => {
+  let total = 0;
+  songs.forEach((element) => {
+    total = total - 0 + element.price;
+  });
+  return total.toFixed(2);
+};
 
-const getTotalPrice = (songs) =>{
-    let total = 0;
-    songs.forEach(element => {
-        total = total - 0 + element.price
-    });
-    return total.toFixed(2)
-}
-
-
-
-const handlePermissions = ()=> {
-    const user = localStorage.getItem("user")
-    if(!user || user.length <= 0) {
-        window.location.replace("./")
-    }
-
-}
+const handlePermissions = () => {
+  const user = localStorage.getItem("user");
+  if (!user || user.length <= 0) {
+    window.location.replace("./");
+  }
+};
 
 // todo: mySongs \/ get from DB
 const mySongs = [
-    { id: 1, title: "Song #1", artist: "artist" },
-    { id: 2, title: "Song #2", artist: "artist" },
-    { id: 3, title: "Song #3", artist: "artist" },
-    { id: 4, title: "Song #4", artist: "artist" },
-    { id: 5, title: "Song #5", artist: "artist" },
-    { id: 6, title: "Song #6", artist: "artist" },
-  ];
-  
-  const myOrders = [
-    {
-      date: "14.08.2023",
-      songs: [
-        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-        { id: 3, title: "Song #3", artist: "artist", price: 19.99 },
-        { id: 4, title: "Song #4", artist: "artist", price: 19.99 },
-        { id: 5, title: "Song #5", artist: "artist", price: 19.99 },
-        { id: 6, title: "Song #5", artist: "artist", price: 19.99 },
-      ],
-      id: "order-1",
-    },
-    {
-      date: "14.08.2023",
-      songs: [
-        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-      ],
-      id: "order-2",
-    },
-    {
-      date: "14.08.2023",
-      songs: [
-        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-        { id: 3, title: "Song #2", artist: "artist", price: 19.99 },
-      ],
-      id: "order-3",
-    },
-  ];
+  { id: 1, title: "Song #1", artist: "artist" },
+  { id: 2, title: "Song #2", artist: "artist" },
+  { id: 3, title: "Song #3", artist: "artist" },
+  { id: 4, title: "Song #4", artist: "artist" },
+  { id: 5, title: "Song #5", artist: "artist" },
+  { id: 6, title: "Song #6", artist: "artist" },
+];
 
-  const user = {name: "Tal Mekler", email: "TalMekler@gmail.com", isAdmin: true}
+const myOrders = [
+  {
+    date: "14.08.2023",
+    songs: [
+      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+      { id: 3, title: "Song #3", artist: "artist", price: 19.99 },
+      { id: 4, title: "Song #4", artist: "artist", price: 19.99 },
+      { id: 5, title: "Song #5", artist: "artist", price: 19.99 },
+      { id: 6, title: "Song #5", artist: "artist", price: 19.99 },
+    ],
+    id: "order-1",
+  },
+  {
+    date: "14.08.2023",
+    songs: [
+      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+    ],
+    id: "order-2",
+  },
+  {
+    date: "14.08.2023",
+    songs: [
+      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+      { id: 3, title: "Song #2", artist: "artist", price: 19.99 },
+    ],
+    id: "order-3",
+  },
+];
 
-const setProfilePage = ()=> {
-    document.querySelector("#user-full-name").innerHTML = user.name
-    document.querySelector("#user-email").innerHTML = user.email
-    if(user.isAdmin) {
-        document.querySelector("#admin-panel-wrapper").classList.add("d-block")
-        document.querySelector("#admin-panel-wrapper").classList.remove("d-none")
-    }else {
-        document.querySelector("#admin-panel-wrapper").classList.add("d-none")
-        document.querySelector("#admin-panel-wrapper").classList.remove("d-block")
-    }
+const user = {
+  name: "Tal Mekler",
+  email: "TalMekler@gmail.com",
+  isAdmin: true,
+};
 
-    setMySongs();
-    setMyOrders();
-}
+const onOpenEdit = () => {
+  document.querySelector("#edit-fullname").value = user.name;
+  document.querySelector("#edit-email").value = user.email;
+  $("#edit-profile-modal").modal("show");
+};
 
-handlePermissions()
+const onSaveEdit = () => {
+  $("#edit-profile-modal").modal("hide");
+  //   todo: ajax to update the user
+};
+
+const setProfilePage = () => {
+  document.querySelector("#user-full-name").innerHTML = user.name;
+  document.querySelector("#user-email").innerHTML = user.email;
+  if (user.isAdmin) {
+    document.querySelector("#admin-panel-wrapper").classList.add("d-block");
+    document.querySelector("#admin-panel-wrapper").classList.remove("d-none");
+  } else {
+    document.querySelector("#admin-panel-wrapper").classList.add("d-none");
+    document.querySelector("#admin-panel-wrapper").classList.remove("d-block");
+  }
+
+  setMySongs();
+  setMyOrders();
+};
+
+handlePermissions();
 setProfilePage();
