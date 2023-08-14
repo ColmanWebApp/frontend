@@ -15,7 +15,7 @@ const createSongItem = (songTitle, artist, songId) => {
   a.classList +=
     "text-decoration-none song-item row p-2 d-flex align-items-center justify-content-between rounded-3";
   a.innerHTML = `<div class="col-9">
-                        <p class="m-0 p-0 fs-5 fw-medium text-light">${songTitle}</p>
+                        <p class="m-0 p-0 fw-medium text-light">${songTitle}</p>
                     </div>
                     <div class="col-auto">
                         <p class="m-0 p-0 text-99">${artist}</p>
@@ -42,7 +42,7 @@ const createOrderItem = (date, songs, orderId) => {
   div.innerHTML = `<div class="col-12">
   <div class="row d-flex align-items-center justify-content-between">
     <div class="col-auto">
-      <span class="text-99 me-4 fs-5">${date}</span>
+      <span class="text-99 me-4">${date}</span>
       <span class="text-99 me-4">${songs.length} Songs</span>
       <span class="text-99">${getTotalPrice(songs)}$</span>
     </div>
@@ -81,47 +81,7 @@ const getTotalPrice = (songs) =>{
     return total.toFixed(2)
 }
 
-// todo: mySongs \/ get from DB
-const mySongs = [
-  { id: 1, title: "Song #1", artist: "artist" },
-  { id: 2, title: "Song #2", artist: "artist" },
-  { id: 3, title: "Song #3", artist: "artist" },
-  { id: 4, title: "Song #4", artist: "artist" },
-  { id: 5, title: "Song #5", artist: "artist" },
-  { id: 6, title: "Song #6", artist: "artist" },
-];
 
-const myOrders = [
-  {
-    date: "14.08.2023",
-    songs: [
-      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-      { id: 3, title: "Song #3", artist: "artist", price: 19.99 },
-      { id: 4, title: "Song #4", artist: "artist", price: 19.99 },
-      { id: 5, title: "Song #5", artist: "artist", price: 19.99 },
-      { id: 6, title: "Song #5", artist: "artist", price: 19.99 },
-    ],
-    id: "order-1",
-  },
-  {
-    date: "14.08.2023",
-    songs: [
-      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-    ],
-    id: "order-2",
-  },
-  {
-    date: "14.08.2023",
-    songs: [
-      { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
-      { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
-      { id: 3, title: "Song #2", artist: "artist", price: 19.99 },
-    ],
-    id: "order-3",
-  },
-];
 
 const handlePermissions = ()=> {
     const user = localStorage.getItem("user")
@@ -131,6 +91,64 @@ const handlePermissions = ()=> {
 
 }
 
+// todo: mySongs \/ get from DB
+const mySongs = [
+    { id: 1, title: "Song #1", artist: "artist" },
+    { id: 2, title: "Song #2", artist: "artist" },
+    { id: 3, title: "Song #3", artist: "artist" },
+    { id: 4, title: "Song #4", artist: "artist" },
+    { id: 5, title: "Song #5", artist: "artist" },
+    { id: 6, title: "Song #6", artist: "artist" },
+  ];
+  
+  const myOrders = [
+    {
+      date: "14.08.2023",
+      songs: [
+        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+        { id: 3, title: "Song #3", artist: "artist", price: 19.99 },
+        { id: 4, title: "Song #4", artist: "artist", price: 19.99 },
+        { id: 5, title: "Song #5", artist: "artist", price: 19.99 },
+        { id: 6, title: "Song #5", artist: "artist", price: 19.99 },
+      ],
+      id: "order-1",
+    },
+    {
+      date: "14.08.2023",
+      songs: [
+        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+      ],
+      id: "order-2",
+    },
+    {
+      date: "14.08.2023",
+      songs: [
+        { id: 1, title: "Song #1", artist: "artist", price: 19.99 },
+        { id: 2, title: "Song #2", artist: "artist", price: 19.99 },
+        { id: 3, title: "Song #2", artist: "artist", price: 19.99 },
+      ],
+      id: "order-3",
+    },
+  ];
+
+  const user = {name: "Tal Mekler", email: "TalMekler@gmail.com", isAdmin: true}
+
+const setProfilePage = ()=> {
+    document.querySelector("#user-full-name").innerHTML = user.name
+    document.querySelector("#user-email").innerHTML = user.email
+    if(user.isAdmin) {
+        document.querySelector("#admin-panel-wrapper").classList.add("d-block")
+        document.querySelector("#admin-panel-wrapper").classList.remove("d-none")
+    }else {
+        document.querySelector("#admin-panel-wrapper").classList.add("d-none")
+        document.querySelector("#admin-panel-wrapper").classList.remove("d-block")
+    }
+
+    setMySongs();
+    setMyOrders();
+}
+
 handlePermissions()
-setMySongs();
-setMyOrders();
+setProfilePage();
