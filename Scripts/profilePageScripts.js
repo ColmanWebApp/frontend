@@ -134,6 +134,10 @@ const onSaveEdit = () => {
   //   todo: ajax to update the user
 };
 
+const handleBack = ()=> {
+    window.history.back()
+}
+
 const setProfilePage = () => {
   document.querySelector("#user-full-name").innerHTML = user.name;
   document.querySelector("#user-email").innerHTML = user.email;
