@@ -241,9 +241,7 @@ const resetModalsInputs = () => {
   document.querySelectorAll(".modal-input").forEach((element) => {
     element.value = "";
   });
-  document.querySelectorAll(".modal-body .alert").forEach((element) => {
-    element.classList.add("d-none");
-  });
+  unshowModalError()
 };
 
 const showModalError = () => {
@@ -251,5 +249,11 @@ const showModalError = () => {
     element.classList.remove("d-none");
   });
 };
+
+const unshowModalError = () => {
+  document.querySelectorAll(".modal-body .alert").forEach((element) => {
+    element.classList.add("d-none");
+  });
+}
 
 createNavbar();

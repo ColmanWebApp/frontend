@@ -43,12 +43,7 @@ const onCheckout = () => {
   ) {
     return;
   }
-  // const splitedCart = cartOnStorage.split(",");
-  // const songsIdsArr = [];
-  // for (let i = 0; i < splitedCart.length; i++) {
-  //   songsIdsArr.push(String(splitedCart[i]));
-  // }
-  console.log(`checkout clicked - after validate localstorage`);
+  
   // todo: Ajax -> create order
   $.ajax({
     url: "http://localhost:6969/orders",
@@ -166,7 +161,7 @@ const handlePermissions = ()=> {
     window.location.replace("./index.html")
 }
 
-addToLocalStorage();
+// addToLocalStorage();
 handlePermissions();
 // localStorage.clear()
 createCartList();
