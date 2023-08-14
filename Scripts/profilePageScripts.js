@@ -95,6 +95,7 @@ const onOpenEdit = () => {
   unshowModalError();
   document.querySelector("#edit-fullname").value = user.name;
   document.querySelector("#edit-email").value = user.email;
+  document.querySelector("#edit-password").value = ""
   $("#edit-profile-modal").modal("show");
 };
 
