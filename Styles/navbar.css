@@ -81,3 +81,19 @@
     transform: translate(1rem, -50%);
     color: #A7A7A7;
 }
+
+#search-list {
+    max-height: 25rem;
+    overflow-y: scroll;
+}
+
+.serach-list-item {
+    transition: 250ms ease-in-out;
+    cursor: pointer;
+}
+.serach-list-item:hover {
+   background: rgba(153, 153, 153, 0.2);
+}
+.serach-list-item:not(:last-child) {
+    border-bottom: 1px solid #dee2e6;
+}
