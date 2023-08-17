@@ -28,8 +28,9 @@ const fillOrderSummary = (totalItems, subtotal, shipping, total) => {
 };
 
 const onDeleteFromCart = (event) => {
-  console.log("item id:", event.getAttribute("attr_id"));
+  // console.log("item id:", event.getAttribute("attr_id"));
   removeItemFromCart(event.getAttribute("attr_id"));
+  handleCheckoutBtnStyle()
 };
 
 const onCheckout = () => {
