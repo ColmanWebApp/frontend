@@ -1,0 +1,26 @@
+.text-99 {
+    color: #999999;
+}
+
+.song-item, .order-item {
+    background-color: #99999933;
+    border: 1px solid #999999;
+}
+
+
+.song-item, .order-item {
+    margin-bottom: 0.5rem;
+}
+
+.order-item{
+    cursor: pointer;
+}
+
+.order-item i {
+    transition: 300ms ease-in-out;
+    transform: rotate(180deg);
+}
+
+.order-item.collapsed i {
+    transform: rotate(0deg);
+}
