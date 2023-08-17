@@ -130,7 +130,6 @@ const onSaveEdit = () => {
       showModalError();
     });
 
-  console.log(editedUser);
   //   todo: ajax to update the user
 };
 
@@ -183,5 +182,4 @@ $.ajax({
       songs = [...songs, ...element.songs];
     });
     setProfilePage();
-    console.log(orders);
   });
