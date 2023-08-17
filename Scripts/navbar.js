@@ -391,7 +391,7 @@ const setSuggestions = (inputValue) => {
 const getSuggestion = (imgUrl, title, artist, id) => {
   const a = document.createElement("a");
   a.classList += "serach-list-item d-flex align-items-center text-decoration-none";
-  a.href = `./frontend/Pages/SongPage/${id}`
+  a.href = `./SongPage?songId=${id}`
   a.innerHTML = `
   <div class="col-3 d-flex align-items-center justify-content-center p-3">
     <img src="${imgUrl}" alt="${title} image" class="w-100 rounded-1">
