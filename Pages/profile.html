@@ -24,8 +24,96 @@
   <body>
     <div id="navbar"></div>
 
-    <div id="content" class="text-light">
-        <h1>Profile</h1>
+    <div id="content" class="text-light py-5 px-2 px-md-3 px-lg-5">
+      <div class="container-fluid">
+        <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+          <i class="fa-solid fa-arrow-left me-1"></i>
+          Back
+        </button>
+        <div class="container-fluid bg-1a rounded-3 p-5">
+          <div class="row d-flex justify-content-between text-center text-lg-start">
+            
+            <div class="col-12 col-lg-auto">
+              <div class="row">
+                <h1 class="fw-semibold">Hi <span id="user-full-name"></span>,</h1>
+              </div>
+              <div
+                class="row d-flex align-items-center justify-content-between"
+              >
+                <div class="col-12 col-lg-auto">
+                  <p class="fs-4 p-0 m-0 text-99" id="user-email"></p>
+                </div>
+                <div class="col-12 col-lg-auto">
+                  <button class="btn btn-outline-light rounded-pill px-5 mt-1 mt-lg-0" onclick="onOpenEdit()">
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-auto mt-3 mt-lg-0 d-none" id="admin-panel-wrapper">
+              <a href="#" class="btn btn-outline-primary rounded-pill px-5">
+                Admin Panel
+              </a>
+            </div>
+
+          </div>
+
+          <div class="row mt-4 d-flex flex-column-reverse flex-lg-row">
+            <div class="col-lg-6 mt-4 mt-lg-0">
+              <p class="m-0 p-0 text-light fs-3 fw-semibold mb-3">
+                My Songs (<span id="num-of-songs">0</span>):
+              </p>
+              <div class="container-fluid" id="my-songs-list"></div>
+            </div>
+            <div class="col-lg-6">
+
+              <p class="m-0 p-0 text-light fs-3 fw-semibold mb-3">
+                My Orders (<span id="num-of-orders">0</span>):
+              </p>
+              <div class="container-fluid" id="my-orders-list"></div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="edit-profile-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content translate-middle-y">
+            <div class="modal-header">
+              <h1 class="modal-title fs-4 fw-bold" id="exampleModalLabel2">Edit Profile</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+              <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Oops! Something went wrong. Please try again.
+              </div>
+              <div class="email input-wrapper mb-3">
+                <i class="fa-solid fa-user input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="edit-email" id="edit-fullname" placeholder="Full Name"/>
+              </div>
+              <div class="email input-wrapper mb-3">
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="edit-email" id="edit-email" placeholder="Email"/>
+              </div>
+              <div class="password input-wrapper mb-3">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="edit-password" id="edit-password" placeholder="Password - at least 8 characters"/>
+              </div>
+              <div class="login-btn d-flex flex-column align-items-center">
+                <button class="btn text-light w-100 modal-btn rounded-pill" onclick="onSaveEdit()">Save</button>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div id="footer"></div>
@@ -37,5 +125,6 @@
     ></script>
     <script src="../Scripts/navbar.js"></script>
     <script src="../Scripts/footer.js"></script>
+    <script src="../Scripts/profilePageScripts.js"></script>
   </body>
 </html>

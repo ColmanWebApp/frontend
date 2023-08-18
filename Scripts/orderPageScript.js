@@ -28,27 +28,18 @@ const fillOrderSummary = (totalItems, subtotal, shipping, total) => {
 };
 
 const onDeleteFromCart = (event) => {
-  console.log("item id:", event.getAttribute("attr_id"));
+  // console.log("item id:", event.getAttribute("attr_id"));
   removeItemFromCart(event.getAttribute("attr_id"));
+  handleCheckoutBtnStyle()
 };
 
 const onCheckout = () => {
   const cartOnStorage = JSON.parse(localStorage.getItem("cart"));
   const userToken = localStorage.getItem("user");
-  if (
-    cartOnStorage === null ||
-    cartOnStorage.length === 0 ||
-    userToken === null ||
-    userToken.length === 0
-  ) {
+  if ( cartOnStorage === null || cartOnStorage.length === 0 || userToken === null || userToken.length === 0) {
     return;
   }
-  // const splitedCart = cartOnStorage.split(",");
-  // const songsIdsArr = [];
-  // for (let i = 0; i < splitedCart.length; i++) {
-  //   songsIdsArr.push(String(splitedCart[i]));
-  // }
-  console.log(`checkout clicked - after validate localstorage`);
+  
   // todo: Ajax -> create order
   $.ajax({
     url: "http://localhost:6969/orders",
@@ -67,6 +58,7 @@ const onCheckout = () => {
     .fail(function () {
       const checkoutModalContent = document.querySelector("#checkout-modal .modal-body")
       checkoutModalContent.innerHTML = `Something went wrong!<br>Try again later...`
+      $("#checkout-modal").modal("show")
       console.log("something when wront");
       return;
     })
@@ -77,6 +69,7 @@ const onCheckout = () => {
       songsFromDB.forEach(element => {
         checkoutModalSongsListElement.innerHTML += `<li>${element.title}</li>`
       });
+      $("#checkout-modal").modal("show")
       console.log("finish success");
     });
 
@@ -156,7 +149,7 @@ const removeItemFromCart = (itemID, removeAll = false) => {
 };
 
 const addToLocalStorage = () => {
-  const cart = ["64d2a2af3a54f70b2c2883f3", "64ccda0c5fad016c15f71c3d"];
+  const cart = ["64d2a2af3a54f70b2c2883f3", "64ccda0c5fad016c15f71c3d", "64ccd9dd5fad016c15f71c39"];
   localStorage.setItem("cart", JSON.stringify(cart));
   updateNavbar();
 };
@@ -166,8 +159,16 @@ const handlePermissions = ()=> {
     window.location.replace("./index.html")
 }
 
+const handleCheckoutBtnStyle = () => {
+  const cart = JSON.parse(localStorage.getItem("cart"))
+  if(!cart || cart.length == 0){
+    document.querySelector("#checkout-btn").setAttribute("disabled", "")
+  }
+}
+
 // addToLocalStorage();
 handlePermissions();
+handleCheckoutBtnStyle()
 // localStorage.clear()
 createCartList();
 
