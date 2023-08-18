@@ -9,10 +9,11 @@ function createCard(song) {
   <div class="card song-card d-flex justify-content-center align-items-center mb-3 border-0">
     <div class="row p-0 m-0 w-75">
       <div class="col-12 p-0 m-0">
-        <button class="btn mx-0 px-0 link-light" onclick="previousPage()">
-        <i class="fa-solid fa-arrow-left me-1"></i>
-        Back
-       </button>
+        <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+          <i class="fa-solid fa-arrow-left me-1"></i>
+          Back
+         </button>
+      </div>
     </div>
     <div class="row song-items rounded-4 overflow-hidden w-75">
       <div class="col-md-4 m-0 p-0">
@@ -29,10 +30,7 @@ function createCard(song) {
               <p class="card-text m-0 p-0 fs-4">${song.duration}</p>
               ${preview}
             </div>
-            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5" id="add-to-cart">
-            <div class="price fs-5 me-3">${song.price}$</div>
-              <div onclick="addToCart('${song._id}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>
-            </div>
+            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5" id="add-to-cart"></div>
         </div>
       </div>
     </div>
@@ -49,7 +47,7 @@ function addToCart(songId) {
     return;
   }
   if (!songId) {
-    window.location.replace("../Pages/404.html")
+    window.location.replace("../Pages/404.html");
     return;
   }
   const songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -92,8 +90,7 @@ async function setAddToCart(songId) {
         alert("error:", error);
         return;
       });
-  }
-  else{
+  } else {
     addToCart.html(`<div class="price fs-5 me-3">${song.price}$</div>
     <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
   }
@@ -102,10 +99,9 @@ async function setAddToCart(songId) {
 $(document).ready(async function () {
   const urlParams = window.location.search;
   const searchParams = new URLSearchParams(urlParams);
-  if (!searchParams.has("songId"))
-    window.location.replace("./404.html");
+  if (!searchParams.has("songId")) window.location.replace("./404.html");
   else {
-    const songId = searchParams.get("songId"); 
+    const songId = searchParams.get("songId");
     const myJson = {
       url: `http://localhost:6969/songs/${songId}/`,
       type: "GET",
