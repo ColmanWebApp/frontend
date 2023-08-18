@@ -391,7 +391,7 @@ const setSuggestions = (inputValue) => {
 const getSuggestion = (imgUrl, title, artist, id) => {
   const a = document.createElement("a");
   a.classList += "serach-list-item d-flex align-items-center text-decoration-none";
-  a.href = `./SongPage?songId=${id}`
+  a.href = `./SongPage.html?songId=${id}`
   a.innerHTML = `
   <div class="col-3 d-flex align-items-center justify-content-center p-3">
     <img src="${imgUrl}" alt="${title} image" class="w-100 rounded-1">
@@ -450,4 +450,16 @@ $.ajax({
 }).fail(function () {
   alert("error")
   return;
+});
+
+
+document.querySelectorAll(".modal-input").forEach((element) => {
+  element.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      console.log(element.parentElement.parentElement.querySelector("button").click());
+    }
+  });
 });
