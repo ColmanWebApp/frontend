@@ -9,8 +9,10 @@ function createCard(song) {
   <div class="card song-card d-flex justify-content-center align-items-center mb-3 border-0">
     <div class="row p-0 m-0 w-75">
       <div class="col-12 p-0 m-0">
-        <div onclick="previousPage()" class="back btn text-light text-start p-0 m-0">Back</div>
-      </div>
+        <button class="btn mx-0 px-0 link-light" onclick="previousPage()">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Back
+       </button>
     </div>
     <div class="row song-items rounded-4 overflow-hidden w-75">
       <div class="col-md-4 m-0 p-0">
