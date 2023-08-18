@@ -100,12 +100,10 @@ async function setAddToCart(songId) {
 $(document).ready(async function () {
   const urlParams = window.location.search;
   const searchParams = new URLSearchParams(urlParams);
-  if (searchParams.has("songId"))
-    // add !
-    //window.location.replace("/"); // remove from //
-    console.log("no Id found");
+  if (!searchParams.has("songId"))
+    window.location.replace("./404.html");
   else {
-    const songId = "64d7d41f3a0cb8522dbf45e5"; // add later searchParams.get("songId")
+    const songId = searchParams.get("songId"); 
     const myJson = {
       url: `http://localhost:6969/songs/${songId}/`,
       type: "GET",
@@ -123,7 +121,7 @@ $(document).ready(async function () {
         setAddToCart(song._id);
       })
       .fail(function (error) {
-        console.log("failed", error);
+        window.location.replace("./404.html");
       });
   }
 });
