@@ -9,7 +9,7 @@ function createCard(song) {
   <div class="card song-card d-flex justify-content-center align-items-center mb-3 border-0">
     <div class="row p-0 m-0 w-75">
       <div class="col-12 p-0 m-0">
-        <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+        <button class="btn mx-0 px-0 link-light" onclick="previousPage()">
           <i class="fa-solid fa-arrow-left me-1"></i>
           Back
          </button>
@@ -99,7 +99,8 @@ async function setAddToCart(songId) {
 $(document).ready(async function () {
   const urlParams = window.location.search;
   const searchParams = new URLSearchParams(urlParams);
-  if (!searchParams.has("songId")) window.location.replace("./404.html");
+  if (!searchParams.has("songId")) 
+    window.location.replace("./404.html");
   else {
     const songId = searchParams.get("songId");
     const myJson = {
