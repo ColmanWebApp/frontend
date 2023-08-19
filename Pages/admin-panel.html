@@ -52,7 +52,8 @@
             </div>
 
             <div class="row mt-5">
-                <div class="col-4 px-4">
+
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
                     <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-users-list">
                         <div class="col-12">
                             <div class="row d-flex align-items-center justify-content-between">
@@ -65,37 +66,148 @@
                             </div>
                             
                         </div>
-
-                        
-
                     </div>
+
                     <div class="collapse px-2 rounded-bottom-2 list" id="all-users-list">
                         <div class="row py-2">
                             <div class="col-12 px-2 py-0">
-                                <div class="list-item text-light p-1">User Name</div>
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="user-1" onclick="onUserClicked(this)">
+                                    <span>User Name</span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
                             </div>
                             <div class="col-12 px-2 py-0">
-                                <div class="list-item text-light p-1">User Name</div>
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="user-2" onclick="onUserClicked(this)">
+                                    <span>User Name</span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">Songs</div>
-                <div class="col-4">Orders</div>
+
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
+                    <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-songs-list">
+                        <div class="col-12">
+                            <div class="row d-flex align-items-center justify-content-between">
+                                <div class="col-auto">
+                                    <p class="p-0 m-0 fs-5 fw-medium">Songs</p>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="collapse px-2 rounded-bottom-2 list" id="all-songs-list">
+                        <div class="row py-2">
+                            <div class="col-12 px-2 py-0">
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-1" onclick="onUserClicked(this)">
+                                    <span>Song Title</span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
+                            </div>
+                            <div class="col-12 px-2 py-0">
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-2" onclick="onUserClicked(this)">
+                                    <span>Song Title</span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
+                    <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-orders-list">
+                        <div class="col-12">
+                            <div class="row d-flex align-items-center justify-content-between">
+                                <div class="col-auto">
+                                    <p class="p-0 m-0 fs-5 fw-medium">Orders</p>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="collapse px-2 rounded-bottom-2 list" id="all-orders-list">
+                        <div class="row py-2">
+                            <div class="col-12 px-2 py-0">
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-1" onclick="onUserClicked(this)">
+                                    <div>
+                                        <span class="me-3">19.08.2023</span>
+                                        <span class="me-3">Tal Mekler</span>
+                                        <span>39.98$</span>
+                                    </div>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
+                            </div>
+                            <div class="col-12 px-2 py-0">
+                                <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-2" onclick="onUserClicked(this)">
+                                    <div>
+                                        <span class="me-3">19.08.2023</span>
+                                        <span class="me-3">Tal Mekler</span>
+                                        <span>39.98$</span>
+                                    </div>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row mt-5">
-                <div class="col-6 p-5">
+                <div class="col-12 col-lg-6 p-3">
                     <h3 class="p-0 m-0">Stat 1</h3>
                     <img src="https://picsum.photos/200" alt="" class="w-100" style="max-height: 500px;">
                 </div>
-                <div class="col-6 p-5">
+                <div class="col-12 col-lg-6 p-3">
                     <h3 class="p-0 m-0">Stat 1</h3>
                     <img src="https://picsum.photos/200" alt="" class="w-100" style="max-height: 500px;">
                 </div>
             </div>
 
         </div>
+
+        <!-- Users Modal -->
+        <div class="modal fade text-dark" id="users-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">[USER] Tal Mekler</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                        Oops! Something went wrong. Please try again.
+                      </div>
+                      <div class="fullname input-wrapper mb-3">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="edit-fullname" id="edit-fullname" placeholder="Full Name"/>
+                      </div>
+                      <div class="email input-wrapper mb-3">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="edit-email" id="edit-email" placeholder="Email"/>
+                      </div>
+                      <div class="password input-wrapper mb-3">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="edit-password" id="edit-password" placeholder="Password - at least 8 characters"/>
+                      </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger">Delete User</button>
+                  <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
     </div>
 
     <div id="footer"></div>

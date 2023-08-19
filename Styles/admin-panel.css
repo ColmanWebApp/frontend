@@ -12,8 +12,9 @@
 .list-item {
     background: transparent;
     transition: 150ms ease-in-out;
+    color: #999999;
 }
 
 .list-item:hover {
-    background: #000;
+    color: white;
 }
