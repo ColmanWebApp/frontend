@@ -1,0 +1,16 @@
+.song-card{
+    background-color: #111111;
+} 
+.song-items{
+    background-color:#1A1A1A;
+}
+.song-info{
+    color: #999999;
+}
+#preview-sound-bar{
+    height: 2rem;
+    width: 20rem;
+}
+#preview-text{
+    font-size: 16px;
+}
