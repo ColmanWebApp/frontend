@@ -33,32 +33,32 @@
         </button>
         <div class="container-fluid text-light p-5">
             <h1 class="fw-bold fs-1 m-0 p-0 text-center text-lg-start">Admin Panel</h1>
-            <div class="row d-flex justify-content-between mt-3">
-                <div class="col-auto mx-auto mx-lg-0">
-                    Total Users: <span>15</span>
+            <div class="row d-flex justify-content-between mt-3 fs-5">
+                <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+                    Total Users: <span id="total-users-number"></span>
                 </div>
-                <div class="col-auto mx-auto mx-lg-0">
-                    Total Songs: <span>100</span>
+                <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+                    Total Songs: <span id="total-songs-number"></span>
                 </div>
-                <div class="col-auto mx-auto mx-lg-0">
-                    Total Orders: <span>25</span>
+                <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+                    Total Orders: <span id="total-orders-number">25</span>
                 </div>
-                <div class="col-auto mx-auto mx-lg-0">
+                <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
                     Total Paid: <span>999.5</span>$
                 </div>
-                <div class="col-auto mx-auto mx-lg-0">
+                <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
                     Average Income: <span>39.98</span>$
                 </div>
             </div>
 
             <div class="row mt-5">
 
-                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="users">
                     <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-users-list">
                         <div class="col-12">
                             <div class="row d-flex align-items-center justify-content-between">
                                 <div class="col-auto">
-                                    <p class="p-0 m-0 fs-5 fw-medium">Users</p>
+                                    <p class="p-0 m-0 fs-5 fw-medium list-title">Users ( <span>0</span> )</p>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa-solid fa-chevron-down"></i>
@@ -69,7 +69,12 @@
                     </div>
 
                     <div class="collapse px-2 rounded-bottom-2 list" id="all-users-list">
-                        <div class="row py-2">
+                        <div class="row px-2">
+                            <div class="col-12 border-bottom py-2 px-2">
+                                <input type="text" class="w-100 py-1 px-2 rounded-2 border" placeholder="Search User" oninput="onSearchUser(this)">
+                            </div>
+                        </div>
+                        <div class="row py-2 row-list">
                             <div class="col-12 px-2 py-0">
                                 <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="user-1" onclick="onUserClicked(this)">
                                     <span>User Name</span>
@@ -86,12 +91,12 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="songs">
                     <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-songs-list">
                         <div class="col-12">
                             <div class="row d-flex align-items-center justify-content-between">
                                 <div class="col-auto">
-                                    <p class="p-0 m-0 fs-5 fw-medium">Songs</p>
+                                    <p class="p-0 m-0 fs-5 fw-medium list-title">Songs ( <span>0</span> )</p>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa-solid fa-chevron-down"></i>
@@ -102,7 +107,12 @@
                     </div>
 
                     <div class="collapse px-2 rounded-bottom-2 list" id="all-songs-list">
-                        <div class="row py-2">
+                        <div class="row px-2">
+                            <div class="col-12 border-bottom py-2 px-2">
+                                <input type="text" class="w-100 py-1 px-2 rounded-2 border" placeholder="Search Song" oninput="onSearchSong(this)">
+                            </div>
+                        </div>
+                        <div class="row py-2 row-list">
                             <div class="col-12 px-2 py-0">
                                 <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-1" onclick="onUserClicked(this)">
                                     <span>Song Title</span>
@@ -179,7 +189,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">[USER] Tal Mekler</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">[USER] <span id="user-modal-userfullname"></span></h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -188,21 +198,36 @@
                       </div>
                       <div class="fullname input-wrapper mb-3">
                         <i class="fa-solid fa-user input-icon"></i>
-                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="edit-fullname" id="edit-fullname" placeholder="Full Name"/>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="user-edit-fullname" id="user-edit-fullname" placeholder="Full Name"/>
                       </div>
                       <div class="email input-wrapper mb-3">
                         <i class="fa-solid fa-envelope input-icon"></i>
-                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="edit-email" id="edit-email" placeholder="Email"/>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="user-edit-email" id="user-edit-email" placeholder="Email"/>
                       </div>
                       <div class="password input-wrapper mb-3">
                         <i class="fa-solid fa-lock input-icon"></i>
-                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="edit-password" id="edit-password" placeholder="Password - at least 8 characters"/>
+                        <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="user-edit-password" id="user-edit-password" placeholder="Password - at least 8 characters"/>
                       </div>
+                      <div class="orders row">
+                        <div class="col-12 px-4 fs-5">
+                            Total Orders: <span class="fw-normal" id="user-total-orders"></span>
+                        </div>
+                        <div class="col-12 px-4 fs-5">
+                            Total Songs: <span class="fw-normal" id="user-total-songs"></span>
+                        </div>
+                        <div class="col-12 px-4 fs-5">
+                            Total Order's Cost: <span class="fw-normal" id="user-total-orders-cost">59.97</span>$
+                        </div>
+                        <div class="col-12 px-4 fs-5">
+                            Average Cost Per Order: <span class="fw-normal" id="user-avg-per-order">19.99</span>$
+                        </div>
+                      </div>
+                      
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger">Delete User</button>
-                  <button type="button" class="btn btn-primary">Save Changes</button>
+                  <button type="button" class="btn btn-danger" onclick="onDeleteUser()">Delete User</button>
+                  <button type="button" class="btn btn-primary" onclick="onSaveUser()">Save Changes</button>
                 </div>
               </div>
             </div>
