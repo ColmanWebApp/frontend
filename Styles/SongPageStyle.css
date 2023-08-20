@@ -6,6 +6,7 @@
 }
 .song-info{
     color: #999999;
+    padding: 3rem;
 }
 #preview-sound-bar{
     height: 2rem;
@@ -13,4 +14,26 @@
 }
 #preview-text{
     font-size: 16px;
+}
+@media(max-width:768px){
+    .song-info{
+        display: flex;
+        flex-direction: column;
+        padding:30px 0;
+        align-items: center ;
+    }
+    .song-description{
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+    }
+    #preview-bar{
+        flex-direction: column-reverse;
+    }
+    #preview-bar p{
+        align-self: flex-start;
+    }
+
+
 }
