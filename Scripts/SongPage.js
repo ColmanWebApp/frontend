@@ -20,7 +20,7 @@ function createCard(song) {
         <img src="${song.album_image}" class="img-fluid object-fit-cover h-100 w-100" alt=${song.title}" image">
       </div>
       <div class="col-md-8">
-        <div class="card-body song-info p-5">
+        <div class="card-body song-info">
             <div class="song-description ">
               <h1 class="card-title text-light fw-bold">${song.title}</h1>
               <p class="card-text m-0 p-0 fs-4">${song.album}</p>
@@ -59,7 +59,6 @@ function addToCart(songId) {
 
 async function setAddToCart(songId) {
   const addToCart = $("#add-to-cart");
-  console.log("song id:", songId);
   if (localStorage.getItem("user")) {
     await $.ajax({
       url: `http://localhost:6969/users/check-song/${songId}/`,
@@ -87,7 +86,7 @@ async function setAddToCart(songId) {
   <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>`);
       })
       .fail(function (error) {
-        alert("error:", error);
+        alert("error:fail", error);
         return;
       });
   } else {
