@@ -448,7 +448,6 @@ $.ajax({
     ALL_SONGS = res
   },
 }).fail(function () {
-  alert("error")
   return;
 });
 

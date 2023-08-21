@@ -95,7 +95,7 @@ const onDeleteUser = () => {
   );
 
   $.ajax({
-    url: `http://localhost:6969/users/${current_user._id}`,
+    url: `http://localhost:6969/admin/users/${current_user._id}`,
     type: "DELETE",
     secure: true,
     cors: true,
@@ -129,7 +129,7 @@ const onSaveUser = () => {
     isAdmin: current_user.isAdmin,
   };
   $.ajax({
-    url: `http://localhost:6969/users/${current_user._id}`,
+    url: `http://localhost:6969/admin/users/${current_user._id}`,
     type: "PUT",
     secure: true,
     cors: true,
@@ -262,56 +262,68 @@ const onSearchOrder = (element) => {
 // get all users
 const getAllUsers = async () => {
   await $.ajax({
-    url: `http://localhost:6969/users/`,
-    type: "GET",
+    url: `http://localhost:6969/admin/users/`,
+    type: "POST",
     secure: true,
     cors: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
+    data: {
+        token: localStorage.getItem('user')
+    }
   })
     .done(function (res) {
       adminPanel_ALL_USERS = res;
       console.log("users:", adminPanel_ALL_USERS);
     })
-    .fail(function () {
-      console.log("error - GET ALL USERS");
+    .fail(function (err) {
+      if (err.status === 403) window.location.replace("./404.html");
     });
 };
-
 // get all songs
 const getAllSongs = async () => {
   await $.ajax({
-    url: `http://localhost:6969/songs/`,
-    type: "GET",
+    url: `http://localhost:6969/admin/songs/`,
+    type: "POST",
     secure: true,
     cors: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
+    data: {
+        token: localStorage.getItem('user')
+    }
   })
     .done(function (res) {
       adminPanel_ALL_SONGS = res;
       console.log("songs:", adminPanel_ALL_SONGS);
     })
-    .fail(function () {
-      console.log("error - GET ALL USERS");
+    .fail(function (err) {
+        if (err.status === 403) window.location.replace("./404.html");
     });
 };
 
 const getAllOrders = async () => {
   await $.ajax({
-    url: `http://localhost:6969/orders/`,
-    type: "GET",
+    url: `http://localhost:6969/admin/orders/`,
+    type: "POST",
     secure: true,
     cors: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-  }).done(function (res) {
-    adminPanel_ALL_ORDERS = res;
-    console.log("orders:", adminPanel_ALL_ORDERS);
-  });
+    data: {
+        token: localStorage.getItem('user')
+    }
+  })
+    .done(function (res) {
+      adminPanel_ALL_ORDERS = res;
+      console.log("orders:", adminPanel_ALL_ORDERS);
+    })
+    .fail(function (err) {
+        if (err.status === 403) window.location.replace("./404.html");
+    });
 };
 
 let adminPanel_ALL_USERS = [];
@@ -322,6 +334,7 @@ let adminPanel_ALL_ORDERS = [];
 // });
 
 const setPage = async () => {
+  const loader = document.querySelector("#loader");
   await getAllUsers();
   await getAllSongs();
   await getAllOrders();
@@ -336,7 +349,7 @@ const setPage = async () => {
   setIncomes(adminPanel_ALL_ORDERS);
   setOrdersList(adminPanel_ALL_ORDERS);
 
-  document.querySelector("#loader").classList.add("d-none");
+  loader.classList.add("d-none");
   document.querySelector("#navbar").classList.remove("d-none");
   document.querySelector("#content").classList.remove("d-none");
   document.querySelector("#footer").classList.remove("d-none");
