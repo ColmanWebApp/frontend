@@ -2,11 +2,69 @@ const handleBack = () => {
   window.history.back();
 };
 
+const getCurrentUserOrdersPrice = () => {
+  const current_user = adminPanel_ALL_USERS.find(
+    (user) =>
+      user._id ===
+      document.querySelector("#users-modal").getAttribute("data-id")
+  );
+  const currentUserSongs = [];
+  for (let i = 0; i < adminPanel_ALL_SONGS.length; i++) {
+    // todo: delete this if after change the data
+    if (!adminPanel_ALL_SONGS[i]._id) {
+      continue;
+    }
+
+    for (let j = 0; j < current_user.songs.length; j++) {
+      if (adminPanel_ALL_SONGS[i]._id === current_user.songs[j]) {
+        currentUserSongs.push(adminPanel_ALL_SONGS[i]);
+        break;
+      }
+    }
+  }
+  let songsValue = 0;
+  currentUserSongs.forEach((song) => {
+    songsValue = songsValue - 0 + song.price;
+  });
+  return songsValue;
+};
+
+const getUserById = (userId) => {
+
+    for (let index = 0; index < adminPanel_ALL_USERS.length; index++) {
+       if(!adminPanel_ALL_USERS[index]){
+        continue
+       }
+       if(adminPanel_ALL_USERS[index]._id === userId){
+        return adminPanel_ALL_USERS[index]
+       }
+    }
+
+    return {name: "NoName"}
+}
+
+const getOrderPrice = (orderId) => {
+    const order = adminPanel_ALL_ORDERS.find(ord => ord._id=== orderId)
+    let totalPrice = 0
+    order.songs.forEach(song => {
+        const currentSong = adminPanel_ALL_SONGS.find(admin_song => admin_song._id === song)
+        totalPrice = totalPrice - 0 + currentSong.price
+    });
+
+    return totalPrice
+}
+
+const getOrderDateAsString = (date) => {
+    const dmy = date.split("T")[0].split("-")
+    console.log(dmy);
+  return `${dmy[2]}.${dmy[1]}.${dmy[0]}`
+};
+
 const onUserClicked = async (element) => {
   const current_user = adminPanel_ALL_USERS.find(
     (user) => user._id === element.getAttribute("data-id")
   );
-  
+
   document
     .querySelector("#users-modal")
     .setAttribute("data-id", current_user._id);
@@ -16,38 +74,25 @@ const onUserClicked = async (element) => {
   document.querySelector("#user-edit-email").value = current_user.email;
   document.querySelector("#user-edit-password").value = current_user.password;
 
- $.ajax({
-    url: `http://localhost:6969/orders/user/${current_user._id}`,
-    type: "GET",
-    secure: true,
-    cors: true,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  })
-    .done(function (res) {
-      console.log("get res", res);
-      document.querySelector("#user-total-orders").innerHTML = res.length;
-      let songCounter = 0
-      res.forEach(result => {
-        songCounter += result.songs.length
-      })
-      document.querySelector("#user-total-songs").innerHTML =songCounter;
-    })
-    .fail(function () {
-      console.log("user orders failed");
-      return [];
-    });
+  $("#user-total-orders").text(current_user.orders.length);
+  $("#user-total-songs").text(current_user.songs.length);
 
-//   console.log("out of ajax:", userOrders);
+  const songsValue = getCurrentUserOrdersPrice();
+  $("#user-total-orders-cost").text(songsValue);
+  $("#user-avg-per-order").text(
+    (songsValue / current_user.orders.length).toFixed(2)
+  );
 
   $("#users-modal").modal("show");
   console.log(current_user);
 };
 
 const onDeleteUser = () => {
-    const current_user = adminPanel_ALL_USERS.find(
-        (user) => user._id === document.querySelector("#users-modal").getAttribute("data-id"))
+  const current_user = adminPanel_ALL_USERS.find(
+    (user) =>
+      user._id ===
+      document.querySelector("#users-modal").getAttribute("data-id")
+  );
 
   $.ajax({
     url: `http://localhost:6969/users/${current_user._id}`,
@@ -58,14 +103,15 @@ const onDeleteUser = () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem("user")
-    }
-  }).done(function() {
-    window.location.reload()
-  }).fail(function() {
-    showModalError();
+      token: localStorage.getItem("user"),
+    },
   })
-
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
 };
 
 const onSaveUser = () => {
@@ -115,9 +161,12 @@ const setNumberOfUsers = (numOfTotalUsers) => {
 const setNumberOfSongs = (numOfTotalSongs) => {
   document.querySelector("#total-songs-number").innerHTML = numOfTotalSongs;
 };
+const setNumberOfOrders = (numOfTotalOrders) => {
+    document.querySelector("#total-orders-number").innerHTML = numOfTotalOrders;
+  };
 
 const setUsersList = (usersList) => {
-    $("#users .list-title span").text(`${usersList.length}`)
+  $("#users .list-title span").text(`${usersList.length}`);
   const rowElement = document.querySelector("#all-users-list .row-list");
   rowElement.innerHTML = "";
   usersList.forEach((element) => {
@@ -145,6 +194,26 @@ const setSongsList = (songsList) => {
   });
 };
 
+const setOrdersList = (ordersList) => {
+    $("#orders .list-title span").text(ordersList.length);
+    const rowElement = document.querySelector("#all-orders-list .row-list");
+    rowElement.innerHTML = "";
+    ordersList.forEach((element) => {
+      const col12 = document.createElement("div");
+      col12.classList += "col-12 px-2 py-0";
+        col12.innerHTML += `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onUserClicked(this)">
+        <div class="col-10 d-flex justify-content-between">
+            <span class="me-3">${getOrderDateAsString(element.date)}</span>
+            <span class="me-3">${getUserById(element.user).name}</span>
+            <span>${getOrderPrice(element._id)}$</span>
+        </div>
+        <i class="fa-solid fa-pen-to-square"></i>
+    </div>`
+
+      rowElement.appendChild(col12);
+    });
+  };
+
 const onSearchUser = (element) => {
   setUsersList(
     adminPanel_ALL_USERS.filter((user) =>
@@ -159,7 +228,11 @@ const onSearchSong = (element) => {
     )
   );
 };
+const onSearchOrder = (element) => {
+    console.log(element.value);
+}
 
+// get all users
 $.ajax({
   url: `http://localhost:6969/users/`,
   type: "GET",
@@ -179,6 +252,7 @@ $.ajax({
     console.log("error - GET ALL USERS");
   });
 
+// get all songs
 $.ajax({
   url: `http://localhost:6969/songs/`,
   type: "GET",
@@ -197,6 +271,21 @@ $.ajax({
   .fail(function () {
     console.log("error - GET ALL USERS");
   });
+
+$.ajax({
+  url: `http://localhost:6969/orders/`,
+  type: "GET",
+  secure: true,
+  cors: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+  },
+}).done(function (res) {
+  adminPanel_ALL_ORDERS = res;
+  setNumberOfOrders(adminPanel_ALL_ORDERS.length)
+  setOrdersList(adminPanel_ALL_ORDERS)
+  console.log("orders:", adminPanel_ALL_ORDERS);
+});
 
 let adminPanel_ALL_USERS = [];
 let adminPanel_ALL_SONGS = [];

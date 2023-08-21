@@ -129,12 +129,12 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4">
+                <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="orders">
                     <div class="list row p-2 rounded-2 collapsed" data-bs-toggle="collapse" data-bs-target="#all-orders-list">
                         <div class="col-12">
                             <div class="row d-flex align-items-center justify-content-between">
                                 <div class="col-auto">
-                                    <p class="p-0 m-0 fs-5 fw-medium">Orders</p>
+                                    <p class="p-0 m-0 fs-5 fw-medium list-title">Orders ( <span></span> )</p>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa-solid fa-chevron-down"></i>
@@ -145,7 +145,12 @@
                     </div>
 
                     <div class="collapse px-2 rounded-bottom-2 list" id="all-orders-list">
-                        <div class="row py-2">
+                        <div class="row px-2">
+                            <div class="col-12 border-bottom py-2 px-2">
+                                <input type="text" class="w-100 py-1 px-2 rounded-2 border" placeholder="Search Order (Date/Name)" oninput="onSearchOrder(this)">
+                            </div>
+                        </div>
+                        <div class="row py-2 row-list">
                             <div class="col-12 px-2 py-0">
                                 <div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="song-1" onclick="onUserClicked(this)">
                                     <div>
