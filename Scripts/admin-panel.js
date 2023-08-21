@@ -43,17 +43,17 @@ const getUserById = (userId) => {
 };
 
 const getOrderPrice = (orderId) => {
-    const order = adminPanel_ALL_ORDERS.find((ord) => ord._id === orderId);
-    let totalPrice = 0;
-  
-    for (let i = 0; i < order.songs.length; i++) {
-      for (let j = 0; j < adminPanel_ALL_SONGS.length; j++) {
-        if (!adminPanel_ALL_SONGS[j]._id) continue;
-        if (adminPanel_ALL_SONGS[j]._id === order.songs[i])
-          totalPrice = totalPrice - 0 + adminPanel_ALL_SONGS[j].price;
-      }
+  const order = adminPanel_ALL_ORDERS.find((ord) => ord._id === orderId);
+  let totalPrice = 0;
+
+  for (let i = 0; i < order.songs.length; i++) {
+    for (let j = 0; j < adminPanel_ALL_SONGS.length; j++) {
+      if (!adminPanel_ALL_SONGS[j]._id) continue;
+      if (adminPanel_ALL_SONGS[j]._id === order.songs[i])
+        totalPrice = totalPrice - 0 + adminPanel_ALL_SONGS[j].price;
     }
-    return totalPrice;
+  }
+  return totalPrice;
 };
 
 const getOrderDateAsString = (date) => {
@@ -79,7 +79,7 @@ const onUserClicked = async (element) => {
   $("#user-total-songs").text(current_user.songs.length);
 
   const songsValue = getCurrentUserOrdersPrice();
-  $("#user-total-orders-cost").text(songsValue);
+  $("#user-total-orders-cost").text(songsValue.toFixed(2));
   $("#user-avg-per-order").text(
     (songsValue / current_user.orders.length).toFixed(2)
   );
@@ -171,9 +171,11 @@ const setIncomes = (ordersList) => {
   ordersList.forEach((order) => {
     totalIncome = totalIncome - 0 + getOrderPrice(order._id);
   });
-  const avgIncome = totalIncome / ordersList.length;
+  let avgIncome = totalIncome / ordersList.length;
+  if (!avgIncome) avgIncome = 0;
+
   $("#total-income").text(totalIncome.toFixed(2));
-  $("#avg-income").text(avgIncome.toFixed(2))
+  $("#avg-income").text(avgIncome.toFixed(2));
 };
 
 const setUsersList = (usersList) => {
