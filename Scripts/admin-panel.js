@@ -43,16 +43,17 @@ const getUserById = (userId) => {
 };
 
 const getOrderPrice = (orderId) => {
-  const order = adminPanel_ALL_ORDERS.find((ord) => ord._id === orderId);
-  let totalPrice = 0;
-  order.songs.forEach((song) => {
-    const currentSong = adminPanel_ALL_SONGS.find(
-      (admin_song) => admin_song._id === song
-    );
-    totalPrice = totalPrice - 0 + currentSong.price;
-  });
-
-  return totalPrice;
+    const order = adminPanel_ALL_ORDERS.find((ord) => ord._id === orderId);
+    let totalPrice = 0;
+  
+    for (let i = 0; i < order.songs.length; i++) {
+      for (let j = 0; j < adminPanel_ALL_SONGS.length; j++) {
+        if (!adminPanel_ALL_SONGS[j]._id) continue;
+        if (adminPanel_ALL_SONGS[j]._id === order.songs[i])
+          totalPrice = totalPrice - 0 + adminPanel_ALL_SONGS[j].price;
+      }
+    }
+    return totalPrice;
 };
 
 const getOrderDateAsString = (date) => {
