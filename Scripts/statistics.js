@@ -23,11 +23,11 @@ async function salesStatisticPerGenre(){
     console.log("genreCountList",genreCountList);
     const xValues = [];
     const yValues = [];
+    genreCountList = genreCountList.sort((a,b)=>a._id.localeCompare(b._id));
     genreCountList.forEach(genre=>{
         xValues.push(genre._id);
         yValues.push(genre.count);
     });
-    xValues.sort((a,b)=>a.localeCompare(b));
     console.log("xValues",xValues);
     console.log("yValues",yValues);
 
