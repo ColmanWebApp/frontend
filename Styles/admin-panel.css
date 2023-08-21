@@ -1,0 +1,20 @@
+#content > div {
+    background-color: #1a1a1a;
+    border-radius: 1rem;
+}
+
+.list {
+    background-color: #99999933;
+    border: 1px solid #999999;
+    cursor: pointer;
+}
+
+.list-item {
+    background: transparent;
+    transition: 150ms ease-in-out;
+    color: #999999;
+}
+
+.list-item:hover {
+    color: white;
+}
