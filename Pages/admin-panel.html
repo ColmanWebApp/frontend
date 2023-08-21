@@ -184,13 +184,13 @@
             </div>
 
             <div class="row mt-5">
-                <div class="col-12 col-lg-6 p-3">
-                    <h3 class="p-0 m-0">Stat 1</h3>
-                    <img src="https://picsum.photos/200" alt="" class="w-100" style="max-height: 500px;">
+                <div class="col-12 col-lg-6 p-3 px-4 d-flex flex-column">
+                    <h3 class="p-0 m-0 mb-4">Purchases By Genres</h3>
+                    <canvas id="genresChart" class="h-auto my-auto" style="width:100%;transform: scale(1.05);"></canvas>
                 </div>
-                <div class="col-12 col-lg-6 p-3">
-                    <h3 class="p-0 m-0">Stat 1</h3>
-                    <img src="https://picsum.photos/200" alt="" class="w-100" style="max-height: 500px;">
+                <div class="col-12 col-lg-6 p-3 px-4 d-flex flex-column">
+                    <h3 class="p-0 m-0 mb-4">Last 10 Days Sales</h3>
+                    <canvas id="genresChart2" class="h-auto my-auto" style="width:100%;transform: scale(1.05);"></canvas>
                 </div>
             </div>
 
@@ -257,5 +257,7 @@
     <script src="../Scripts/navbar.js"></script>
     <script src="../Scripts/footer.js"></script>
     <script src="../Scripts/admin-panel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="../Scripts/statistics.js"></script>
   </body>
 </html>
