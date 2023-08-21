@@ -1,20 +1,39 @@
 #content > div {
-    background-color: #1a1a1a;
-    border-radius: 1rem;
+  background-color: #1a1a1a;
+  border-radius: 1rem;
 }
 
 .list {
-    background-color: #99999933;
-    border: 1px solid #999999;
-    cursor: pointer;
+  background-color: #99999933;
+  border: 1px solid #999999;
+  cursor: pointer;
 }
 
 .list-item {
-    background: transparent;
-    transition: 150ms ease-in-out;
-    color: #999999;
+  background: transparent;
+  transition: 150ms ease-in-out;
+  color: #999999;
 }
 
 .list-item:hover {
-    color: white;
+  color: white;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item i.fa-xmark {
+  width: 0;
+  margin-left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+}
+
+.list-group-item:hover i.fa-xmark {
+  width: auto;
+  visibility: visible;
+  margin-left: 0.5rem;
+  opacity: 1;
 }

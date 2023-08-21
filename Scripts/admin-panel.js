@@ -87,6 +87,10 @@ const onUserClicked = async (element) => {
   $("#users-modal").modal("show");
 };
 
+const onSongClicked = () => {
+  $("#songs-modal").modal("show");
+};
+
 const onDeleteUser = () => {
   const current_user = adminPanel_ALL_USERS.find(
     (user) =>
@@ -198,7 +202,7 @@ const setSongsList = (songsList) => {
   songsList.forEach((element) => {
     const col12 = document.createElement("div");
     col12.classList += "col-12 px-2 py-0";
-    col12.innerHTML = `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onUserClicked(this)">
+    col12.innerHTML = `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onSongClicked(this)">
         <span>${element.title}</span>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
@@ -259,6 +263,26 @@ const onSearchOrder = (element) => {
   console.log(element.value);
 };
 
+const onDeleteGenre = (listItem) => {
+  listItem.remove();
+};
+
+const onAddGenre = () => {
+  const genreValue = document.querySelector("#song-edit-genres").value;
+  if (genreValue === "") return;
+
+  const li = document.createElement("li")
+  li.classList += "list-group-item border-end col-auto mb-2 px-3"
+  li.setAttribute("onclick", "onDeleteGenre(this)")
+  li.innerHTML = `<span>${genreValue}</span>
+  <i class="fa-solid fa-xmark"></i>`
+
+  document.querySelector("#genres-ul").appendChild(li)
+  document.querySelector("#song-edit-genres").value = ""
+
+  console.log(genreValue);
+};
+
 // get all users
 const getAllUsers = async () => {
   await $.ajax({
@@ -270,8 +294,8 @@ const getAllUsers = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_USERS = res;
@@ -292,15 +316,15 @@ const getAllSongs = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_SONGS = res;
       console.log("songs:", adminPanel_ALL_SONGS);
     })
     .fail(function (err) {
-        if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403) window.location.replace("./404.html");
     });
 };
 
@@ -314,24 +338,24 @@ const getAllOrders = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_ORDERS = res;
       console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {
-        if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403) window.location.replace("./404.html");
     });
 };
 
 let adminPanel_ALL_USERS = [];
 let adminPanel_ALL_SONGS = [];
 let adminPanel_ALL_ORDERS = [];
-// $(document).ready(() => {
-//   $("#users-modal").modal("show");
-// });
+$(document).ready(() => {
+  $("#songs-modal").modal("show");
+});
 
 const setPage = async () => {
   const loader = document.querySelector("#loader");
