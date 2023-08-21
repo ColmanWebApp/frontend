@@ -27,6 +27,7 @@ async function salesStatisticPerGenre(){
         xValues.push(genre._id);
         yValues.push(genre.count);
     });
+    xValues.sort((a,b)=>a.localeCompare(b));
     console.log("xValues",xValues);
     console.log("yValues",yValues);
 
@@ -45,14 +46,16 @@ async function salesStatisticPerGenre(){
       datasets: [{
         backgroundColor: barColors,
         data: yValues
-      }]
+      }],
+      
     },
     options: {
-      title: {
-        display: true,
-        text: "Purchases By Genres"
+      legend: {
+         labels: {
+            fontColor: 'white' //set your desired color
+         }
       }
-    }
+   }
   });
 }
 salesStatisticPerGenre();
