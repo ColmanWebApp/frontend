@@ -29,6 +29,7 @@ function createCard(song) {
               <p class="card-text m-0 p-0 fs-4">${song.year}</p>
               <p class="card-text m-0 p-0 fs-4">${song.duration}</p>
               ${preview}
+              
             </div>
             <div class="d-flex align-items-center justify-content-end add-to-cart mt-5" id="add-to-cart"></div>
         </div>
