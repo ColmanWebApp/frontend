@@ -58,8 +58,7 @@ const getOrderPrice = (orderId) => {
 
 const getOrderDateAsString = (date) => {
   const dmy = date.split("T")[0].split("-");
-  return "" + dmy[2] + "." + dmy[1] + "." + dmy[0];
-  //   return `${dmy[2]}.${dmy[1]}.${dmy[0]}`;
+  return `${dmy[2]}.${dmy[1]}.${dmy[0]}`;
 };
 
 const onUserClicked = async (element) => {
@@ -86,7 +85,6 @@ const onUserClicked = async (element) => {
   );
 
   $("#users-modal").modal("show");
-  console.log(current_user);
 };
 
 const onDeleteUser = () => {
@@ -249,7 +247,7 @@ const onSearchOrder = (element) => {
     adminPanel_ALL_ORDERS.filter((order) => {
       console.log(getOrderDateAsString(order._id));
       return (
-        getOrderDateAsString(order._id)
+        getOrderDateAsString(order.date)
           .toLowerCase()
           .includes(element.value.toLowerCase()) ||
         getUserById(order.user)
@@ -337,6 +335,11 @@ const setPage = async () => {
   setNumberOfOrders(adminPanel_ALL_ORDERS.length);
   setIncomes(adminPanel_ALL_ORDERS);
   setOrdersList(adminPanel_ALL_ORDERS);
+
+  document.querySelector("#loader").classList.add("d-none");
+  document.querySelector("#navbar").classList.remove("d-none");
+  document.querySelector("#content").classList.remove("d-none");
+  document.querySelector("#footer").classList.remove("d-none");
 };
 
-setPage()
+setPage();
