@@ -30,34 +30,34 @@ const getCurrentUserOrdersPrice = () => {
 };
 
 const getUserById = (userId) => {
-
-    for (let index = 0; index < adminPanel_ALL_USERS.length; index++) {
-       if(!adminPanel_ALL_USERS[index]){
-        continue
-       }
-       if(adminPanel_ALL_USERS[index]._id === userId){
-        return adminPanel_ALL_USERS[index]
-       }
+  for (let index = 0; index < adminPanel_ALL_USERS.length; index++) {
+    if (!adminPanel_ALL_USERS[index]) {
+      continue;
     }
+    if (adminPanel_ALL_USERS[index]._id === userId) {
+      return adminPanel_ALL_USERS[index];
+    }
+  }
 
-    return {name: "NoName"}
-}
+  return { name: "NoName" };
+};
 
 const getOrderPrice = (orderId) => {
-    const order = adminPanel_ALL_ORDERS.find(ord => ord._id=== orderId)
-    let totalPrice = 0
-    order.songs.forEach(song => {
-        const currentSong = adminPanel_ALL_SONGS.find(admin_song => admin_song._id === song)
-        totalPrice = totalPrice - 0 + currentSong.price
-    });
+  const order = adminPanel_ALL_ORDERS.find((ord) => ord._id === orderId);
+  let totalPrice = 0;
+  order.songs.forEach((song) => {
+    const currentSong = adminPanel_ALL_SONGS.find(
+      (admin_song) => admin_song._id === song
+    );
+    totalPrice = totalPrice - 0 + currentSong.price;
+  });
 
-    return totalPrice
-}
+  return totalPrice;
+};
 
 const getOrderDateAsString = (date) => {
-    const dmy = date.split("T")[0].split("-")
-    console.log(dmy);
-  return `${dmy[2]}.${dmy[1]}.${dmy[0]}`
+  const dmy = date.split("T")[0].split("-");
+  return `${dmy[2]}.${dmy[1]}.${dmy[0]}`;
 };
 
 const onUserClicked = async (element) => {
@@ -162,8 +162,18 @@ const setNumberOfSongs = (numOfTotalSongs) => {
   document.querySelector("#total-songs-number").innerHTML = numOfTotalSongs;
 };
 const setNumberOfOrders = (numOfTotalOrders) => {
-    document.querySelector("#total-orders-number").innerHTML = numOfTotalOrders;
-  };
+  document.querySelector("#total-orders-number").innerHTML = numOfTotalOrders;
+};
+
+const setIncomes = (ordersList) => {
+  let totalIncome = 0;
+  ordersList.forEach((order) => {
+    totalIncome = totalIncome - 0 + getOrderPrice(order._id);
+  });
+  const avgIncome = totalIncome / ordersList.length;
+  $("#total-income").text(totalIncome.toFixed(2));
+  $("#avg-income").text(avgIncome.toFixed(2))
+};
 
 const setUsersList = (usersList) => {
   $("#users .list-title span").text(`${usersList.length}`);
@@ -195,24 +205,26 @@ const setSongsList = (songsList) => {
 };
 
 const setOrdersList = (ordersList) => {
-    $("#orders .list-title span").text(ordersList.length);
-    const rowElement = document.querySelector("#all-orders-list .row-list");
-    rowElement.innerHTML = "";
-    ordersList.forEach((element) => {
-      const col12 = document.createElement("div");
-      col12.classList += "col-12 px-2 py-0";
-        col12.innerHTML += `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onUserClicked(this)">
+  $("#orders .list-title span").text(ordersList.length);
+  const rowElement = document.querySelector("#all-orders-list .row-list");
+  rowElement.innerHTML = "";
+  ordersList.forEach((element) => {
+    const col12 = document.createElement("div");
+    col12.classList += "col-12 px-2 py-0";
+    col12.innerHTML += `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${
+      element._id
+    }" onclick="onUserClicked(this)">
         <div class="col-10 d-flex justify-content-between">
             <span class="me-3">${getOrderDateAsString(element.date)}</span>
             <span class="me-3">${getUserById(element.user).name}</span>
             <span>${getOrderPrice(element._id)}$</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
-    </div>`
+    </div>`;
 
-      rowElement.appendChild(col12);
-    });
-  };
+    rowElement.appendChild(col12);
+  });
+};
 
 const onSearchUser = (element) => {
   setUsersList(
@@ -229,8 +241,8 @@ const onSearchSong = (element) => {
   );
 };
 const onSearchOrder = (element) => {
-    console.log(element.value);
-}
+  console.log(element.value);
+};
 
 // get all users
 $.ajax({
@@ -282,8 +294,9 @@ $.ajax({
   },
 }).done(function (res) {
   adminPanel_ALL_ORDERS = res;
-  setNumberOfOrders(adminPanel_ALL_ORDERS.length)
-  setOrdersList(adminPanel_ALL_ORDERS)
+  setNumberOfOrders(adminPanel_ALL_ORDERS.length);
+  setIncomes(adminPanel_ALL_ORDERS);
+  setOrdersList(adminPanel_ALL_ORDERS);
   console.log("orders:", adminPanel_ALL_ORDERS);
 });
 
