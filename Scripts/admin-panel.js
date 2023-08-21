@@ -58,7 +58,8 @@ const getOrderPrice = (orderId) => {
 
 const getOrderDateAsString = (date) => {
   const dmy = date.split("T")[0].split("-");
-  return `${dmy[2]}.${dmy[1]}.${dmy[0]}`;
+  return "" + dmy[2] + "." + dmy[1] + "." + dmy[0];
+  //   return `${dmy[2]}.${dmy[1]}.${dmy[0]}`;
 };
 
 const onUserClicked = async (element) => {
@@ -244,64 +245,76 @@ const onSearchSong = (element) => {
   );
 };
 const onSearchOrder = (element) => {
+  setOrdersList(
+    adminPanel_ALL_ORDERS.filter((order) => {
+      console.log(getOrderDateAsString(order._id));
+      return (
+        getOrderDateAsString(order._id)
+          .toLowerCase()
+          .includes(element.value.toLowerCase()) ||
+        getUserById(order.user)
+          .name.toLowerCase()
+          .includes(element.value.toLowerCase())
+      );
+    })
+  );
   console.log(element.value);
 };
 
 // get all users
-$.ajax({
-  url: `http://localhost:6969/users/`,
-  type: "GET",
-  secure: true,
-  cors: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-})
-  .done(function (res) {
-    adminPanel_ALL_USERS = res;
-    setUsersList(adminPanel_ALL_USERS);
-    setNumberOfUsers(adminPanel_ALL_USERS.length);
-    console.log("users:", adminPanel_ALL_USERS);
+const getAllUsers = async () => {
+  await $.ajax({
+    url: `http://localhost:6969/users/`,
+    type: "GET",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   })
-  .fail(function () {
-    console.log("error - GET ALL USERS");
-  });
+    .done(function (res) {
+      adminPanel_ALL_USERS = res;
+      console.log("users:", adminPanel_ALL_USERS);
+    })
+    .fail(function () {
+      console.log("error - GET ALL USERS");
+    });
+};
 
 // get all songs
-$.ajax({
-  url: `http://localhost:6969/songs/`,
-  type: "GET",
-  secure: true,
-  cors: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-})
-  .done(function (res) {
-    adminPanel_ALL_SONGS = res;
-    setSongsList(adminPanel_ALL_SONGS);
-    setNumberOfSongs(adminPanel_ALL_SONGS.length);
-    console.log("songs:", adminPanel_ALL_SONGS);
+const getAllSongs = async () => {
+  await $.ajax({
+    url: `http://localhost:6969/songs/`,
+    type: "GET",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   })
-  .fail(function () {
-    console.log("error - GET ALL USERS");
-  });
+    .done(function (res) {
+      adminPanel_ALL_SONGS = res;
+      console.log("songs:", adminPanel_ALL_SONGS);
+    })
+    .fail(function () {
+      console.log("error - GET ALL USERS");
+    });
+};
 
-$.ajax({
-  url: `http://localhost:6969/orders/`,
-  type: "GET",
-  secure: true,
-  cors: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-}).done(function (res) {
-  adminPanel_ALL_ORDERS = res;
-  setNumberOfOrders(adminPanel_ALL_ORDERS.length);
-  setIncomes(adminPanel_ALL_ORDERS);
-  setOrdersList(adminPanel_ALL_ORDERS);
-  console.log("orders:", adminPanel_ALL_ORDERS);
-});
+const getAllOrders = async () => {
+  await $.ajax({
+    url: `http://localhost:6969/orders/`,
+    type: "GET",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  }).done(function (res) {
+    adminPanel_ALL_ORDERS = res;
+    console.log("orders:", adminPanel_ALL_ORDERS);
+  });
+};
 
 let adminPanel_ALL_USERS = [];
 let adminPanel_ALL_SONGS = [];
@@ -309,3 +322,21 @@ let adminPanel_ALL_ORDERS = [];
 // $(document).ready(() => {
 //   $("#users-modal").modal("show");
 // });
+
+const setPage = async () => {
+  await getAllUsers();
+  await getAllSongs();
+  await getAllOrders();
+
+  setUsersList(adminPanel_ALL_USERS);
+  setNumberOfUsers(adminPanel_ALL_USERS.length);
+
+  setSongsList(adminPanel_ALL_SONGS);
+  setNumberOfSongs(adminPanel_ALL_SONGS.length);
+
+  setNumberOfOrders(adminPanel_ALL_ORDERS.length);
+  setIncomes(adminPanel_ALL_ORDERS);
+  setOrdersList(adminPanel_ALL_ORDERS);
+};
+
+setPage()
