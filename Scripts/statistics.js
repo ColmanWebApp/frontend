@@ -28,6 +28,7 @@ async function salesStatisticPerGenre(){
         xValues.push(genre._id);
         yValues.push(genre.count);
     });
+    yValues.push(0);
     console.log("xValues",xValues);
     console.log("yValues",yValues);
 
