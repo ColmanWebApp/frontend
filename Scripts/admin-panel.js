@@ -80,15 +80,56 @@ const onUserClicked = async (element) => {
 
   const songsValue = getCurrentUserOrdersPrice();
   $("#user-total-orders-cost").text(songsValue.toFixed(2));
+  const avg = (songsValue / current_user.orders.length) ? (songsValue / current_user.orders.length) : 0
   $("#user-avg-per-order").text(
-    (songsValue / current_user.orders.length).toFixed(2)
+    avg.toFixed(2)
   );
 
   $("#users-modal").modal("show");
 };
 
-const onSongClicked = () => {
+const onSongClicked = (songElement) => {
+  clearSongModalInputs();
+  const song = adminPanel_ALL_SONGS.find(
+    (s) => s._id === songElement.getAttribute("data-id")
+  );
+  console.log(song);
+  $("#song-modal-title").text(song.title)
+  document.querySelector("#song-edit-title").value = song.title;
+  document.querySelector("#song-edit-artist").value = song.artist;
+  document.querySelector("#song-edit-album").value = song.album;
+  document.querySelector("#song-edit-year").value = song.year;
+  const songDurationInSeconds = song.duration / 1000;
+  const songDurationMinutes = (songDurationInSeconds / 60).toFixed(0);
+  const songDurationSeconds = (songDurationInSeconds % 60).toFixed(0);
+  document.querySelector("#song-edit-duration").value = `${
+    songDurationMinutes >= 10 ? songDurationMinutes : "0" + songDurationMinutes
+  }:${
+    songDurationSeconds >= 10 ? songDurationSeconds : "0" + songDurationSeconds
+  }`;
+
+  document.querySelector("#song-edit-price").value = song.price;
+  document.querySelector("#song-edit-album-image").value = song.album_image;
+  document.querySelector("#song-edit-preview").value = song.preview_url;
+
+  song.genre.forEach(genre => {
+    document.querySelector("#song-edit-genres").value = genre
+    onAddGenre()
+  });
+
+
+  $("#song-action").text("EDIT SONG");
   $("#songs-modal").modal("show");
+};
+
+const onAddSong = () => {
+  clearSongModalInputs();
+  $("#song-action").text("ADD SONG");
+  $("#songs-modal").modal("show");
+};
+
+const clearSongModalInputs = () => {
+  document.querySelector("#genres-ul").innerHTML = "";
 };
 
 const onDeleteUser = () => {
@@ -271,14 +312,14 @@ const onAddGenre = () => {
   const genreValue = document.querySelector("#song-edit-genres").value;
   if (genreValue === "") return;
 
-  const li = document.createElement("li")
-  li.classList += "list-group-item border-end col-auto mb-2 px-3"
-  li.setAttribute("onclick", "onDeleteGenre(this)")
+  const li = document.createElement("li");
+  li.classList += "list-group-item border-end col-auto mb-2 px-3";
+  li.setAttribute("onclick", "onDeleteGenre(this)");
   li.innerHTML = `<span>${genreValue}</span>
-  <i class="fa-solid fa-xmark"></i>`
+  <i class="fa-solid fa-xmark"></i>`;
 
-  document.querySelector("#genres-ul").appendChild(li)
-  document.querySelector("#song-edit-genres").value = ""
+  document.querySelector("#genres-ul").appendChild(li);
+  document.querySelector("#song-edit-genres").value = "";
 
   console.log(genreValue);
 };
@@ -353,9 +394,9 @@ const getAllOrders = async () => {
 let adminPanel_ALL_USERS = [];
 let adminPanel_ALL_SONGS = [];
 let adminPanel_ALL_ORDERS = [];
-$(document).ready(() => {
-  $("#songs-modal").modal("show");
-});
+// $(document).ready(() => {
+//   $("#songs-modal").modal("show");
+// });
 
 const setPage = async () => {
   const loader = document.querySelector("#loader");

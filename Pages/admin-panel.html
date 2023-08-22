@@ -152,7 +152,7 @@
             >
               <div class="row px-2">
                 <div class="col-12 px-2 pt-2">
-                  <button class="btn btn-primary w-100">Add New Song</button>
+                  <button class="btn btn-primary w-100" onclick="onAddSong()">Add New Song</button>
                 </div>
                 <div class="col-12 border-bottom py-2">
                   <input
@@ -324,7 +324,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                [SONG] <span id="user-modal-userfullname"></span>
+                [ <span id="song-action"></span> ] <span id="song-modal-title"></span>
               </h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -352,7 +352,7 @@
                 </div>
                 <div class="duration input-wrapper mb-3 col-12 col-lg-6">
                     <i class="fa-solid fa-clock input-icon"></i>
-                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="number" min="0" name="song-edit-duration" id="song-edit-duration" placeholder="* Song Duration (Seconds)"/>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-duration" id="song-edit-duration" placeholder="* Song Duration (Example: 03:09)"/>
                 </div>
                 <div class="price input-wrapper mb-3 col-12 col-lg-6">
                     <i class="fa-solid fa-dollar-sign input-icon"></i>
