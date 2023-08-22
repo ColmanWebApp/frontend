@@ -137,8 +137,7 @@ const onAddSong = () => {
   $("#songs-modal").modal("show");
 };
 
-const onSaveSongsChanges = () => {
-  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+const getSongFromForm = ()=> {
   const durationMinSec = $("#song-edit-duration").val().split(":")
   const durationInMiliSeconds = ((durationMinSec[0] * 60) - 0 +  (durationMinSec[1]-0)) * 1000
 
@@ -147,7 +146,7 @@ const onSaveSongsChanges = () => {
     genresList.push(genre.innerHTML)
   });
 
-  const updatedSong = {
+  const song = {
     "title": $("#song-edit-title").val(),
     "artist": $("#song-edit-artist").val(),
     "album": $("#song-edit-album").val(),
@@ -158,6 +157,14 @@ const onSaveSongsChanges = () => {
     "preview_url": $("#song-edit-preview").val(),
     "genre": genresList
   }
+
+  return song
+}
+
+const onSaveSongsChanges = () => {
+  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+
+  const updatedSong = getSongFromForm()
 
   $.ajax({
     url: `http://localhost:6969/admin/songs/${songId}`,
@@ -186,6 +193,25 @@ const onSaveSongsChanges = () => {
 
 const onSaveNewSong = () => {
   console.log("onSaveNewSong");
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/create`,
+    type: "POST",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+      song: getSongFromForm(),
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
 }
 
 const clearSongModalInputs = () => {
@@ -231,6 +257,25 @@ const onDeleteUser = () => {
 
 const onDeleteSong = ()=> {
   console.log("onDeleteSong");
+  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/${songId}`,
+    type: "DELETE",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
 }
 
 const onSaveUser = () => {
