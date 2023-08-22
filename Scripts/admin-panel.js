@@ -80,11 +80,153 @@ const onUserClicked = async (element) => {
 
   const songsValue = getCurrentUserOrdersPrice();
   $("#user-total-orders-cost").text(songsValue.toFixed(2));
+  const avg = (songsValue / current_user.orders.length) ? (songsValue / current_user.orders.length) : 0
   $("#user-avg-per-order").text(
-    (songsValue / current_user.orders.length).toFixed(2)
+    avg.toFixed(2)
   );
 
   $("#users-modal").modal("show");
+};
+
+const onSongClicked = (songElement) => {
+  clearSongModalInputs();
+  const song = adminPanel_ALL_SONGS.find(
+    (s) => s._id === songElement.getAttribute("data-id")
+  );
+  console.log(song);
+  $("#song-modal-title").text(song.title)
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
+  document.querySelector("#song-edit-title").value = song.title;
+  document.querySelector("#song-edit-artist").value = song.artist;
+  document.querySelector("#song-edit-album").value = song.album;
+  document.querySelector("#song-edit-year").value = song.year;
+  const songDurationInSeconds = song.duration / 1000;
+  const songDurationMinutes = (songDurationInSeconds / 60).toFixed(0);
+  const songDurationSeconds = (songDurationInSeconds % 60).toFixed(0);
+  document.querySelector("#song-edit-duration").value = `${
+    songDurationMinutes >= 10 ? songDurationMinutes : "0" + songDurationMinutes
+  }:${
+    songDurationSeconds >= 10 ? songDurationSeconds : "0" + songDurationSeconds
+  }`;
+
+  document.querySelector("#song-edit-price").value = song.price;
+  document.querySelector("#song-edit-album-image").value = song.album_image;
+  document.querySelector("#song-edit-preview").value = song.preview_url;
+
+  song.genre.forEach(genre => {
+    document.querySelector("#song-edit-genres").value = genre
+    onAddGenre()
+  });
+
+
+  $("#song-action").text("EDIT SONG");
+  document.querySelector("#songs-modal").setAttribute("data-song-id", songElement.getAttribute("data-id"))
+  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveSongsChanges()")
+  $("#song-modal-save-btn").text ("Save Changes")
+  $("#songs-modal").modal("show");
+};
+
+const onAddSong = () => {
+  clearSongModalInputs();
+  document.querySelector("#song-modal-delete-btn").classList.add("d-none")
+  
+  $("#song-action").text("ADD SONG");
+  document.querySelector("#songs-modal").removeAttribute("data-song-id")
+  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveNewSong()")
+  $("#song-modal-save-btn").text ("Save New Song")
+  $("#songs-modal").modal("show");
+};
+
+const getSongFromForm = ()=> {
+  const durationMinSec = $("#song-edit-duration").val().split(":")
+  const durationInMiliSeconds = ((durationMinSec[0] * 60) - 0 +  (durationMinSec[1]-0)) * 1000
+
+  const genresList = []
+  document.querySelectorAll("#genres-ul li span").forEach(genre => {
+    genresList.push(genre.innerHTML)
+  });
+
+  const song = {
+    "title": $("#song-edit-title").val(),
+    "artist": $("#song-edit-artist").val(),
+    "album": $("#song-edit-album").val(),
+    "year": $("#song-edit-year").val(),
+    "duration": durationInMiliSeconds,
+    "price": $("#song-edit-price").val(),
+    "album_image": $("#song-edit-album-image").val()!="" ? $("#song-edit-album-image").val() : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
+    "preview_url": $("#song-edit-preview").val() ? $("#song-edit-preview").val() : undefined,
+    "genre": genresList,
+    "youtube_id": $("#song-edit-youtube-id").val()
+  }
+
+  return song
+}
+
+const onSaveSongsChanges = () => {
+  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+
+  const updatedSong = getSongFromForm()
+
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/${songId}`,
+    type: "PUT",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+      updatedSong: updatedSong,
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
+
+
+
+  console.log("updatedSong:", updatedSong);
+}
+
+const onSaveNewSong = () => {
+  console.log("onSaveNewSong");
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/create`,
+    type: "POST",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+      song: getSongFromForm(),
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
+}
+
+const clearSongModalInputs = () => {
+  document.querySelector("#genres-ul").innerHTML = "";
+  $("#song-modal-title").text("")
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
+  document.querySelector("#song-edit-title").value = "";
+  document.querySelector("#song-edit-artist").value = "";
+  document.querySelector("#song-edit-album").value = "";
+  document.querySelector("#song-edit-year").value = "";
+  document.querySelector("#song-edit-duration").value = ""
+  document.querySelector("#song-edit-price").value = "";
+  document.querySelector("#song-edit-album-image").value = "";
+  document.querySelector("#song-edit-preview").value = "";
 };
 
 const onDeleteUser = () => {
@@ -113,6 +255,29 @@ const onDeleteUser = () => {
       showModalError();
     });
 };
+
+const onDeleteSong = ()=> {
+  console.log("onDeleteSong");
+  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/${songId}`,
+    type: "DELETE",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
+}
 
 const onSaveUser = () => {
   const current_user = adminPanel_ALL_USERS.find(
@@ -198,7 +363,7 @@ const setSongsList = (songsList) => {
   songsList.forEach((element) => {
     const col12 = document.createElement("div");
     col12.classList += "col-12 px-2 py-0";
-    col12.innerHTML = `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onUserClicked(this)">
+    col12.innerHTML = `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${element._id}" onclick="onSongClicked(this)">
         <span>${element.title}</span>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
@@ -219,7 +384,7 @@ const setOrdersList = (ordersList) => {
         <div class="col-10 d-flex justify-content-between">
             <span class="me-3">${getOrderDateAsString(element.date)}</span>
             <span class="me-3">${getUserById(element.user).name}</span>
-            <span>${getOrderPrice(element._id)}$</span>
+            <span>${getOrderPrice(element._id).toFixed(2)}$</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
@@ -259,6 +424,26 @@ const onSearchOrder = (element) => {
   console.log(element.value);
 };
 
+const onDeleteGenre = (listItem) => {
+  listItem.remove();
+};
+
+const onAddGenre = () => {
+  const genreValue = document.querySelector("#song-edit-genres").value;
+  if (genreValue === "") return;
+
+  const li = document.createElement("li");
+  li.classList += "list-group-item border-end col-auto mb-2 px-3";
+  li.setAttribute("onclick", "onDeleteGenre(this)");
+  li.innerHTML = `<span>${genreValue}</span>
+  <i class="fa-solid fa-xmark"></i>`;
+
+  document.querySelector("#genres-ul").appendChild(li);
+  document.querySelector("#song-edit-genres").value = "";
+
+  console.log(genreValue);
+};
+
 // get all users
 const getAllUsers = async () => {
   await $.ajax({
@@ -270,8 +455,8 @@ const getAllUsers = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_USERS = res;
@@ -292,15 +477,15 @@ const getAllSongs = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_SONGS = res;
       console.log("songs:", adminPanel_ALL_SONGS);
     })
     .fail(function (err) {
-        if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403) window.location.replace("./404.html");
     });
 };
 
@@ -314,15 +499,15 @@ const getAllOrders = async () => {
       "Access-Control-Allow-Origin": "*",
     },
     data: {
-        token: localStorage.getItem('user')
-    }
+      token: localStorage.getItem("user"),
+    },
   })
     .done(function (res) {
       adminPanel_ALL_ORDERS = res;
       console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {
-        if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403) window.location.replace("./404.html");
     });
 };
 
@@ -330,7 +515,7 @@ let adminPanel_ALL_USERS = [];
 let adminPanel_ALL_SONGS = [];
 let adminPanel_ALL_ORDERS = [];
 // $(document).ready(() => {
-//   $("#users-modal").modal("show");
+//   $("#songs-modal").modal("show");
 // });
 
 const setPage = async () => {
