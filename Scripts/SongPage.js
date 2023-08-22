@@ -1,4 +1,8 @@
 function createCard(song) {
+  const songDurationInSeconds=song.duration/1000;//50000 -> 50sec -> 00:50 
+  const minutes=(songDurationInSeconds/60).toFixed(0);
+  const seconds=(songDurationInSeconds%60).toFixed(0);
+  const songDuration=`${minutes>9?minutes:"0"+minutes}:${seconds>9?seconds:"0"+seconds}`;
   let preview = "";
   if (song.preview_url)
     preview = `<div id="preview-bar" class="d-flex align-items-center mt-3">
@@ -27,8 +31,9 @@ function createCard(song) {
               <p class="card-text m-0 p-0 fs-4">${song.artist}</p>
               <p class="card-text m-0 p-0 fs-4">${song.genre}</p>
               <p class="card-text m-0 p-0 fs-4">${song.year}</p>
-              <p class="card-text m-0 p-0 fs-4">${song.duration}</p>
+              <p class="card-text m-0 p-0 fs-4">${songDuration}</p>
               ${preview}
+              
             </div>
             <div class="d-flex align-items-center justify-content-end add-to-cart mt-5" id="add-to-cart"></div>
         </div>
@@ -79,7 +84,7 @@ async function setAddToCart(songId) {
         }
         const songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
         if (songsInCart && songsInCart.includes(songId)) {
-          addToCart.html("Song already in cart");
+          addToCart.html(`<i class="fa-solid fa-check me-2" style="color: #5fcc24; "></i>Added to cart`);
           return;
         }
         addToCart.html(`<div class="price fs-5 me-3">${song.price}$</div>
