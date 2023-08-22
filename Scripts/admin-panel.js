@@ -155,7 +155,8 @@ const getSongFromForm = ()=> {
     "price": $("#song-edit-price").val(),
     "album_image": $("#song-edit-album-image").val()!="" ? $("#song-edit-album-image").val() : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
     "preview_url": $("#song-edit-preview").val() ? $("#song-edit-preview").val() : undefined,
-    "genre": genresList
+    "genre": genresList,
+    "youtube_id": $("#song-edit-youtube-id").val()
   }
 
   return song
@@ -383,7 +384,7 @@ const setOrdersList = (ordersList) => {
         <div class="col-10 d-flex justify-content-between">
             <span class="me-3">${getOrderDateAsString(element.date)}</span>
             <span class="me-3">${getUserById(element.user).name}</span>
-            <span>${getOrderPrice(element._id)}$</span>
+            <span>${getOrderPrice(element._id).toFixed(2)}$</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
