@@ -95,6 +95,7 @@ const onSongClicked = (songElement) => {
   );
   console.log(song);
   $("#song-modal-title").text(song.title)
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
   document.querySelector("#song-edit-title").value = song.title;
   document.querySelector("#song-edit-artist").value = song.artist;
   document.querySelector("#song-edit-album").value = song.album;
@@ -119,17 +120,86 @@ const onSongClicked = (songElement) => {
 
 
   $("#song-action").text("EDIT SONG");
+  document.querySelector("#songs-modal").setAttribute("data-song-id", songElement.getAttribute("data-id"))
+  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveSongsChanges()")
+  $("#song-modal-save-btn").text ("Save Changes")
   $("#songs-modal").modal("show");
 };
 
 const onAddSong = () => {
   clearSongModalInputs();
+  document.querySelector("#song-modal-delete-btn").classList.add("d-none")
+  
   $("#song-action").text("ADD SONG");
+  document.querySelector("#songs-modal").removeAttribute("data-song-id")
+  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveNewSong()")
+  $("#song-modal-save-btn").text ("Save New Song")
   $("#songs-modal").modal("show");
 };
 
+const onSaveSongsChanges = () => {
+  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+  const durationMinSec = $("#song-edit-duration").val().split(":")
+  const durationInMiliSeconds = ((durationMinSec[0] * 60) - 0 +  (durationMinSec[1]-0)) * 1000
+
+  const genresList = []
+  document.querySelectorAll("#genres-ul li span").forEach(genre => {
+    genresList.push(genre.innerHTML)
+  });
+
+  const updatedSong = {
+    "title": $("#song-edit-title").val(),
+    "artist": $("#song-edit-artist").val(),
+    "album": $("#song-edit-album").val(),
+    "year": $("#song-edit-year").val(),
+    "duration": durationInMiliSeconds,
+    "price": $("#song-edit-price").val(),
+    "album_image": $("#song-edit-album-image").val(),
+    "preview_url": $("#song-edit-preview").val(),
+    "genre": genresList
+  }
+
+  $.ajax({
+    url: `http://localhost:6969/admin/songs/${songId}`,
+    type: "PUT",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+      updatedSong: updatedSong,
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function () {
+      showModalError();
+    });
+
+
+
+  console.log("updatedSong:", updatedSong);
+}
+
+const onSaveNewSong = () => {
+  console.log("onSaveNewSong");
+}
+
 const clearSongModalInputs = () => {
   document.querySelector("#genres-ul").innerHTML = "";
+
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
+  document.querySelector("#song-edit-title").value = "";
+  document.querySelector("#song-edit-artist").value = "";
+  document.querySelector("#song-edit-album").value = "";
+  document.querySelector("#song-edit-year").value = "";
+  document.querySelector("#song-edit-duration").value = ""
+  document.querySelector("#song-edit-price").value = "";
+  document.querySelector("#song-edit-album-image").value = "";
+  document.querySelector("#song-edit-preview").value = "";
 };
 
 const onDeleteUser = () => {
@@ -158,6 +228,10 @@ const onDeleteUser = () => {
       showModalError();
     });
 };
+
+const onDeleteSong = ()=> {
+  console.log("onDeleteSong");
+}
 
 const onSaveUser = () => {
   const current_user = adminPanel_ALL_USERS.find(
