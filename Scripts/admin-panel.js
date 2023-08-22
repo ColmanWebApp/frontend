@@ -153,8 +153,8 @@ const getSongFromForm = ()=> {
     "year": $("#song-edit-year").val(),
     "duration": durationInMiliSeconds,
     "price": $("#song-edit-price").val(),
-    "album_image": $("#song-edit-album-image").val(),
-    "preview_url": $("#song-edit-preview").val(),
+    "album_image": $("#song-edit-album-image").val()!="" ? $("#song-edit-album-image").val() : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
+    "preview_url": $("#song-edit-preview").val() ? $("#song-edit-preview").val() : undefined,
     "genre": genresList
   }
 
@@ -216,7 +216,7 @@ const onSaveNewSong = () => {
 
 const clearSongModalInputs = () => {
   document.querySelector("#genres-ul").innerHTML = "";
-
+  $("#song-modal-title").text("")
   document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
   document.querySelector("#song-edit-title").value = "";
   document.querySelector("#song-edit-artist").value = "";
