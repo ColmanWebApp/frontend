@@ -469,6 +469,7 @@ const getAllUsers = async () => {
     })
     .fail(function (err) {
       if (err.status === 403) window.location.replace("./404.html");
+      else window.location.replace("./");
     });
 };
 // get all songs
@@ -491,6 +492,7 @@ const getAllSongs = async () => {
     })
     .fail(function (err) {
       if (err.status === 403) window.location.replace("./404.html");
+      else window.location.replace("./");
     });
 };
 
@@ -513,6 +515,7 @@ const getAllOrders = async () => {
     })
     .fail(function (err) {
       if (err.status === 403) window.location.replace("./404.html");
+      else window.location.replace("./");
     });
 };
 
