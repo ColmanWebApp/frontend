@@ -105,8 +105,8 @@ const onSongClicked = (songElement) => {
   document.querySelector("#song-edit-album").value = song.album;
   document.querySelector("#song-edit-year").value = song.year;
   const songDurationInSeconds = song.duration / 1000;
-  const songDurationMinutes = (songDurationInSeconds / 60).toFixed(0);
-  const songDurationSeconds = (songDurationInSeconds % 60).toFixed(0);
+  const songDurationMinutes = parseInt(songDurationInSeconds / 60).toFixed(0);
+  const songDurationSeconds = parseInt(songDurationInSeconds % 60).toFixed(0);
   document.querySelector("#song-edit-duration").value = `${
     songDurationMinutes >= 10 ? songDurationMinutes : "0" + songDurationMinutes
   }:${
@@ -145,7 +145,6 @@ const onAddSong = () => {
 const getSongFromForm = ()=> {
   const durationMinSec = $("#song-edit-duration").val().split(":")
   const durationInMiliSeconds = ((durationMinSec[0] * 60) - 0 +  (durationMinSec[1]-0)) * 1000
-
   const genresList = []
   document.querySelectorAll("#genres-ul li span").forEach(genre => {
     genresList.push(genre.innerHTML)
