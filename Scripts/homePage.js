@@ -84,7 +84,7 @@ function millisecondsToMMSS(milliseconds) {
 
 // Click on card to move to song page
 const getId = (id) => {
-  window.location.href = `./SongPage?songId=${id}`;
+  window.location.href = `./SongPage.html?songId=${id}`;
 };
 
 
