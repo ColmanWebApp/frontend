@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <script
+      src="https://kit.fontawesome.com/6a8815bcbd.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../Styles/globalStyle.css" />
+    <link rel="stylesheet" href="../Styles/admin-panel.css" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div
+      id="loader"
+      class="spinner-border fs-3 text-primary col-auto m-auto"
+      style="width: 5rem; height: 5rem"
+      role="status"
+    >
+      <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <div id="navbar" class="d-none"></div>
+
+    <div id="content" class="text-light p-5 d-none">
+      <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Back
+      </button>
+      <div class="container-fluid text-light p-5">
+        <h1 class="fw-bold fs-1 m-0 p-0 text-center text-lg-start">
+          Admin Panel
+        </h1>
+        <div class="row d-flex justify-content-between mt-3 fs-5">
+          <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+            Total Users: <span id="total-users-number"></span>
+          </div>
+          <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+            Total Songs: <span id="total-songs-number"></span>
+          </div>
+          <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+            Total Orders: <span id="total-orders-number"></span>
+          </div>
+          <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+            Total Paid: <span id="total-income"></span>$
+          </div>
+          <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
+            Average Income: <span id="avg-income"></span>$
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="users">
+            <div
+              class="list row p-2 rounded-2 collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#all-users-list"
+            >
+              <div class="col-12">
+                <div
+                  class="row d-flex align-items-center justify-content-between"
+                >
+                  <div class="col-auto">
+                    <p class="p-0 m-0 fs-5 fw-medium list-title">
+                      Users ( <span>0</span> )
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="collapse px-2 rounded-bottom-2 list"
+              id="all-users-list"
+            >
+              <div class="row px-2">
+                <div class="col-12 border-bottom py-2 px-2">
+                  <input
+                    type="text"
+                    class="w-100 py-1 px-2 rounded-2 border"
+                    placeholder="Search User"
+                    oninput="onSearchUser(this)"
+                  />
+                </div>
+              </div>
+              <div class="row py-2 row-list">
+                <div class="col-12 px-2 py-0">
+                  <div
+                    class="list-item p-1 d-flex justify-content-between align-items-center"
+                    data-id="user-1"
+                    onclick="onUserClicked(this)"
+                  >
+                    <span>User Name</span>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </div>
+                </div>
+                <div class="col-12 px-2 py-0">
+                  <div
+                    class="list-item p-1 d-flex justify-content-between align-items-center"
+                    data-id="user-2"
+                    onclick="onUserClicked(this)"
+                  >
+                    <span>User Name</span>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="songs">
+            <div
+              class="list row p-2 rounded-2 collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#all-songs-list"
+            >
+              <div class="col-12">
+                <div
+                  class="row d-flex align-items-center justify-content-between"
+                >
+                  <div class="col-auto">
+                    <p class="p-0 m-0 fs-5 fw-medium list-title">
+                      Songs ( <span>0</span> )
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="collapse px-2 rounded-bottom-2 list"
+              id="all-songs-list"
+            >
+              <div class="row px-2">
+                <div class="col-12 px-2 pt-2">
+                  <button class="btn btn-primary w-100" onclick="onAddSong()">Add New Song</button>
+                </div>
+                <div class="col-12 border-bottom py-2">
+                  <input
+                    type="text"
+                    class="w-100 py-1 px-2 rounded-2 border"
+                    placeholder="Search Song"
+                    oninput="onSearchSong(this)"
+                  />
+                </div>
+              </div>
+              <div class="row py-2 row-list"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4 mt-3 mt-lg-0 px-4" id="orders">
+            <div
+              class="list row p-2 rounded-2 collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#all-orders-list"
+            >
+              <div class="col-12">
+                <div
+                  class="row d-flex align-items-center justify-content-between"
+                >
+                  <div class="col-auto">
+                    <p class="p-0 m-0 fs-5 fw-medium list-title">
+                      Orders ( <span></span> )
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="collapse px-2 rounded-bottom-2 list"
+              id="all-orders-list"
+            >
+              <div class="row px-2">
+                <div class="col-12 border-bottom py-2 px-2">
+                  <input
+                    type="text"
+                    class="w-100 py-1 px-2 rounded-2 border"
+                    placeholder="Search Order (Date/Name)"
+                    oninput="onSearchOrder(this)"
+                  />
+                </div>
+              </div>
+              <div class="row py-2 row-list">
+                <div class="col-12 px-2 py-0">
+                  <div
+                    class="list-item p-1 d-flex justify-content-between align-items-center"
+                    data-id="song-1"
+                    onclick="onUserClicked(this)"
+                  >
+                    <div>
+                      <span class="me-3">19.08.2023</span>
+                      <span class="me-3">Tal Mekler</span>
+                      <span>39.98$</span>
+                    </div>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </div>
+                </div>
+                <div class="col-12 px-2 py-0">
+                  <div
+                    class="list-item p-1 d-flex justify-content-between align-items-center"
+                    data-id="song-2"
+                    onclick="onUserClicked(this)"
+                  >
+                    <div>
+                      <span class="me-3">19.08.2023</span>
+                      <span class="me-3">Tal Mekler</span>
+                      <span>39.98$</span>
+                    </div>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-12 col-lg-6 p-3 px-4 d-flex flex-column">
+            <h3 class="p-0 m-0 mb-4">Purchases By Genres</h3>
+            <canvas
+              id="genresChart"
+              class="h-auto my-auto"
+              style="width: 100%; transform: scale(1.05)"
+            ></canvas>
+          </div>
+          <div class="col-12 col-lg-6 p-3 px-4 d-flex flex-column">
+            <h3 class="p-0 m-0 mb-4">Last 10 Days Sales</h3>
+            <canvas
+              id="genresChart2"
+              class="h-auto my-auto"
+              style="width: 100%; transform: scale(1.05)"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Modal -->
+      <div class="modal fade text-dark" id="users-modal" tabindex="-1" aria-labelledby="users-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                [USER] <span id="user-modal-userfullname"></span>
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Oops! Something went wrong. Please try again.
+              </div>
+              <div class="fullname input-wrapper mb-3">
+                <i class="fa-solid fa-user input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="user-edit-fullname" id="user-edit-fullname" placeholder="Full Name"/>
+              </div>
+              <div class="email input-wrapper mb-3">
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="email" name="user-edit-email" id="user-edit-email" placeholder="Email"/>
+              </div>
+              <div class="password input-wrapper mb-3">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input class="modal-input px-5 py-2 w-100 rounded-pill" type="password" name="user-edit-password" id="user-edit-password" placeholder="Password - at least 8 characters"/>
+              </div>
+              <div class="is-admin input-wrapper mb-3 ps-2">
+                <div class="form-check form-switch">
+                  <label class="form-check-label" for="user-edit-is-admin">Is Admin</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="user-edit-is-admin">
+                </div>
+              </div>
+              <div class="orders row">
+                <div class="col-12 px-4 fs-5">
+                  Total Orders:
+                  <span class="fw-normal" id="user-total-orders"></span>
+                </div>
+                <div class="col-12 px-4 fs-5">
+                  Total Songs:
+                  <span class="fw-normal" id="user-total-songs"></span>
+                </div>
+                <div class="col-12 px-4 fs-5">
+                  Total Order's Cost:
+                  <span class="fw-normal" id="user-total-orders-cost"></span>$
+                </div>
+                <div class="col-12 px-4 fs-5">
+                  Average Cost Per Order:
+                  <span class="fw-normal" id="user-avg-per-order"></span>$
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" onclick="onDeleteUser()">
+                Delete User
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="onSaveUser()"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Song Modal -->
+      <div class="modal fade text-dark modal-lg" id="songs-modal" tabindex="-1" aria-labelledby="songs-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                [ <span id="song-action"></span> ] <span id="song-modal-title"></span>
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Oops! Something went wrong. Please try again.
+              </div>
+              
+              <div class="row">
+                <div class="title input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-heading input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-title" id="song-edit-title" placeholder="* Song Title"/>
+                </div>
+                <div class="artist input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-signature input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-artist" id="song-edit-artist" placeholder="* Song artist"/>
+                </div>
+                <div class="album input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-compact-disc input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-album" id="song-edit-album" placeholder="* Album Name"/>
+                </div>
+                <div class="year input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-calendar-days input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="number" min="1900" name="song-edit-year" id="song-edit-year" placeholder="* Year"/>
+                </div>
+                <div class="duration input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-clock input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-duration" id="song-edit-duration" placeholder="* Song Duration (Example: 03:09)"/>
+                </div>
+                <div class="price input-wrapper mb-3 col-12 col-lg-6">
+                    <i class="fa-solid fa-dollar-sign input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="number" min="0" name="song-edit-price" id="song-edit-price" placeholder="* Song Price ($)"/>
+                </div>
+                <div class="album-image input-wrapper mb-3 col-12">
+                    <i class="fa-solid fa-image input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-album-image" id="song-edit-album-image" placeholder="Album Image URL"/>
+                </div>
+                <div class="preview input-wrapper mb-3 col-12">
+                    <i class="fa-solid fa-play input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-preview" id="song-edit-preview" placeholder="Preview URL"/>
+                </div>
+                <div class="api-id input-wrapper mb-3 col-12">
+                    <i class="fa-brands fa-youtube input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-youtube-id" id="song-edit-youtube-id" placeholder="* Song ID From YouTube"/>
+                </div>
+                <div class="genres input-wrapper mb-3 col-12">
+                    <div class="row">
+                        <div class="col position-relative">
+                            <i class="fa-solid fa-rectangle-list input-icon"></i>
+                            <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="song-edit-genres" id="song-edit-genres" placeholder="Add Genres"/>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-dark w-100 rounded-pill px-5" onclick="onAddGenre()">Add Genre</button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <ul class="row" id="genres-ul"></ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="song-modal-delete-btn" class="btn btn-danger d-none" onclick="onDeleteSong()">
+                Delete Song
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="song-modal-save-btn"
+              >
+                Save Song
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer" class="d-none"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../Scripts/navbar.js"></script>
+    <script src="../Scripts/footer.js"></script>
+    <script src="../Scripts/admin-panel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="../Scripts/statistics.js"></script>
+  </body>
+</html>

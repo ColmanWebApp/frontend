@@ -1,0 +1,101 @@
+  <!DOCTYPE html>
+<html>
+  <head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    </head>
+<body>
+
+<canvas id="genresChart" style="width:100%;max-width:600px"></canvas>
+
+<script src="../Scripts/statistics.js"> </script>
+</body>
+</html>
+<!-- 
+ column/bar chart
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<body>
+
+<canvas id="numberOfSalesChart" style="width:100%;max-width:600px"></canvas>
+
+<script>
+var xValues = ["January", "February", "March", "April", "May","June","July","August","September","October","November","December"];
+var yValues = [55, 49, 44, 24, 15,60,100,3,33,320,200,224];
+var barColors = [
+    '#FF5733', '#FFBD33', '#FFD633', '#FFEE33', '#D9FF33',
+    '#7DFF33', '#33FF7E', '#33FFB9', '#33FFE5', '#33E5FF',
+    '#33B9FF', '#337EFF', '#334CFF', '#7A33FF', '#B933FF',
+    '#E533FF', '#FF33F1', '#FF33B9', '#FF3398', '#FF336A',
+    '#FF334C', '#FF5D33', '#FF8333', '#FFA833', '#FFD133'];
+
+new Chart("numberOfSalesChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Number Of Sales In 'YEAR'"
+    }
+  }
+});
+</script>
+
+</body>
+</html> 
+  -->
+
+ <!-- profits chart- Grafh Menayot 
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<body>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+<script>
+var xValues = ["January", "February", "March", "April", "May","June","July","August","September","October","November","December"];
+const yValues = [3200,7500,12000,27800,42515,62715,75842,92421,114521,135002,166412,202732];
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      color:"black",
+      backgroundColor: "black",
+      borderColor: "rgb(46, 204, 113)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 0, max:500000}}],
+    },
+    title: {
+      display: true,
+      text: "Profits in dollar in `YEAR`"
+    }
+  }
+});
+</script>
+
+</body>
+</html>  -->
+
+
+

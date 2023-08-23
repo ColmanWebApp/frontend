@@ -14,7 +14,14 @@
     <div id="navbar"></div>
 
     <div id="content" class="p-5">
+      <div class="container">
+        <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+          <i class="fa-solid fa-arrow-left me-1"></i>
+          Back
+        </button>
+      
       <div class="container text-light" id="order-page-content">
+        
         <div class="row d-flex flex-lg-row flex-column-reverse">
           <div class="col-lg-4 col-12 p-0">
             <div id="order-summary" class="p-4 border-2 h-100">
@@ -47,7 +54,8 @@
                 <div class="col-12">
                   <button
                     class="btn btn-light rounded-pill w-100"
-                    onclick="onCheckout()" data-bs-toggle="modal" data-bs-target="#checkout-modal"
+                    id="checkout-btn"
+                    onclick="onCheckout()"
                   >
                     Checkout
                   </button>
@@ -71,6 +79,7 @@
           </div>
         </div>
       </div>
+    </div>
 
 
       <div class="modal fade" id="checkout-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -82,7 +91,7 @@
             <div class="modal-body">
               <p>You bought the following songs: </p>
               <ul id="songs-list-modal"></ul>
-              <button type="button" class="btn btn-facebook btn-primary">Publish on Facebook</button>
+              <button type="button" class="btn btn-facebook btn-primary" onclick="postToFacebook()">Publish on Facebook</button>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" onclick="{window.location.replace(`./`)}">Back To Home</button>
@@ -102,5 +111,6 @@
     <script src="../Scripts/navbar.js"></script>
     <script src="../Scripts/footer.js"></script>
     <script src="../Scripts/orderPageScript.js"></script>
+    <script src="../Scripts/facebookPublish.js"></script>
   </body>
 </html>
