@@ -107,7 +107,7 @@ async function setAddToCart(songId) {
           return;
         }
         addToCart.html(`<div class="price fs-5 me-3">${song.price.toFixed(2)}$</div>
-  <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>`);
+  <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 col-auto ">Add to cart </div>`);
       })
       .fail(function (error) {
         alert("error:fail", error);
@@ -117,7 +117,7 @@ async function setAddToCart(songId) {
     addToCart.removeClass("d-none");
     addToCart.addClass("ms-auto");
     addToCart.html(`<div class="price fs-5 me-3">${song.price.toFixed(2)}$</div>
-    <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
+    <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 col-auto" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
   }
 }
 
