@@ -74,6 +74,10 @@ const onUserClicked = async (element) => {
   document.querySelector("#user-edit-fullname").value = current_user.name;
   document.querySelector("#user-edit-email").value = current_user.email;
   document.querySelector("#user-edit-password").value = current_user.password;
+  if(current_user.isAdmin)
+    document.querySelector("#user-edit-is-admin").setAttribute("checked","")
+  else
+    document.querySelector("#user-edit-is-admin").removeAttribute("checked")
 
   $("#user-total-orders").text(current_user.orders.length);
   $("#user-total-songs").text(current_user.songs.length);
@@ -292,7 +296,7 @@ const onSaveUser = () => {
     password: document.querySelector("#user-edit-password").value,
     orders: current_user.orders,
     songs: current_user.songs,
-    isAdmin: current_user.isAdmin,
+    isAdmin: document.querySelector("#user-edit-is-admin").hasAttribute("checked"),
   };
   $.ajax({
     url: `http://localhost:6969/admin/users/${current_user._id}`,
@@ -461,7 +465,7 @@ const getAllUsers = async () => {
   })
     .done(function (res) {
       adminPanel_ALL_USERS = res;
-      console.log("users:", adminPanel_ALL_USERS);
+      // console.log("users:", adminPanel_ALL_USERS);
     })
     .fail(function (err) {
       if (err.status === 403) window.location.replace("./404.html");
@@ -483,7 +487,7 @@ const getAllSongs = async () => {
   })
     .done(function (res) {
       adminPanel_ALL_SONGS = res;
-      console.log("songs:", adminPanel_ALL_SONGS);
+      // console.log("songs:", adminPanel_ALL_SONGS);
     })
     .fail(function (err) {
       if (err.status === 403) window.location.replace("./404.html");
