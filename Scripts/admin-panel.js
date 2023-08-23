@@ -112,6 +112,7 @@ const onSongClicked = (songElement) => {
   document.querySelector("#song-edit-price").value = song.price;
   document.querySelector("#song-edit-album-image").value = song.album_image;
   document.querySelector("#song-edit-preview").value = song.preview_url;
+  document.querySelector("#song-edit-youtube-id").value = song.youtube_id;
 
   song.genre.forEach(genre => {
     document.querySelector("#song-edit-genres").value = genre
