@@ -1,7 +1,7 @@
 function createCard(song) {
   const songDurationInSeconds=song.duration/1000;//50000 -> 50sec -> 00:50 
-  const minutes=(songDurationInSeconds/60).toFixed(0);
-  const seconds=(songDurationInSeconds%60).toFixed(0);
+  const minutes=parseInt(songDurationInSeconds/60).toFixed(0);
+  const seconds=parseInt(songDurationInSeconds%60).toFixed(0);
   const songDuration=`${minutes>9?minutes:"0"+minutes}:${seconds>9?seconds:"0"+seconds}`;
   let preview = "";
   if (song.preview_url)
