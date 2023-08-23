@@ -4,7 +4,7 @@ const createNavbar = () => {
   ).innerHTML = ` <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3">
   <div class="container-fluid">
     <div class="col-4">
-      <a class="navbar-brand fs-3 fw-bold" href="/frontend/Pages/">MusicApp</a>
+      <a class="navbar-brand fs-3 fw-bold" href="./">MusicApp</a>
     </div>
     <button
       class="navbar-toggler"
@@ -70,7 +70,7 @@ const createNavbar = () => {
         </li>
         <div class="connected-nav-item nav-item mt-2 mt-lg-0 me-lg-3">
           <a
-            href="/frontend/Pages/profile.html"
+            href="./profile.html"
             class="text-decoration-none"
           >
             <div
@@ -448,7 +448,6 @@ $.ajax({
     ALL_SONGS = res
   },
 }).fail(function () {
-  alert("error")
   return;
 });
 

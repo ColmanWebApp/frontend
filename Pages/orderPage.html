@@ -14,7 +14,14 @@
     <div id="navbar"></div>
 
     <div id="content" class="p-5">
+      <div class="container">
+        <button class="btn mx-0 px-0 link-light" onclick="handleBack()">
+          <i class="fa-solid fa-arrow-left me-1"></i>
+          Back
+        </button>
+      
       <div class="container text-light" id="order-page-content">
+        
         <div class="row d-flex flex-lg-row flex-column-reverse">
           <div class="col-lg-4 col-12 p-0">
             <div id="order-summary" class="p-4 border-2 h-100">
@@ -72,6 +79,7 @@
           </div>
         </div>
       </div>
+    </div>
 
 
       <div class="modal fade" id="checkout-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
