@@ -392,7 +392,7 @@ const setOrdersList = (ordersList) => {
         <div class="col-10 d-flex justify-content-between">
             <span class="me-3">${getOrderDateAsString(element.date)}</span>
             <span class="me-3">${getUserById(element.user).name}</span>
-            <span>${getOrderPrice(element._id).toFixed(2)}$</span>
+            <span>$${getOrderPrice(element._id).toFixed(2)}</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
