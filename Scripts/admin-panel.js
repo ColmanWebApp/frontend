@@ -62,6 +62,7 @@ const getOrderDateAsString = (date) => {
 };
 
 const onUserClicked = async (element) => {
+  
   const current_user = adminPanel_ALL_USERS.find(
     (user) => user._id === element.getAttribute("data-id")
   );
@@ -88,7 +89,7 @@ const onUserClicked = async (element) => {
   $("#user-avg-per-order").text(
     avg.toFixed(2)
   );
-
+  // console.log(document.querySelector("#user-edit-is-admin").checked)
   $("#users-modal").modal("show");
 };
 
@@ -296,7 +297,7 @@ const onSaveUser = () => {
     password: document.querySelector("#user-edit-password").value,
     orders: current_user.orders,
     songs: current_user.songs,
-    isAdmin: document.querySelector("#user-edit-is-admin").hasAttribute("checked"),
+    isAdmin: document.querySelector("#user-edit-is-admin").checked,
   };
   $.ajax({
     url: `http://localhost:6969/admin/users/${current_user._id}`,
@@ -312,17 +313,19 @@ const onSaveUser = () => {
     },
   })
     .done(function () {
+      console.log("done");
       window.location.reload();
     })
     .fail(function () {
+      console.log("fail");
       showModalError();
     });
 
-  console.log(
-    `user save: ${document
-      .querySelector("#users-modal")
-      .getAttribute("data-id")}`
-  );
+  // console.log(
+  //   `user save: ${document
+  //     .querySelector("#users-modal")
+  //     .getAttribute("data-id")}`
+  // );
 };
 
 const setNumberOfUsers = (numOfTotalUsers) => {
