@@ -48,6 +48,7 @@ function previousPage() {
 }
 
 function addToCart(songId) {
+  const set=new Set();
   if (!localStorage.getItem("user")) {
     return;
   }
@@ -55,8 +56,15 @@ function addToCart(songId) {
     window.location.replace("../Pages/404.html");
     return;
   }
-  const songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
-  songsInCart.push(songId);
+  let songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  songsInCart.forEach(element => {
+    set.add(element);
+  });
+  set.add(songId);
+  songsInCart=[];
+  set.forEach(element=>{
+    songsInCart.push(element);
+  })
   localStorage.setItem("cart", JSON.stringify(songsInCart));
   updateNavbar();
   setAddToCart(songId);
