@@ -55,32 +55,21 @@ const barColors = [
     '#E533FF', '#FF33F1', '#FF33B9', '#FF3398', '#FF336A',
     '#FF334C', '#FF5D33', '#FF8333', '#FFA833', '#FFD133'
 ];
-
-new Chart("genresChart2", {
+const graph=document.getElementById("genresChart2")
+new Chart(graph, {
   type: "bar",
   data: {
     labels: xValues,
     datasets: [{
       backgroundColor: barColors,
-      data: yValues,
+      data: [...yValues,0],
       label:''
     }],
     
   },
   options: {
-    legend: {
-       labels: {
-          fontColor: 'white' 
-       },
-       display:false
-    },
-    scales:{
-      y:{
-        beginAtZero:true,
-        ticks:{
-          color:'#FFFFFF'
-        }
-      }
+    legend:{
+      display:false
     }
  }
 });
