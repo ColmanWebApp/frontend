@@ -232,6 +232,7 @@ const clearSongModalInputs = () => {
   document.querySelector("#song-edit-price").value = "";
   document.querySelector("#song-edit-album-image").value = "";
   document.querySelector("#song-edit-preview").value = "";
+  document.querySelector("#song-edit-youtube-id").value = "";
 };
 
 const onDeleteUser = () => {
