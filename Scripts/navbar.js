@@ -373,7 +373,7 @@ const onClearNavbarSearch = ()=> {
 
 const setSuggestions = (inputValue) => {
   const suggestions = ALL_SONGS.filter((song) =>
-    song.title.toLowerCase().includes(inputValue.toLowerCase())
+    song.title.toLowerCase().includes(inputValue.toLowerCase()) || song.artist.toLowerCase().includes(inputValue.toLowerCase())
   );
   document.querySelector("#search-list").innerHTML = "";
   suggestions.forEach((suggestion) => {
