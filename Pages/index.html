@@ -14,20 +14,90 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
+
     <link rel="stylesheet" href="../Styles/globalStyle.css" />
+		<link rel="stylesheet" href="../Styles/homePage.css">
+
+
 
     <script
       src="https://code.jquery.com/jquery-3.6.3.min.js"
       integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
       crossorigin="anonymous"
     ></script>
+		<script src="../Scripts/homePage.js" defer></script>
   </head>
   <body>
     <div id="navbar"></div>
 
     <div id="content" class="text-light">
-        <h1>Home Page</h1>
-    </div>
+			<div class="top_hits_carousel container-fluid px-0">
+				<h3 style="padding-top: 50px; padding-left: 80px;">Top Hits</h3>
+				<div id="carouselExampleCaptions" class="carousel slide" style="height: 700px;" data-bs-ride="carousel">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+					</div>
+					<div id="bigCarousel" class="carousel-inner h-100">
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev" >
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- FILTERS HERE -->
+
+			<div class="songs_container container py-5 overflow-hidden">	
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<label class="form-label">Genre</label>
+									<div class="dropdown">
+										<button class="btn btn-secondary dropdown-toggle" type="button" id="genreDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Select Genre
+										</button>
+										<div class="dropdown-menu px-2" aria-labelledby="genreDropdown" id="genreDropdownMenu">
+												<!-- Dropdown options with checkboxes will be generated here -->
+										</div>
+									</div>
+							</div>
+									<div class="col-md-12 mb-3">
+											<label for="priceRangeFilter" class="form-label">Price Range</label>
+											<select class="form-select" id="priceRangeFilter">
+													<option value="">All Prices</option>
+													<option value="0-10">$0 - $10</option>
+													<option value="10-20">$10 - $20</option>
+													<option value="20+">$20+</option>
+											</select>
+									</div>
+									<div class="col-md-12 mb-3">
+											<div class="form-check" style="padding-top: 20px;">
+													<input class="form-check-input" type="checkbox" id="previewFilter">
+													<label class="form-check-label" for="previewFilter">
+															Has Preview
+													</label>
+											</div>
+									</div>
+							</div>
+				<div id="cards" class="songs-grid row gy-5 gx-0"></div>
+		</div>
+		
+			
+			<div class="songs_container container py-5 overflow-hidden">
+				<!-- <div id="select"></div> -->
+					<div id="cards" class="songs-grid row gy-5 gx-0">
+
+					</div>
+		</div>
+
 
     <div id="footer"></div>
 
