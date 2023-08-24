@@ -95,7 +95,7 @@ const onOpenEdit = () => {
   unshowModalError();
   document.querySelector("#edit-fullname").value = user.name;
   document.querySelector("#edit-email").value = user.email;
-  document.querySelector("#edit-password").value = ""
+  document.querySelector("#edit-password").value = "";
   $("#edit-profile-modal").modal("show");
 };
 
@@ -133,9 +133,9 @@ const onSaveEdit = () => {
   //   todo: ajax to update the user
 };
 
-const handleBack = ()=> {
-    window.history.back()
-}
+const handleBack = () => {
+  window.history.back();
+};
 
 const setProfilePage = () => {
   document.querySelector("#user-full-name").innerHTML = user.name;
@@ -152,34 +152,48 @@ const setProfilePage = () => {
   setMyOrders();
 };
 
-handlePermissions();
+const setUserDetails = async () => {
+  await $.ajax({
+    url: `http://localhost:6969/users/user-details`,
+    type: "POST",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+    },
+  })
+    .fail(function (err) {
+      if (err.status === 403) {
+        localStorage.clear();
+        window.location.replace("./404.html");
+      }
+      return;
+    })
+    .done(function (res) {
+      user = res;
+      orders = user.orders;
+      orders.forEach((element) => {
+        songs = [...songs, ...element.songs];
+      });
+      
+    });
+};
+
+const setPage = async () => {
+  handlePermissions();
+  await setUserDetails();
+  setProfilePage();
+  $("#navbar").removeClass("d-none");
+  $("#content").removeClass("d-none");
+  $("#footer").removeClass("d-none");
+  $("#loader").addClass("d-none");
+};
+
+setPage();
+
 let user;
 let orders;
 let songs = [];
-$.ajax({
-  url: `http://localhost:6969/users/user-details`,
-  type: "POST",
-  secure: true,
-  cors: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-  data: {
-    token: localStorage.getItem("user"),
-  },
-})
-  .fail(function (err) {
-    if (err.status === 403) {
-      localStorage.clear();
-      window.location.replace("./404.html");
-    }
-    return;
-  })
-  .done(function (res) {
-    user = res;
-    orders = user.orders;
-    orders.forEach((element) => {
-      songs = [...songs, ...element.songs];
-    });
-    setProfilePage();
-  });

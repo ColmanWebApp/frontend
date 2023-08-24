@@ -23,19 +23,19 @@ function createCard(song) {
       <div class="col-md-4 m-0 p-0">
         <img src="${song.album_image}" class="img-fluid object-fit-cover h-100 w-100" alt=${song.title}" image">
       </div>
-      <div class="col-md-8">
-        <div class="card-body song-info">
-            <div class="song-description ">
+      <div class="col-md-8 d-flex align-items-center">
+        <div class="card-body song-info d-flex flex-column justify-content-between">
+            <div class="song-description col-6  ">
               <h1 class="card-title text-light fw-bold">${song.title}</h1>
               <p class="card-text m-0 p-0 fs-4">${song.album}</p>
               <p class="card-text m-0 p-0 fs-4">${song.artist}</p>
-              <p class="card-text m-0 p-0 fs-4">${song.genre}</p>
+              <p class="card-text m-0 p-0 fs-4">${song.genre.join(", ")}</p>
               <p class="card-text m-0 p-0 fs-4">${song.year}</p>
               <p class="card-text m-0 p-0 fs-4">${songDuration}</p>
-              ${preview}
+              <div id="preview">${preview}</div>
               
             </div>
-            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5" id="add-to-cart"></div>
+            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5 col-6 d-none" id="add-to-cart"></div>
         </div>
       </div>
     </div>
@@ -60,6 +60,9 @@ function addToCart(songId) {
   localStorage.setItem("cart", JSON.stringify(songsInCart));
   updateNavbar();
   setAddToCart(songId);
+  const toastLiveExample = document.getElementById('added-to-cart-pop-up')
+      const toast = new bootstrap.Toast(toastLiveExample)
+      toast.show()
 }
 
 async function setAddToCart(songId) {
@@ -78,16 +81,24 @@ async function setAddToCart(songId) {
       },
     })
       .done(function (res) {
+        addToCart.removeClass("d-none");
         if (res.isExist) {
-          addToCart.html("Song already in library");
+          $(".song-info").removeClass("flex-column");
+          $(".song-description").addClass("pe-5");
+          console.log(song.youtube_id)
+          addToCart.html(`<iframe class="w-100 h-100" style="max-height:315px;" src="https://www.youtube.com/embed/${song.youtube_id}" referrerpolicy="no-referrer-when-downgrade"
+          title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>`);
+          addToCart.addClass("ps-5");
+          $("#preview").addClass("d-none");
           return;
         }
+        addToCart.addClass("ms-auto");
         const songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
         if (songsInCart && songsInCart.includes(songId)) {
           addToCart.html(`<i class="fa-solid fa-check me-2" style="color: #5fcc24; "></i>Added to cart`);
           return;
         }
-        addToCart.html(`<div class="price fs-5 me-3">${song.price}$</div>
+        addToCart.html(`<div class="price fs-5 me-3">${song.price.toFixed(2)}$</div>
   <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>`);
       })
       .fail(function (error) {
@@ -95,12 +106,15 @@ async function setAddToCart(songId) {
         return;
       });
   } else {
-    addToCart.html(`<div class="price fs-5 me-3">${song.price}$</div>
+    addToCart.removeClass("d-none");
+    addToCart.addClass("ms-auto");
+    addToCart.html(`<div class="price fs-5 me-3">${song.price.toFixed(2)}$</div>
     <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
   }
 }
 
 $(document).ready(async function () {
+  
   const urlParams = window.location.search;
   const searchParams = new URLSearchParams(urlParams);
   if (!searchParams.has("songId")) 
