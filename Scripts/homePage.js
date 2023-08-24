@@ -151,22 +151,29 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 
 //NOT FINISHED. NEED TO FIX
 const carousel = (data) => {
-  data.sort((a, b) => b.numOfPurchases - a.numOfPurchases); // Sort by highest numOfPurchases
-  const top5 = data.slice(0, 5); // Take the highest 5
+  data.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
+  const top5 = data.slice(0, 5); 
   let html = '';
 
   for (let index = 0; index < top5.length; index++) {
     const item = top5[index];
     const isActive = index === 0 ? 'active' : '';
     html += `
-		<div onmouseover="textImg(this)" class="carousel-item ${isActive} text-center">
-		<img src="${item.album_image}" class="" style="width:70%;max-height:700px;" alt="...">
-		<div class="carousel-caption d-none d-md-block">
-			<h5>${item.title}</h5>
-			<p>${item.price}</p>
+		<div class="carousel-item ${isActive} h-100">
+		<img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
+		<div class="carousel-item-body">
+			 <h5 class="carousel-item-title">${item.title}</h5>
+			 <p class="carousel-item-text">${item.album}
+			 <br>${item.artist}
+			 <br>${getGenres(item.genre)}
+			 <br>${item.year}
+			 <br>Price: $${item.price}</p>
+			 <button class="carousel-item-btn" onclick="getId('${item._id}')">
+    			Learn More
+    			<i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
+				</button>
 		</div>
-	</div>
-	
+ </div>
     `;
   }
 
