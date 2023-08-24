@@ -27,7 +27,7 @@ const createNavbar = () => {
             <div id="search-list" class="w-100 p-0">
 
             </div>
-            <p class="m-0 p-2 text-center bg-light border-top">Total result: <span id="serach-total-result">0</span></p>
+            <p class="m-0 p-2 text-center bg-light border-top">Total result: <span id="serach-total-result">0</span> <i class="fa-solid fa-delete-left" onclick="onClearNavbarSearch()"></i></p>
           </div>
         </div>
       </form>
@@ -366,9 +366,14 @@ const onSearch = (event) => {
   }
 };
 
+const onClearNavbarSearch = ()=> {
+  $("#navbar input").val("")
+  closeSuggestions()
+}
+
 const setSuggestions = (inputValue) => {
   const suggestions = ALL_SONGS.filter((song) =>
-    song.title.toLowerCase().includes(inputValue.toLowerCase())
+    song.title.toLowerCase().includes(inputValue.toLowerCase()) || song.artist.toLowerCase().includes(inputValue.toLowerCase())
   );
   document.querySelector("#search-list").innerHTML = "";
   suggestions.forEach((suggestion) => {
