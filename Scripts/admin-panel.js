@@ -62,6 +62,7 @@ const getOrderDateAsString = (date) => {
 };
 
 const onUserClicked = async (element) => {
+  
   const current_user = adminPanel_ALL_USERS.find(
     (user) => user._id === element.getAttribute("data-id")
   );
@@ -88,7 +89,7 @@ const onUserClicked = async (element) => {
   $("#user-avg-per-order").text(
     avg.toFixed(2)
   );
-
+  // console.log(document.querySelector("#user-edit-is-admin").checked)
   $("#users-modal").modal("show");
 };
 
@@ -130,6 +131,98 @@ const onSongClicked = (songElement) => {
   $("#song-modal-save-btn").text ("Save Changes")
   $("#songs-modal").modal("show");
 };
+
+const onOrderClicked = (element)=> {
+  const orderId = element.getAttribute("data-id");
+  const order = adminPanel_ALL_ORDERS.find(order => order._id === orderId)
+  const orderDateArray = order.date.split("T")[0].split("-")
+  const orderDate = `${orderDateArray[2]}.${orderDateArray[1]}.${orderDateArray[0]}`
+  const orderTimeArray = order.date.split("T")[1].split(".")[0].split(":")
+  const orderTime = `${orderTimeArray[0]}:${orderTimeArray[1]}`
+
+  const user = adminPanel_ALL_USERS.find(user => user._id === order.user)
+  const songs = adminPanel_ALL_SONGS.filter(song => order.songs.includes(song._id))
+
+  $("#orders-modal-title").text(`${orderDate} | ${user.name}`)
+  $("#order-edit-user").val(`${user.name} (${user.email})`)
+  $("#order-edit-time").val(`${orderDate}, ${orderTime}`)
+  $("#order-edit-price").val(`${getOrderPrice(orderId).toFixed(2)}`)
+
+  const songsListElement = $("#order-songs-ul")
+  songsListElement.html("")
+  songs.forEach(song => {
+    const li = document.createElement("li")
+    li.classList += "list-group-item border-end col-auto mb-2 px-3"
+    li.setAttribute("onclick", "{this.remove()}")
+    li.setAttribute("data-song-id", song._id)
+    li.innerHTML = `<span>${song.title}</span>
+                    <i class="fa-solid fa-xmark"></i>`
+    songsListElement.append(li)
+  })
+
+  const orderModal = $("#orders-modal");
+
+  orderModal.attr("data-id", orderId)
+  orderModal.modal("show")
+}
+
+const onDeleteOrder = () => {
+  const orderId = $("#orders-modal").attr("data-id");
+
+  $.ajax({
+    url: `http://localhost:6969/admin/orders/${orderId}`,
+    type: "DELETE",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function (err) {
+      showModalError();
+    });
+
+}
+
+const onSaveOrder = ()=> {
+  const orderId = $("#orders-modal").attr("data-id");
+  const songsList = []
+  document.querySelectorAll("#order-songs-ul li").forEach(songName => {
+    songsList.push(songName.getAttribute("data-song-id"))
+  });
+
+  const updatedOrder = {
+    "songs": [...songsList]
+  }
+
+  $.ajax({
+    url: `http://localhost:6969/admin/orders/${orderId}`,
+    type: "PUT",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+      updatedOrder: updatedOrder,
+    },
+  })
+    .done(function () {
+      window.location.reload();
+    })
+    .fail(function (err) {
+      showModalError();
+    });
+
+
+}
 
 const onAddSong = () => {
   clearSongModalInputs();
@@ -296,7 +389,7 @@ const onSaveUser = () => {
     password: document.querySelector("#user-edit-password").value,
     orders: current_user.orders,
     songs: current_user.songs,
-    isAdmin: document.querySelector("#user-edit-is-admin").hasAttribute("checked"),
+    isAdmin: document.querySelector("#user-edit-is-admin").checked,
   };
   $.ajax({
     url: `http://localhost:6969/admin/users/${current_user._id}`,
@@ -312,17 +405,19 @@ const onSaveUser = () => {
     },
   })
     .done(function () {
+      console.log("done");
       window.location.reload();
     })
     .fail(function () {
+      console.log("fail");
       showModalError();
     });
 
-  console.log(
-    `user save: ${document
-      .querySelector("#users-modal")
-      .getAttribute("data-id")}`
-  );
+  // console.log(
+  //   `user save: ${document
+  //     .querySelector("#users-modal")
+  //     .getAttribute("data-id")}`
+  // );
 };
 
 const setNumberOfUsers = (numOfTotalUsers) => {
@@ -385,11 +480,11 @@ const setOrdersList = (ordersList) => {
     col12.classList += "col-12 px-2 py-0";
     col12.innerHTML += `<div class="list-item p-1 d-flex justify-content-between align-items-center" data-id="${
       element._id
-    }" onclick="onUserClicked(this)">
+    }" onclick="onOrderClicked(this)">
         <div class="col-10 d-flex justify-content-between">
             <span class="me-3">${getOrderDateAsString(element.date)}</span>
             <span class="me-3">${getUserById(element.user).name}</span>
-            <span>${getOrderPrice(element._id).toFixed(2)}$</span>
+            <span>$${getOrderPrice(element._id).toFixed(2)}</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
