@@ -13,6 +13,38 @@ $.ajax({
 });
 
 
+
+function initSocket() {
+	console.log("initSocket")
+	const socket = io("http://localhost:7070", {
+	  transports: ["websocket"],
+	});
+  
+	socket.on("connect", function () {
+	  console.log("Connected to socket.io server");
+	  socket.emit("message", "Hello World from client");
+	});
+  
+	socket.on("message", function (message) {
+	  console.log("Received message:", message);
+	});
+
+	socket.on("updateSongNumOfPurchases", function (message) {
+		console.log("Received message:", message);
+		for(let i = 0; i < message.length; i++){
+			$(`#${message[i].songId} .num-of-purchases-and-icon`).html(`<i class="fa-solid fa-bag-shopping"></i> ${message[i].numOfPurchases}`);
+		}
+	  });
+  
+}
+
+$(document).ready(function () {
+	initSocket();
+});
+
+
+
+
 // Event listener to filter selected genres, price range, and has preview
 $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeFilter, #previewFilter", function() {
 	const selectedGenres = $("#genreDropdownMenu .genre-checkbox:checked").map(function() {
@@ -32,6 +64,7 @@ $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeF
 					$("#cards").html(LoadCardData(filteredData));
 			}
 	});
+	
 });
 
 
@@ -62,7 +95,7 @@ const LoadCardData = (data) => {
 				<br>${millisecondsToMMSS(item.duration)}
 				<br>Price: $${item.price}
 				</p>
-				<div class="ms-auto w-auto text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+				<div class="ms-auto w-auto text-end num-of-purchases-and-icon"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
       </div>
     </div>
     `;
