@@ -48,7 +48,7 @@ const createOrderItem = (date, songs, orderId) => {
     splitedDate[0]
   }</span>
       <span class="text-99 me-4">${songs.length} Songs</span>
-      <span class="text-99">${getTotalPrice(songs)}$</span>
+      <span class="text-99">$${getTotalPrice(songs)}</span>
     </div>
     <div class="col-auto">
       <i class="fa-solid fa-chevron-down"></i>
@@ -67,9 +67,9 @@ const createSongsForOrder = (songs) => {
 
   songs.forEach((element) => {
     songsForOrders += `<div class="px-2 py-0 d-flex justify-content-between">
-        <span class="me-3 fw-medium">${element.title}</span>
-        <span class="me-3 text-99">${element.artist}</span>
-        <span class="text-99">${element.price}$</span>
+        <span class="col-4 fw-medium">${element.title}</span>
+        <span class="col-4 text-center text-99">${element.artist}</span>
+        <span class="col-4 text-end text-99">$${element.price}</span>
     </div>`;
   });
 

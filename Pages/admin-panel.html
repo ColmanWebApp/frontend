@@ -55,10 +55,10 @@
             Total Orders: <span id="total-orders-number"></span>
           </div>
           <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
-            Total Paid: <span id="total-income"></span>$
+            Total Paid: $<span id="total-income"></span>
           </div>
           <div class="col-auto mx-auto mx-lg-0 text-center text-lg-start">
-            Average Income: <span id="avg-income"></span>$
+            Average Income: $<span id="avg-income"></span>
           </div>
         </div>
 
@@ -413,6 +413,65 @@
           </div>
         </div>
       </div>
+
+
+       <!-- Order Modal -->
+       <div class="modal fade text-dark" id="orders-modal" tabindex="-1" aria-labelledby="orders-modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                [ ORDER ] <span id="orders-modal-title"></span>
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger px-4 py-2 d-none" role="alert">
+                Oops! Something went wrong. Please try again.
+              </div>
+              
+              <div class="row">
+                <div class="order-user input-wrapper mb-3 col-12">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="order-edit-user" id="order-edit-user" disabled/>
+                </div>
+                <div class="order-time input-wrapper mb-3 col-12">
+                    <i class="fa-solid fa-calendar-days input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="text" name="order-edit-time" id="order-edit-time" disabled/>
+                </div>
+                <div class="order-price input-wrapper mb-3 col-12">
+                    <i class="fa-solid fa-dollar-sign input-icon"></i>
+                    <input class="modal-input px-5 py-2 w-100 rounded-pill" type="number" name="order-edit-price" id="order-edit-price" disabled/>
+                </div>
+                <div class="order-songs input-wrapper mb-3 col-12">
+                    <div class="row px-3">
+                      <div class="col-12 p-0 m-0">
+                        <p class="m-0 p-0 fs-5 fw-medium ps-1">Songs:</p>
+                      </div>
+                      <div class="col-12 m-0 p-0">
+                        <ul class="row px-0" id="order-songs-ul"></ul>
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="song-modal-delete-btn" class="btn btn-danger" onclick="onDeleteOrder()">
+                Delete Order
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="song-modal-save-btn"
+                onclick="onSaveOrder()"
+              >
+                Save Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="footer" class="d-none"></div>
@@ -424,8 +483,8 @@
     ></script>
     <script src="../Scripts/navbar.js"></script>
     <script src="../Scripts/footer.js"></script>
+    <script src="../Scripts/statistics.js"></script>
     <script src="../Scripts/admin-panel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="../Scripts/statistics.js"></script>
   </body>
 </html>

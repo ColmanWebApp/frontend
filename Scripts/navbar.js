@@ -358,7 +358,7 @@ const onSignup = () => {
 };
 
 const onSearch = (event) => {
-  if (event.value.length >= 2) {
+  if (event.value.length >= 1) {
     setSuggestions(event.value);
     document.querySelector("#search-suggestion").classList.remove("d-none");
   } else {
@@ -373,7 +373,7 @@ const onClearNavbarSearch = ()=> {
 
 const setSuggestions = (inputValue) => {
   const suggestions = ALL_SONGS.filter((song) =>
-    song.title.toLowerCase().includes(inputValue.toLowerCase())
+    song.title.toLowerCase().includes(inputValue.toLowerCase()) || song.artist.toLowerCase().includes(inputValue.toLowerCase())
   );
   document.querySelector("#search-list").innerHTML = "";
   suggestions.forEach((suggestion) => {
