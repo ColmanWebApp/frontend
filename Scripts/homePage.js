@@ -1,22 +1,25 @@
 let AllData =  [];
-$.ajax({
-	url: "http://localhost:6969/songs",
-	type: "GET",
-	dataType: "json",
-	success: function (data) {
-		AllData = data
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-    $("#cards").html(LoadCardData(AllData));
-    $("#bigCarousel").html(carousel(AllData));
-    $("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
-	},
-	error: function (err) {
-			console.log(err);
-	}
-});
 
+$(document).ready(function () {
+	$.ajax({
+		url: "http://localhost:6969/songs",
+		type: "GET",
+		dataType: "json",
+		success: function (data) {
+			AllData = data
+			.map(value => ({ value, sort: Math.random() }))
+			.sort((a, b) => a.sort - b.sort)
+			.map(({ value }) => value);
+			$("#cards").html(LoadCardData(AllData));
+			$("#bigCarousel").html(carousel(AllData));
+			$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+		},
+		error: function (err) {
+				console.log(err);
+		}
+	});
+	initSocket();
+});
 
 // Event listener to filter selected genres, price range, and has preview
 $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeFilter, #previewFilter", function() {
@@ -59,7 +62,7 @@ const LoadCardData = (data) => {
 				<br>${millisecondsToMMSS(item.duration)}
 				<br>Price: $${item.price}
 				</p>
-				<div class="ms-auto w-auto text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+				<div class="ms-auto w-auto text-end num-of-purchases-and-icon"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
       </div>
     </div>
     `;
@@ -167,7 +170,7 @@ const carousel = (data) => {
 			 <br>${item.year}
 			 <br>Price: $${item.price}</p>
 			 <button class="carousel-item-btn" onclick="getId('${item._id}')">
-    			Learn More
+    			Buy Song
     			<i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
 				</button>
 		</div>
@@ -200,9 +203,5 @@ function initSocket() {
 			$(`#${message[i].songId} .num-of-purchases-and-icon`).html(`<i class="fa-solid fa-bag-shopping"></i> ${message[i].numOfPurchases}`);
 		}
 	  });
-  
 }
 
-$(document).ready(function () {
-	initSocket();
-});

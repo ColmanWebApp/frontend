@@ -79,3 +79,15 @@
 	font-weight: 500;
 	cursor: pointer;
 }
+
+.carousel-control-prev {
+	background: rgba(0, 0, 0, 0.250);
+}
+
+.carousel-control-next {
+	background: rgba(0, 0, 0, 0.250);
+}
+
+.filter-dropdown-menu {
+	width: 40%;
+}
