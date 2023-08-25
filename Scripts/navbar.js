@@ -358,7 +358,7 @@ const onSignup = () => {
 };
 
 const onSearch = (event) => {
-  if (event.value.length >= 2) {
+  if (event.value.length >= 1) {
     setSuggestions(event.value);
     document.querySelector("#search-suggestion").classList.remove("d-none");
   } else {
