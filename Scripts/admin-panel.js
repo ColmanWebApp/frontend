@@ -493,9 +493,9 @@ const setOrdersList = (ordersList) => {
       element._id
     }" onclick="onOrderClicked(this)">
         <div class="col-10 d-flex justify-content-between">
-            <span class="me-3">${getOrderDateAsString(element.date)}</span>
-            <span class="me-3">${getUserById(element.user).name}</span>
-            <span>$${getOrderPrice(element._id).toFixed(2)}</span>
+            <span class="col-4">${getOrderDateAsString(element.date)}</span>
+            <span class="col text-center">${getUserById(element.user).name}</span>
+            <span class="col-3 text-end">$${getOrderPrice(element._id).toFixed(2)}</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
@@ -652,6 +652,9 @@ const setPage = async () => {
   document.querySelector("#navbar").classList.remove("d-none");
   document.querySelector("#content").classList.remove("d-none");
   document.querySelector("#footer").classList.remove("d-none");
+
+  salesStatisticPerGenre();
+  lastTenDaysSalesStatistics();
 };
 
 setPage();

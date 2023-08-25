@@ -62,7 +62,7 @@ new Chart("genresChart2", {
     labels: xValues,
     datasets: [{
       backgroundColor: barColors,
-      data: yValues,
+      data: [...yValues, 0],
       label:''
     }],
     
@@ -125,6 +125,6 @@ async function salesStatisticPerGenre(){
 }
 
 
-salesStatisticPerGenre();
-lastTenDaysSalesStatistics();
+// salesStatisticPerGenre();
+// lastTenDaysSalesStatistics();
 
