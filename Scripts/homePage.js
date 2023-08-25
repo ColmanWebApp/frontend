@@ -1,11 +1,16 @@
+let AllData =  [];
 $.ajax({
 	url: "http://localhost:6969/songs",
 	type: "GET",
 	dataType: "json",
 	success: function (data) {
-    $("#cards").html(LoadCardData(data));
-    $("#bigCarousel").html(carousel(data));
-    $("#genreDropdownMenu").html(generateGenreDropdownOptions(data));
+		AllData = data
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+    $("#cards").html(LoadCardData(AllData));
+    $("#bigCarousel").html(carousel(AllData));
+    $("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
 	},
 	error: function (err) {
 			console.log(err);
@@ -22,16 +27,8 @@ $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeF
 	const selectedPriceRange = $("#priceRangeFilter").val();
 	const hasPreview = $("#previewFilter").is(":checked");
 
-	// Perform actions based on the selected genres, price range, and has preview
-	$.ajax({
-			url: "http://localhost:6969/songs",
-			type: "GET",
-			dataType: "json",
-			success: function (data) {
-					const filteredData = filterByGenresPriceRangeAndPreview(data, selectedGenres, selectedPriceRange, hasPreview);
-					$("#cards").html(LoadCardData(filteredData));
-			}
-	});
+	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, hasPreview);
+	$("#cards").html(LoadCardData(filteredData));
 });
 
 
@@ -117,6 +114,8 @@ function filterByGenresPriceRangeAndPreview(data, genres, priceRange, hasPreview
 			return hasPreview ? item.preview_url !== "" && item.preview_url !== null : true;
 	});
 
+
+
 	return filteredData;
 }
 
@@ -148,11 +147,10 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 	});
 };
 
-
-//NOT FINISHED. NEED TO FIX
 const carousel = (data) => {
-  data.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
-  const top5 = data.slice(0, 5); 
+	const carouselData = [...data];
+  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
+  const top5 = carouselData.slice(0, 5); 
   let html = '';
 
   for (let index = 0; index < top5.length; index++) {
@@ -180,3 +178,31 @@ const carousel = (data) => {
 	return html;
 };
 
+
+function initSocket() {
+	console.log("initSocket")
+	const socket = io("http://localhost:7070", {
+	  transports: ["websocket"],
+	});
+  
+	socket.on("connect", function () {
+	  console.log("Connected to socket.io server");
+	  socket.emit("message", "Hello World from client");
+	});
+  
+	socket.on("message", function (message) {
+	  console.log("Received message:", message);
+	});
+
+	socket.on("updateSongNumOfPurchases", function (message) {
+		console.log("Received message:", message);
+		for(let i = 0; i < message.length; i++){
+			$(`#${message[i].songId} .num-of-purchases-and-icon`).html(`<i class="fa-solid fa-bag-shopping"></i> ${message[i].numOfPurchases}`);
+		}
+	  });
+  
+}
+
+$(document).ready(function () {
+	initSocket();
+});
