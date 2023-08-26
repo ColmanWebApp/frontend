@@ -233,35 +233,32 @@ const filterByPreview = (data, selectedPreviewOptions) => {
 }
 
 const carousel = (data) => {
-	const carouselData = [...data];
-  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
-  const top5 = carouselData.slice(0, 5); 
+  const carouselData = [...data];
+  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases);
+  const top5 = carouselData.slice(0, 5);
   let html = '';
 
   for (let index = 0; index < top5.length; index++) {
     const item = top5[index];
     const isActive = index === 0 ? 'active' : '';
     html += `
-		<div class="carousel-item ${isActive} h-100">
-		<img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
-		<div class="carousel-item-body">
-			 <h5 class="carousel-item-title">${item.title}</h5>
-			 <p class="carousel-item-text">${item.album}
-			 <br>${item.artist}
-			 <br>${getGenres(item.genre)}
-			 <br>${item.year}
-			 <br>Price: $${item.price}</p>
-			 <button class="carousel-item-btn" onclick="getId('${item._id}')">
-    			Buy Song
-    			<i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
-				</button>
-		</div>
- </div>
+      <a href="SongPage.html?songId=${item._id}" class="carousel-item ${isActive} h-100">
+        <img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
+        <div class="carousel-item-body">
+          <h5 class="carousel-item-title">${item.title}</h5>
+          <p class="carousel-item-text">${item.album}
+          <br>${item.artist}
+          <br>${getGenres(item.genre)}
+          <br>${item.year}
+          <br>Price: $${item.price}</p>
+        </div>
+      </a>
     `;
   }
 
-	return html;
+  return html;
 };
+
 
 
 function initSocket() {
