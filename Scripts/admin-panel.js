@@ -576,8 +576,8 @@ const getAllUsers = async () => {
       // console.log("users:", adminPanel_ALL_USERS);
     })
     .fail(function (err) {
-      if (err.status === 403) window.location.replace("./404.html");
-      else window.location.replace("./");
+      console.log("err:", err)
+      if (err.status === 403 || err.status === 401) window.location.replace("./404.html");
     });
 };
 // get all songs
@@ -599,7 +599,7 @@ const getAllSongs = async () => {
       // console.log("songs:", adminPanel_ALL_SONGS);
     })
     .fail(function (err) {
-      if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403 || err.status === 401) window.location.replace("./404.html");
       else window.location.replace("./");
     });
 };
@@ -622,7 +622,7 @@ const getAllOrders = async () => {
       console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {
-      if (err.status === 403) window.location.replace("./404.html");
+      if (err.status === 403 || err.status === 401) window.location.replace("./404.html");
       else window.location.replace("./");
     });
 };

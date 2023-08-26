@@ -10,9 +10,7 @@ $(document).ready(function () {
 			.map(value => ({ value, sort: Math.random() }))
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value);
-			$("#cards").html(LoadCardData(AllData));
-			$("#bigCarousel").html(carousel(AllData));
-			$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+			init();
 		},
 		error: function (err) {
 				console.log(err);
@@ -22,17 +20,31 @@ $(document).ready(function () {
 });
 
 // Event listener to filter selected genres, price range, and has preview
-$(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeFilter, #previewFilter", function() {
+$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewDropdownMenu .preview-checkbox", function() {
 	const selectedGenres = $("#genreDropdownMenu .genre-checkbox:checked").map(function() {
 			return $(this).val();
 	}).get();
-	
-	const selectedPriceRange = $("#priceRangeFilter").val();
-	const hasPreview = $("#previewFilter").is(":checked");
 
-	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, hasPreview);
+	const selectedPriceRange = $("#priceDropdownMenu .price-checkbox:checked").map(function() {
+			return $(this).val();
+	}).get();
+
+	const selectedPreviewOptions = $("#previewDropdownMenu .preview-checkbox:checked").map(function() {
+		return $(this).val();
+	}).get();
+
+	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, selectedPreviewOptions);
+
 	$("#cards").html(LoadCardData(filteredData));
 });
+
+function init() {
+	$("#cards").html(LoadCardData(AllData));
+	$("#bigCarousel").html(carousel(AllData));
+	$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+	$("#priceDropdownMenu").html(generatePricesDropdownOptions);
+	$("#previewDropdownMenu").html(generatePreviewDropdownOptions);
+}
 
 
 // This funciton is used to get all the genres of a specific card. used with LoadCardData function.
@@ -48,6 +60,11 @@ function getGenres(data) {
 
 // Loads the cards
 const LoadCardData = (data) => {
+	if (data.length == 0)
+	return `
+			<div style="display: flex; ; align-items: center; height: 100vh; flex-direction: column;">
+					<h1 style="margin-top: 50px; text-align: center;">No results found</h1>
+			</div>`;
   let html = "";
   for (let item of data) {
     html += `
@@ -108,17 +125,57 @@ const generateGenreDropdownOptions = (data) => {
 };
 
 
-// Function to filter data based on genres, price range, and has preview
-function filterByGenresPriceRangeAndPreview(data, genres, priceRange, hasPreview) {
+const generatePricesDropdownOptions = () => {
+	let html = '';
+	let i = 0
+	for (i; i <= 30; i += 10) {
+			html += `
+					<div class="form-check">
+							<input class="form-check-input price-checkbox" type="checkbox" value="$${i}-$${i+10}" id="priceCheckBox_${i}">
+							<label class="form-check-label" for="priceCheckbox">
+								$${i}-$${i+10}
+							</label>
+					</div>
+			`;
+	}
+	html += `
+	<div class="form-check">
+			<input class="form-check-input price-checkbox" type="checkbox" value="$${i}+">
+			<label class="form-check-label" for="priceCheckbox">
+				$${i}+
+			</label>
+	</div>
+`;
+	return html;
+};
 
+const generatePreviewDropdownOptions = () => {
+	let html = '';
+	html += `
+	<div class="form-check">
+			<input class="form-check-input preview-checkbox" type="checkbox" value="preview" id="exists_preview">
+			<label class="form-check-label" for="previewCheckbox">
+				Preview
+			</label>
+	</div>
+`;
+html += `
+	<div class="form-check">
+			<input class="form-check-input preview-checkbox" type="checkbox" value="no preview" id="not_exists_preview">
+			<label class="form-check-label" for="previewCheckbox">
+				No Preview
+			</label>
+	</div>
+	`;
+	return html;
+};
+
+
+// Function to filter data based on genres, price range, and has preview
+function filterByGenresPriceRangeAndPreview(data, genres, priceRange, previewSelections) {
 	const filteredByGenres = filterByGenres(data, genres);
 	const filteredByGenresAndPrice = filterByPriceRange(filteredByGenres, priceRange);
-	const filteredData = filteredByGenresAndPrice.filter(item => {
-			return hasPreview ? item.preview_url !== "" && item.preview_url !== null : true;
-	});
-
-
-
+	const filteredData = filterByPreview(filteredByGenresAndPrice, previewSelections)
 	return filteredData;
 }
 
@@ -126,60 +183,82 @@ const filterByGenres = (data, selectedGenres) => {
   if (selectedGenres.length === 0) {
     return data; // If no genres selected, return all data
   }
-	console.log(data.filter(item => item.genre.some(genre => selectedGenres.includes(genre))));
   return data.filter(item => item.genre.some(genre => selectedGenres.includes(genre)));
 };
 
 const filterByPriceRange = (data, selectedPriceRange) => {
-	if (selectedPriceRange === "") {
+	if (selectedPriceRange.length === 0) {
 			return data; // If no price range selected, return all data
 	}
 
-	const [minPrice, maxPrice] = selectedPriceRange.split("-").map(parseFloat);
-
-	return data.filter(item => {
-			const price = parseFloat(item.price);
-			if (!isNaN(price)) {
-					if (selectedPriceRange === "20+") {
-							return price >= 20;
+	let filteredData = [];
+	
+	selectedPriceRange.forEach(item => {
+			try {
+					let min, max;
+					if (item.includes('+')) {
+							min = item.slice(1,3);
+							max = Infinity;
 					} else {
-							return price >= minPrice && price <= maxPrice;
+							const rangeValues = item.split('-');
+							min = parseInt(rangeValues[0].trim().slice(1));
+							max = parseInt(rangeValues[1].trim().slice(1));
 					}
+					data.forEach(item => {
+							if (item.price >= min && item.price <= max) {
+									filteredData.push(item);
+							}
+					});
+			} catch (error) {
+					console.error(error);
 			}
-			return false;
 	});
+	
+	return filteredData;
 };
 
+const filterByPreview = (data, selectedPreviewOptions) => {
+	if (selectedPreviewOptions.length == 2 || selectedPreviewOptions.length == 0) {
+		return data;
+	}
+	if (selectedPreviewOptions[0] == 'preview') 
+		return data.filter(item => {
+			return item.preview_url !== "" && item.preview_url !== null ? true : false;
+	});
+	else {
+		return data.filter(item => {
+			return item.preview_url !== "" && item.preview_url !== null ? false : true;
+	});
+	}
+}
+
 const carousel = (data) => {
-	const carouselData = [...data];
-  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
-  const top5 = carouselData.slice(0, 5); 
+  const carouselData = [...data];
+  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases);
+  const top5 = carouselData.slice(0, 5);
   let html = '';
 
   for (let index = 0; index < top5.length; index++) {
     const item = top5[index];
     const isActive = index === 0 ? 'active' : '';
     html += `
-		<div class="carousel-item ${isActive} h-100">
-		<img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
-		<div class="carousel-item-body">
-			 <h5 class="carousel-item-title">${item.title}</h5>
-			 <p class="carousel-item-text">${item.album}
-			 <br>${item.artist}
-			 <br>${getGenres(item.genre)}
-			 <br>${item.year}
-			 <br>Price: $${item.price}</p>
-			 <button class="carousel-item-btn" onclick="getId('${item._id}')">
-    			Buy Song
-    			<i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
-				</button>
-		</div>
- </div>
+      <a href="SongPage.html?songId=${item._id}" class="carousel-item ${isActive} h-100">
+        <img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
+        <div class="carousel-item-body">
+          <h5 class="carousel-item-title">${item.title}</h5>
+          <p class="carousel-item-text">${item.album}
+          <br>${item.artist}
+          <br>${getGenres(item.genre)}
+          <br>${item.year}
+          <br>Price: $${item.price}</p>
+        </div>
+      </a>
     `;
   }
 
-	return html;
+  return html;
 };
+
 
 
 function initSocket() {
@@ -204,4 +283,34 @@ function initSocket() {
 		}
 	  });
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+	// Get all the inner dropdown buttons
+	var innerDropdownButtons = document.querySelectorAll(".dropdown-menu .dropdown-toggle");
+
+	// Hide other inner dropdowns when an inner dropdown is clicked
+	innerDropdownButtons.forEach(function(button) {
+			button.addEventListener("click", function(event) {
+					event.stopPropagation();
+					// Close other inner dropdowns
+					innerDropdownButtons.forEach(function(innerButton) {
+							if (innerButton !== button) {
+									var dropdownMenu = innerButton.nextElementSibling;
+									if (dropdownMenu.classList.contains("show")) {
+											dropdownMenu.classList.remove("show");
+									}
+							}
+					});
+			});
+	});
+
+	// Prevent dropdown menus from closing when clicking inside
+	var dropdownMenus = document.querySelectorAll(".dropdown-menu");
+	dropdownMenus.forEach(function(menu) {
+			menu.addEventListener("click", function(event) {
+					event.stopPropagation();
+			});
+	});
+});
 
