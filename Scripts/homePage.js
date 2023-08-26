@@ -10,10 +10,7 @@ $(document).ready(function () {
 			.map(value => ({ value, sort: Math.random() }))
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value);
-			$("#cards").html(LoadCardData(AllData));
-			$("#bigCarousel").html(carousel(AllData));
-			$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
-			$("#priceDropdownMenu").html(generatePricesDropdownOptions);
+			init();
 		},
 		error: function (err) {
 				console.log(err);
@@ -23,7 +20,7 @@ $(document).ready(function () {
 });
 
 // Event listener to filter selected genres, price range, and has preview
-$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewFilter", function() {
+$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewDropdownMenu .preview-checkbox", function() {
 	const selectedGenres = $("#genreDropdownMenu .genre-checkbox:checked").map(function() {
 			return $(this).val();
 	}).get();
@@ -32,13 +29,22 @@ $(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu
 			return $(this).val();
 	}).get();
 
+	const selectedPreviewOptions = $("#previewDropdownMenu .preview-checkbox:checked").map(function() {
+		return $(this).val();
+	}).get();
 
-	const hasPreview = $("#previewFilter").is(":checked");
-
-	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, hasPreview);
+	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, selectedPreviewOptions);
 
 	$("#cards").html(LoadCardData(filteredData));
 });
+
+function init() {
+	$("#cards").html(LoadCardData(AllData));
+	$("#bigCarousel").html(carousel(AllData));
+	$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+	$("#priceDropdownMenu").html(generatePricesDropdownOptions);
+	$("#previewDropdownMenu").html(generatePreviewDropdownOptions);
+}
 
 
 // This funciton is used to get all the genres of a specific card. used with LoadCardData function.
@@ -126,7 +132,7 @@ const generatePricesDropdownOptions = () => {
 			html += `
 					<div class="form-check">
 							<input class="form-check-input price-checkbox" type="checkbox" value="$${i}-$${i+10}" id="priceCheckBox_${i}">
-							<label class="form-check-label" for="price-checkbox">
+							<label class="form-check-label" for="priceCheckbox">
 								$${i}-$${i+10}
 							</label>
 					</div>
@@ -135,7 +141,7 @@ const generatePricesDropdownOptions = () => {
 	html += `
 	<div class="form-check">
 			<input class="form-check-input price-checkbox" type="checkbox" value="$${i}+">
-			<label class="form-check-label" for="genreCheckbox">
+			<label class="form-check-label" for="priceCheckbox">
 				$${i}+
 			</label>
 	</div>
@@ -143,18 +149,33 @@ const generatePricesDropdownOptions = () => {
 	return html;
 };
 
+const generatePreviewDropdownOptions = () => {
+	let html = '';
+	html += `
+	<div class="form-check">
+			<input class="form-check-input preview-checkbox" type="checkbox" value="preview" id="exists_preview">
+			<label class="form-check-label" for="previewCheckbox">
+				Preview
+			</label>
+	</div>
+`;
+html += `
+	<div class="form-check">
+			<input class="form-check-input preview-checkbox" type="checkbox" value="no preview" id="not_exists_preview">
+			<label class="form-check-label" for="previewCheckbox">
+				No Preview
+			</label>
+	</div>
+	`;
+	return html;
+};
+
 
 // Function to filter data based on genres, price range, and has preview
-function filterByGenresPriceRangeAndPreview(data, genres, priceRange, hasPreview) {
-
+function filterByGenresPriceRangeAndPreview(data, genres, priceRange, previewSelections) {
 	const filteredByGenres = filterByGenres(data, genres);
 	const filteredByGenresAndPrice = filterByPriceRange(filteredByGenres, priceRange);
-	const filteredData = filteredByGenresAndPrice.filter(item => {
-			return hasPreview ? item.preview_url !== "" && item.preview_url !== null : true;
-	});
-
-
-
+	const filteredData = filterByPreview(filteredByGenresAndPrice, previewSelections)
 	return filteredData;
 }
 
@@ -166,7 +187,6 @@ const filterByGenres = (data, selectedGenres) => {
 };
 
 const filterByPriceRange = (data, selectedPriceRange) => {
-	console.log(selectedPriceRange);
 	if (selectedPriceRange.length === 0) {
 			return data; // If no price range selected, return all data
 	}
@@ -180,7 +200,7 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 							min = item.slice(1,3);
 							max = Infinity;
 					} else {
-							const rangeValues = item.split(' - ');
+							const rangeValues = item.split('-');
 							min = parseInt(rangeValues[0].trim().slice(1));
 							max = parseInt(rangeValues[1].trim().slice(1));
 					}
@@ -197,6 +217,20 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 	return filteredData;
 };
 
+const filterByPreview = (data, selectedPreviewOptions) => {
+	if (selectedPreviewOptions.length == 2 || selectedPreviewOptions.length == 0) {
+		return data;
+	}
+	if (selectedPreviewOptions[0] == 'preview') 
+		return data.filter(item => {
+			return item.preview_url !== "" && item.preview_url !== null ? true : false;
+	});
+	else {
+		return data.filter(item => {
+			return item.preview_url !== "" && item.preview_url !== null ? false : true;
+	});
+	}
+}
 
 const carousel = (data) => {
 	const carouselData = [...data];
@@ -253,4 +287,33 @@ function initSocket() {
 	  });
 }
 
+
+document.addEventListener("DOMContentLoaded", function() {
+	// Get all the inner dropdown buttons
+	var innerDropdownButtons = document.querySelectorAll(".dropdown-menu .dropdown-toggle");
+
+	// Hide other inner dropdowns when an inner dropdown is clicked
+	innerDropdownButtons.forEach(function(button) {
+			button.addEventListener("click", function(event) {
+					event.stopPropagation();
+					// Close other inner dropdowns
+					innerDropdownButtons.forEach(function(innerButton) {
+							if (innerButton !== button) {
+									var dropdownMenu = innerButton.nextElementSibling;
+									if (dropdownMenu.classList.contains("show")) {
+											dropdownMenu.classList.remove("show");
+									}
+							}
+					});
+			});
+	});
+
+	// Prevent dropdown menus from closing when clicking inside
+	var dropdownMenus = document.querySelectorAll(".dropdown-menu");
+	dropdownMenus.forEach(function(menu) {
+			menu.addEventListener("click", function(event) {
+					event.stopPropagation();
+			});
+	});
+});
 

@@ -88,6 +88,11 @@
 	background: rgba(0, 0, 0, 0.250);
 }
 
-.filter-dropdown-menu {
-	width: 40%;
+
+.dropdown-menu {
+	display: none; /* Initially hide the menu */
+}
+
+.dropdown.show .dropdown-menu {
+	display: block; /* Display the menu when the button is pressed */
 }
