@@ -1,7 +1,7 @@
 function createCard(song) {
   const songDurationInSeconds=song.duration/1000;//50000 -> 50sec -> 00:50 
-  const minutes=(songDurationInSeconds/60).toFixed(0);
-  const seconds=(songDurationInSeconds%60).toFixed(0);
+  const minutes=parseInt(songDurationInSeconds/60).toFixed(0);
+  const seconds=parseInt(songDurationInSeconds%60).toFixed(0);
   const songDuration=`${minutes>9?minutes:"0"+minutes}:${seconds>9?seconds:"0"+seconds}`;
   let preview = "";
   if (song.preview_url)
@@ -48,6 +48,7 @@ function previousPage() {
 }
 
 function addToCart(songId) {
+  const set=new Set();
   if (!localStorage.getItem("user")) {
     return;
   }
@@ -55,8 +56,15 @@ function addToCart(songId) {
     window.location.replace("../Pages/404.html");
     return;
   }
-  const songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
-  songsInCart.push(songId);
+  let songsInCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  songsInCart.forEach(element => {
+    set.add(element);
+  });
+  set.add(songId);
+  songsInCart=[];
+  set.forEach(element=>{
+    songsInCart.push(element);
+  })
   localStorage.setItem("cart", JSON.stringify(songsInCart));
   updateNavbar();
   setAddToCart(songId);
@@ -99,7 +107,7 @@ async function setAddToCart(songId) {
           return;
         }
         addToCart.html(`<div class="price fs-5 me-3">$${song.price.toFixed(2)}</div>
-  <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 ">Add to cart </div>`);
+  <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 col-auto ">Add to cart </div>`);
       })
       .fail(function (error) {
         alert("error:fail", error);
@@ -109,7 +117,7 @@ async function setAddToCart(songId) {
     addToCart.removeClass("d-none");
     addToCart.addClass("ms-auto");
     addToCart.html(`<div class="price fs-5 me-3">$${song.price.toFixed(2)}</div>
-    <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
+    <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 col-auto" data-bs-toggle="modal" data-bs-target="#error-modal">Add to cart </div>`);
   }
 }
 

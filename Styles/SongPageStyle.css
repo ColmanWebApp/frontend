@@ -34,6 +34,10 @@
     #preview-bar p{
         align-self: flex-start;
     }
+    #add-to-cart{
+        justify-content: center !important;
+        margin-right: auto;
+    }
 
 
 }
