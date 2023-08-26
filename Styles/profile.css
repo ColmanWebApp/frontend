@@ -7,6 +7,9 @@
     border: 1px solid #999999;
 }
 
+.google-map {
+    color: #000000;
+}
 
 .song-item, .order-item {
     margin-bottom: 0.5rem;

@@ -192,8 +192,74 @@ const setPage = async () => {
   $("#loader").addClass("d-none");
 };
 
-setPage();
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 32.178124, lng: 34.915441 }, // Center the map
+      zoom: 10 // Adjust the zoom level as needed
+  });
+  const infoWindow = new google.maps.InfoWindow();
+  const image = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+  let points = [];
+  $.ajax({
+    url: `http://localhost:6969/locations/`,
+    type: "GET",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  }).done(function (res) {
+    res.forEach((element) => {
+      points.push({ lat: element.latitude, lng: element.longitude, name: element.name });
+    });
+    for (let i = 0; i < points.length; i++) {
+      let point = points[i];
+      const marker = new google.maps.Marker({
+          position: { lat: point.lat, lng: point.lng },
+          map,
+          title: point.name,
+          label: `${i+1}`,
+          optimized: false
+          //icon: image, // Red pin icon
+          
+      });
+      
 
+
+      marker.addListener("click", () => {
+        console.log(i);
+        infoWindow.close();
+        infoWindow.setContent(marker.getTitle());
+        infoWindow.open(marker.getMap(), marker);
+      });
+
+
+      marker.setMap(map);
+    }
+  });
+  // Loop through the points and create a red pin for each one
+  
+  
+
+}
+
+
+// function initMap() {
+//   const map = new google.maps.Map(document.getElementById("map"), {
+//     zoom: 4,
+//     center: { lat: -33, lng: 151 },
+//   });
+//   const image =
+//     "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+//   const beachMarker = new google.maps.Marker({
+//     position: { lat: -33.89, lng: 151.274 },
+//     map,
+//     icon: image,
+//   });
+// }
+
+setPage();
+initMap();
 let user;
 let orders;
 let songs = [];
