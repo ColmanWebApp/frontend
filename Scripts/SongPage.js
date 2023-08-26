@@ -26,16 +26,16 @@ function createCard(song) {
       <div class="col-md-8 d-flex align-items-center">
         <div class="card-body song-info d-flex flex-column justify-content-between">
             <div class="song-description col-6  ">
-              <h1 class="card-title text-light fw-bold">${song.title}</h1>
-              <p class="card-text m-0 p-0 fs-4">${song.album}</p>
-              <p class="card-text m-0 p-0 fs-4">${song.artist}</p>
-              <p class="card-text m-0 p-0 fs-4">${song.genre.join(", ")}</p>
+              <h1 class="card-title text-center text-md-start text-light fw-bold">${song.title}</h1>
+              <p class="card-text text-center text-md-start m-0 p-0 fs-4">${song.album}</p>
+              <p class="card-text text-center text-md-start m-0 p-0 fs-4">${song.artist}</p>
+              <p class="card-text text-center text-md-start m-0 p-0 fs-4">${song.genre.join(", ")}</p>
               <p class="card-text m-0 p-0 fs-4">${song.year}</p>
               <p class="card-text m-0 p-0 fs-4">${songDuration}</p>
               <div id="preview">${preview}</div>
               
             </div>
-            <div class="d-flex align-items-center justify-content-end add-to-cart mt-5 col-6 d-none" id="add-to-cart"></div>
+            <div class="d-flex align-items-center justify-content-md-end justify-content-center w-100 add-to-cart mt-5 col-6 d-none" id="add-to-cart"></div>
         </div>
       </div>
     </div>
@@ -92,11 +92,11 @@ async function setAddToCart(songId) {
         addToCart.removeClass("d-none");
         if (res.isExist) {
           $(".song-info").removeClass("flex-column");
-          $(".song-description").addClass("pe-5");
-          console.log(song.youtube_id)
+          $(".song-description").addClass("pe-md-5");
+          addToCart.removeClass("w-100")
           addToCart.html(`<iframe class="w-100 h-100" style="max-height:315px;" src="https://www.youtube.com/embed/${song.youtube_id}" referrerpolicy="no-referrer-when-downgrade"
           title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>`);
-          addToCart.addClass("ps-5");
+          //addToCart.addClass("ps-5");
           $("#preview").addClass("d-none");
           return;
         }
