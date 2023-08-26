@@ -47,43 +47,43 @@ async function lastTenDaysSalesStatistics(){
       xValues.push(date._id);
       yValues.push(date.count);
   });
-
-const barColors = [
+  let max=yValues[0];
+  for (let i=1;i<yValues.length;i++){
+    if(max<yValues[i])
+      max=yValues[i];
+  }
+    const barColors = [
     '#FF5733', '#FFBD33', '#FFD633', '#FFEE33', '#D9FF33',
     '#7DFF33', '#33FF7E', '#33FFB9', '#33FFE5', '#33E5FF',
     '#33B9FF', '#337EFF', '#334CFF', '#7A33FF', '#B933FF',
     '#E533FF', '#FF33F1', '#FF33B9', '#FF3398', '#FF336A',
     '#FF334C', '#FF5D33', '#FF8333', '#FFA833', '#FFD133'
 ];
-
-new Chart("genresChart2", {
-  type: "bar",
+const graph=document.getElementById("genresChart2")
+new Chart(graph, {
+  type: "line",
   data: {
     labels: xValues,
     datasets: [{
-      backgroundColor: barColors,
-      data: yValues,
-      label:''
-    }],
-    
+      fill: false,
+      lineTension: 0,
+      color:"black",
+      backgroundColor: "black",
+      borderColor: "rgb(46, 204, 113)",
+      data: yValues
+    }]
   },
   options: {
-    legend: {
-       labels: {
-          fontColor: 'white' 
-       },
-       display:false
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 0, max:max}}],
     },
-    scales:{
-      y:{
-        beginAtZero:true,
-        ticks:{
-          color:'#FFFFFF'
-        }
-      }
+    title: {
+      display: true,
+    
     }
- }
-});
+  }
+  });
 }
 
 async function salesStatisticPerGenre(){
@@ -95,6 +95,7 @@ async function salesStatisticPerGenre(){
         xValues.push(genre._id);
         yValues.push(genre.count);
     });  
+    yValues.push(0);
 
   const barColors = [
       '#FF5733', '#FFBD33', '#FFD633', '#FFEE33', '#D9FF33',
@@ -105,7 +106,7 @@ async function salesStatisticPerGenre(){
   ];
 
   new Chart("genresChart", {
-    type: "doughnut",
+    type: "bar",
     data: {
       labels: xValues,
       datasets: [{
@@ -118,13 +119,10 @@ async function salesStatisticPerGenre(){
       legend: {
          labels: {
             fontColor: 'white' 
-         }
+         },
+         display:false
       }
    }
   });
 }
-
-
-salesStatisticPerGenre();
-lastTenDaysSalesStatistics();
 

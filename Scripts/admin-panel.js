@@ -62,7 +62,6 @@ const getOrderDateAsString = (date) => {
 };
 
 const onUserClicked = async (element) => {
-  
   const current_user = adminPanel_ALL_USERS.find(
     (user) => user._id === element.getAttribute("data-id")
   );
@@ -75,20 +74,20 @@ const onUserClicked = async (element) => {
   document.querySelector("#user-edit-fullname").value = current_user.name;
   document.querySelector("#user-edit-email").value = current_user.email;
   document.querySelector("#user-edit-password").value = current_user.password;
-  if(current_user.isAdmin)
-    document.querySelector("#user-edit-is-admin").setAttribute("checked","")
-  else
-    document.querySelector("#user-edit-is-admin").removeAttribute("checked")
+  if (current_user.isAdmin)
+    document.querySelector("#user-edit-is-admin").setAttribute("checked", "");
+  else document.querySelector("#user-edit-is-admin").removeAttribute("checked");
 
   $("#user-total-orders").text(current_user.orders.length);
   $("#user-total-songs").text(current_user.songs.length);
 
   const songsValue = getCurrentUserOrdersPrice();
   $("#user-total-orders-cost").text(songsValue.toFixed(2));
-  const avg = (songsValue / current_user.orders.length) ? (songsValue / current_user.orders.length) : 0
-  $("#user-avg-per-order").text(
-    avg.toFixed(2)
-  );
+  const avg =
+    songsValue / current_user.orders.length
+      ? songsValue / current_user.orders.length
+      : 0;
+  $("#user-avg-per-order").text(avg.toFixed(2));
   // console.log(document.querySelector("#user-edit-is-admin").checked)
   $("#users-modal").modal("show");
 };
@@ -99,8 +98,8 @@ const onSongClicked = (songElement) => {
     (s) => s._id === songElement.getAttribute("data-id")
   );
   console.log(song);
-  $("#song-modal-title").text(song.title)
-  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
+  $("#song-modal-title").text(song.title);
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none");
   document.querySelector("#song-edit-title").value = song.title;
   document.querySelector("#song-edit-artist").value = song.artist;
   document.querySelector("#song-edit-album").value = song.album;
@@ -115,56 +114,62 @@ const onSongClicked = (songElement) => {
   }`;
 
   document.querySelector("#song-edit-price").value = song.price;
+  document.querySelector("#song-edit-num-of-purchases").value = `Number Of Purchases: ${song.numOfPurchases}`;
   document.querySelector("#song-edit-album-image").value = song.album_image;
   document.querySelector("#song-edit-preview").value = song.preview_url;
   document.querySelector("#song-edit-youtube-id").value = song.youtube_id;
 
-  song.genre.forEach(genre => {
-    document.querySelector("#song-edit-genres").value = genre
-    onAddGenre()
+  song.genre.forEach((genre) => {
+    document.querySelector("#song-edit-genres").value = genre;
+    onAddGenre();
   });
 
-
   $("#song-action").text("EDIT SONG");
-  document.querySelector("#songs-modal").setAttribute("data-song-id", songElement.getAttribute("data-id"))
-  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveSongsChanges()")
-  $("#song-modal-save-btn").text ("Save Changes")
+  document
+    .querySelector("#songs-modal")
+    .setAttribute("data-song-id", songElement.getAttribute("data-id"));
+  document
+    .querySelector("#song-modal-save-btn")
+    .setAttribute("onclick", "onSaveSongsChanges()");
+  $("#song-modal-save-btn").text("Save Changes");
   $("#songs-modal").modal("show");
 };
 
-const onOrderClicked = (element)=> {
+const onOrderClicked = (element) => {
   const orderId = element.getAttribute("data-id");
-  const order = adminPanel_ALL_ORDERS.find(order => order._id === orderId)
-  const orderDateArray = order.date.split("T")[0].split("-")
-  const orderDate = `${orderDateArray[2]}.${orderDateArray[1]}.${orderDateArray[0]}`
-  const orderTimeArray = order.date.split("T")[1].split(".")[0].split(":")
-  const orderTime = `${orderTimeArray[0]}:${orderTimeArray[1]}`
+  const order = adminPanel_ALL_ORDERS.find((order) => order._id === orderId);
+  const orderDateArray = order.date.split("T")[0].split("-");
+  const orderDate = `${orderDateArray[2]}.${orderDateArray[1]}.${orderDateArray[0]}`;
+  const orderTimeArray = order.date.split("T")[1].split(".")[0].split(":");
+  const orderTime = `${orderTimeArray[0]}:${orderTimeArray[1]}`;
 
-  const user = adminPanel_ALL_USERS.find(user => user._id === order.user)
-  const songs = adminPanel_ALL_SONGS.filter(song => order.songs.includes(song._id))
+  const user = adminPanel_ALL_USERS.find((user) => user._id === order.user);
+  const songs = adminPanel_ALL_SONGS.filter((song) =>
+    order.songs.includes(song._id)
+  );
 
-  $("#orders-modal-title").text(`${orderDate} | ${user.name}`)
-  $("#order-edit-user").val(`${user.name} (${user.email})`)
-  $("#order-edit-time").val(`${orderDate}, ${orderTime}`)
-  $("#order-edit-price").val(`${getOrderPrice(orderId).toFixed(2)}`)
+  $("#orders-modal-title").text(`${orderDate} | ${user.name}`);
+  $("#order-edit-user").val(`${user.name} (${user.email})`);
+  $("#order-edit-time").val(`${orderDate}, ${orderTime}`);
+  $("#order-edit-price").val(`${getOrderPrice(orderId).toFixed(2)}`);
 
-  const songsListElement = $("#order-songs-ul")
-  songsListElement.html("")
-  songs.forEach(song => {
-    const li = document.createElement("li")
-    li.classList += "list-group-item border-end col-auto mb-2 px-3"
-    li.setAttribute("onclick", "{this.remove()}")
-    li.setAttribute("data-song-id", song._id)
+  const songsListElement = $("#order-songs-ul");
+  songsListElement.html("");
+  songs.forEach((song) => {
+    const li = document.createElement("li");
+    li.classList += "list-group-item border-end col-auto mb-2 px-3";
+    li.setAttribute("onclick", "{this.remove()}");
+    li.setAttribute("data-song-id", song._id);
     li.innerHTML = `<span>${song.title}</span>
-                    <i class="fa-solid fa-xmark"></i>`
-    songsListElement.append(li)
-  })
+                    <i class="fa-solid fa-xmark"></i>`;
+    songsListElement.append(li);
+  });
 
   const orderModal = $("#orders-modal");
 
-  orderModal.attr("data-id", orderId)
-  orderModal.modal("show")
-}
+  orderModal.attr("data-id", orderId);
+  orderModal.modal("show");
+};
 
 const onDeleteOrder = () => {
   const orderId = $("#orders-modal").attr("data-id");
@@ -187,19 +192,18 @@ const onDeleteOrder = () => {
     .fail(function (err) {
       showModalError();
     });
+};
 
-}
-
-const onSaveOrder = ()=> {
+const onSaveOrder = () => {
   const orderId = $("#orders-modal").attr("data-id");
-  const songsList = []
-  document.querySelectorAll("#order-songs-ul li").forEach(songName => {
-    songsList.push(songName.getAttribute("data-song-id"))
+  const songsList = [];
+  document.querySelectorAll("#order-songs-ul li").forEach((songName) => {
+    songsList.push(songName.getAttribute("data-song-id"));
   });
 
   const updatedOrder = {
-    "songs": [...songsList]
-  }
+    songs: [...songsList],
+  };
 
   $.ajax({
     url: `http://localhost:6969/admin/orders/${orderId}`,
@@ -220,49 +224,57 @@ const onSaveOrder = ()=> {
     .fail(function (err) {
       showModalError();
     });
-
-
-}
+};
 
 const onAddSong = () => {
   clearSongModalInputs();
-  document.querySelector("#song-modal-delete-btn").classList.add("d-none")
-  
+  document.querySelector("#song-modal-delete-btn").classList.add("d-none");
+
   $("#song-action").text("ADD SONG");
-  document.querySelector("#songs-modal").removeAttribute("data-song-id")
-  document.querySelector("#song-modal-save-btn").setAttribute("onclick", "onSaveNewSong()")
-  $("#song-modal-save-btn").text ("Save New Song")
+  document.querySelector("#songs-modal").removeAttribute("data-song-id");
+  document
+    .querySelector("#song-modal-save-btn")
+    .setAttribute("onclick", "onSaveNewSong()");
+  $("#song-modal-save-btn").text("Save New Song");
   $("#songs-modal").modal("show");
 };
 
-const getSongFromForm = ()=> {
-  const durationMinSec = $("#song-edit-duration").val().split(":")
-  const durationInMiliSeconds = ((durationMinSec[0] * 60) - 0 +  (durationMinSec[1]-0)) * 1000
-  const genresList = []
-  document.querySelectorAll("#genres-ul li span").forEach(genre => {
-    genresList.push(genre.innerHTML)
+const getSongFromForm = () => {
+  const durationMinSec = $("#song-edit-duration").val().split(":");
+  const durationInMiliSeconds =
+    (durationMinSec[0] * 60 - 0 + (durationMinSec[1] - 0)) * 1000;
+  const genresList = [];
+  document.querySelectorAll("#genres-ul li span").forEach((genre) => {
+    genresList.push(genre.innerHTML.replace("amp;", ""));
   });
 
   const song = {
-    "title": $("#song-edit-title").val(),
-    "artist": $("#song-edit-artist").val(),
-    "album": $("#song-edit-album").val(),
-    "year": $("#song-edit-year").val(),
-    "duration": durationInMiliSeconds,
-    "price": $("#song-edit-price").val(),
-    "album_image": $("#song-edit-album-image").val()!="" ? $("#song-edit-album-image").val() : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
-    "preview_url": $("#song-edit-preview").val() ? $("#song-edit-preview").val() : undefined,
-    "genre": genresList,
-    "youtube_id": $("#song-edit-youtube-id").val()
-  }
+    title: $("#song-edit-title").val(),
+    artist: $("#song-edit-artist").val(),
+    album: $("#song-edit-album").val(),
+    year: $("#song-edit-year").val(),
+    duration: durationInMiliSeconds,
+    price: $("#song-edit-price").val(),
+    album_image:
+      $("#song-edit-album-image").val() != ""
+        ? $("#song-edit-album-image").val()
+        : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
+    preview_url: $("#song-edit-preview").val()
+      ? $("#song-edit-preview").val()
+      : undefined,
+    genre: genresList,
+    youtube_id: $("#song-edit-youtube-id").val(),
+  };
 
-  return song
-}
+  return song;
+};
 
 const onSaveSongsChanges = () => {
-  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+  const songId = document
+    .querySelector("#songs-modal")
+    .getAttribute("data-song-id");
 
-  const updatedSong = getSongFromForm()
+  const updatedSong = getSongFromForm();
 
   $.ajax({
     url: `http://localhost:6969/admin/songs/${songId}`,
@@ -284,10 +296,8 @@ const onSaveSongsChanges = () => {
       showModalError();
     });
 
-
-
   console.log("updatedSong:", updatedSong);
-}
+};
 
 const onSaveNewSong = () => {
   console.log("onSaveNewSong");
@@ -310,21 +320,22 @@ const onSaveNewSong = () => {
     .fail(function () {
       showModalError();
     });
-}
+};
 
 const clearSongModalInputs = () => {
   document.querySelector("#genres-ul").innerHTML = "";
-  $("#song-modal-title").text("")
-  document.querySelector("#song-modal-delete-btn").classList.remove("d-none")
+  $("#song-modal-title").text("");
+  document.querySelector("#song-modal-delete-btn").classList.remove("d-none");
   document.querySelector("#song-edit-title").value = "";
   document.querySelector("#song-edit-artist").value = "";
   document.querySelector("#song-edit-album").value = "";
   document.querySelector("#song-edit-year").value = "";
-  document.querySelector("#song-edit-duration").value = ""
+  document.querySelector("#song-edit-duration").value = "";
   document.querySelector("#song-edit-price").value = "";
   document.querySelector("#song-edit-album-image").value = "";
   document.querySelector("#song-edit-preview").value = "";
   document.querySelector("#song-edit-youtube-id").value = "";
+  document.querySelector("#song-edit-num-of-purchases").value = "Number Of Purchases: 0";
 };
 
 const onDeleteUser = () => {
@@ -354,9 +365,11 @@ const onDeleteUser = () => {
     });
 };
 
-const onDeleteSong = ()=> {
+const onDeleteSong = () => {
   console.log("onDeleteSong");
-  const songId = document.querySelector("#songs-modal").getAttribute("data-song-id")
+  const songId = document
+    .querySelector("#songs-modal")
+    .getAttribute("data-song-id");
   $.ajax({
     url: `http://localhost:6969/admin/songs/${songId}`,
     type: "DELETE",
@@ -375,7 +388,7 @@ const onDeleteSong = ()=> {
     .fail(function () {
       showModalError();
     });
-}
+};
 
 const onSaveUser = () => {
   const current_user = adminPanel_ALL_USERS.find(
@@ -482,9 +495,9 @@ const setOrdersList = (ordersList) => {
       element._id
     }" onclick="onOrderClicked(this)">
         <div class="col-10 d-flex justify-content-between">
-            <span class="me-3">${getOrderDateAsString(element.date)}</span>
-            <span class="me-3">${getUserById(element.user).name}</span>
-            <span>$${getOrderPrice(element._id).toFixed(2)}</span>
+            <span class="col-4">${getOrderDateAsString(element.date)}</span>
+            <span class="col text-center">${getUserById(element.user).name}</span>
+            <span class="col-3 text-end">$${getOrderPrice(element._id).toFixed(2)}</span>
         </div>
         <i class="fa-solid fa-pen-to-square"></i>
     </div>`;
@@ -641,6 +654,9 @@ const setPage = async () => {
   document.querySelector("#navbar").classList.remove("d-none");
   document.querySelector("#content").classList.remove("d-none");
   document.querySelector("#footer").classList.remove("d-none");
+
+  salesStatisticPerGenre();
+  lastTenDaysSalesStatistics();
 };
 
 setPage();

@@ -141,6 +141,26 @@ const createCartList = () => {
   }
 };
 
+const publishToFacebook = async () => {
+  let user;
+  await $.ajax({
+    url: `http://localhost:6969/users/user-details`,
+    type: "POST",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      token: localStorage.getItem("user"),
+    },
+  }).done((res)=>user = res)
+  //count how many li items there are in #songs-list-modal
+  const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
+  const message = `${user.name} has just bought ${numOfSongs} new songs from (NAME_OF_APP)! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
+  postToFacebook(message);
+}
+
 const removeItemFromCart = (itemID, removeAll = false) => {
   if (!removeAll) {
     cart = JSON.parse(localStorage.getItem("cart"));
