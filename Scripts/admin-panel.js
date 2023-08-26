@@ -114,6 +114,7 @@ const onSongClicked = (songElement) => {
   }`;
 
   document.querySelector("#song-edit-price").value = song.price;
+  document.querySelector("#song-edit-num-of-purchases").value = `Number Of Purchases: ${song.numOfPurchases}`;
   document.querySelector("#song-edit-album-image").value = song.album_image;
   document.querySelector("#song-edit-preview").value = song.preview_url;
   document.querySelector("#song-edit-youtube-id").value = song.youtube_id;
@@ -334,6 +335,7 @@ const clearSongModalInputs = () => {
   document.querySelector("#song-edit-album-image").value = "";
   document.querySelector("#song-edit-preview").value = "";
   document.querySelector("#song-edit-youtube-id").value = "";
+  document.querySelector("#song-edit-num-of-purchases").value = "Number Of Purchases: 0";
 };
 
 const onDeleteUser = () => {

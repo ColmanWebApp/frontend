@@ -67,9 +67,14 @@
     color: #111111;
     outline: 0;
 }
-.modal-input::placeholder {
+.modal-input::placeholder, .modal-input:disabled {
     color: #A7A7A7;
 }
+
+.modal-input:disabled {
+    cursor: not-allowed;
+}
+
 
 .input-wrapper {
     position: relative;
