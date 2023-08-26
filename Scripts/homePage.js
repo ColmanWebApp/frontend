@@ -1,17 +1,25 @@
-$.ajax({
-	url: "http://localhost:6969/songs",
-	type: "GET",
-	dataType: "json",
-	success: function (data) {
-    $("#cards").html(LoadCardData(data));
-    $("#bigCarousel").html(carousel(data));
-    $("#genreDropdownMenu").html(generateGenreDropdownOptions(data));
-	},
-	error: function (err) {
-			console.log(err);
-	}
-});
+let AllData =  [];
 
+$(document).ready(function () {
+	$.ajax({
+		url: "http://localhost:6969/songs",
+		type: "GET",
+		dataType: "json",
+		success: function (data) {
+			AllData = data
+			.map(value => ({ value, sort: Math.random() }))
+			.sort((a, b) => a.sort - b.sort)
+			.map(({ value }) => value);
+			$("#cards").html(LoadCardData(AllData));
+			$("#bigCarousel").html(carousel(AllData));
+			$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+		},
+		error: function (err) {
+				console.log(err);
+		}
+	});
+	initSocket();
+});
 
 // Event listener to filter selected genres, price range, and has preview
 $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeFilter, #previewFilter", function() {
@@ -22,16 +30,8 @@ $(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeF
 	const selectedPriceRange = $("#priceRangeFilter").val();
 	const hasPreview = $("#previewFilter").is(":checked");
 
-	// Perform actions based on the selected genres, price range, and has preview
-	$.ajax({
-			url: "http://localhost:6969/songs",
-			type: "GET",
-			dataType: "json",
-			success: function (data) {
-					const filteredData = filterByGenresPriceRangeAndPreview(data, selectedGenres, selectedPriceRange, hasPreview);
-					$("#cards").html(LoadCardData(filteredData));
-			}
-	});
+	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, hasPreview);
+	$("#cards").html(LoadCardData(filteredData));
 });
 
 
@@ -62,7 +62,7 @@ const LoadCardData = (data) => {
 				<br>${millisecondsToMMSS(item.duration)}
 				<br>Price: $${item.price}
 				</p>
-				<div class="ms-auto w-auto text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+				<div class="ms-auto w-auto text-end num-of-purchases-and-icon"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
       </div>
     </div>
     `;
@@ -117,6 +117,8 @@ function filterByGenresPriceRangeAndPreview(data, genres, priceRange, hasPreview
 			return hasPreview ? item.preview_url !== "" && item.preview_url !== null : true;
 	});
 
+
+
 	return filteredData;
 }
 
@@ -148,28 +150,58 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 	});
 };
 
-
-//NOT FINISHED. NEED TO FIX
 const carousel = (data) => {
-  data.sort((a, b) => b.numOfPurchases - a.numOfPurchases); // Sort by highest numOfPurchases
-  const top5 = data.slice(0, 5); // Take the highest 5
+	const carouselData = [...data];
+  carouselData.sort((a, b) => b.numOfPurchases - a.numOfPurchases); 
+  const top5 = carouselData.slice(0, 5); 
   let html = '';
 
   for (let index = 0; index < top5.length; index++) {
     const item = top5[index];
     const isActive = index === 0 ? 'active' : '';
     html += `
-		<div onmouseover="textImg(this)" class="carousel-item ${isActive} text-center">
-		<img src="${item.album_image}" class="" style="width:70%;max-height:700px;" alt="...">
-		<div class="carousel-caption d-none d-md-block">
-			<h5>${item.title}</h5>
-			<p>${item.price}</p>
+		<div class="carousel-item ${isActive} h-100">
+		<img src="${item.album_image}" class="img-fluid w-100 h-100" alt="...">
+		<div class="carousel-item-body">
+			 <h5 class="carousel-item-title">${item.title}</h5>
+			 <p class="carousel-item-text">${item.album}
+			 <br>${item.artist}
+			 <br>${getGenres(item.genre)}
+			 <br>${item.year}
+			 <br>Price: $${item.price}</p>
+			 <button class="carousel-item-btn" onclick="getId('${item._id}')">
+    			Buy Song
+    			<i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
+				</button>
 		</div>
-	</div>
-	
+ </div>
     `;
   }
 
 	return html;
 };
+
+
+function initSocket() {
+	console.log("initSocket")
+	const socket = io("http://localhost:7070", {
+	  transports: ["websocket"],
+	});
+  
+	socket.on("connect", function () {
+	  console.log("Connected to socket.io server");
+	  socket.emit("message", "Hello World from client");
+	});
+  
+	socket.on("message", function (message) {
+	  console.log("Received message:", message);
+	});
+
+	socket.on("updateSongNumOfPurchases", function (message) {
+		console.log("Received message:", message);
+		for(let i = 0; i < message.length; i++){
+			$(`#${message[i].songId} .num-of-purchases-and-icon`).html(`<i class="fa-solid fa-bag-shopping"></i> ${message[i].numOfPurchases}`);
+		}
+	  });
+}
 
