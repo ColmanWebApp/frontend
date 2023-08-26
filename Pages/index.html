@@ -56,58 +56,40 @@
 			</div>
 
 			<!-- FILTERS HERE -->
-			<div class="songs_container container py-5 overflow-hidden">
-				<div class="row p-3">
-					 <div class="col-md-12 mb-3 text-center">
-							<div class="dropdown">
-								 <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								 Filters
-								 </button>
-								 <div class="dropdown-menu filter-dropdown-menu" aria-labelledby="filterDropdown">
-										<div class="row p-2">
-											 <div class="col-md-4">
-													<label class="form-label">Genre</label>
-													<div id="genreDropdownMenu">
-														 <!-- Dropdown options with checkboxes will be generated here -->
-													</div>
-											 </div>
-											 <div class="col-md-4">
-													<label for="priceRangeFilter" class="form-label">Price Range</label>
-													<select class="form-select" id="priceRangeFilter">
-														 <option value="">All Prices</option>
-														 <option value="0-10">$0 - $10</option>
-														 <option value="10-20">$10 - $20</option>
-														 <option value="20+">$20+</option>
-													</select>
-											 </div>
-											 <div class="col-md-4">
-													<div class="form-check">
-														 <input class="form-check-input" type="checkbox" id="previewFilter">
-														 <label class="form-check-label" for="previewFilter">
-														 Has Preview
-														 </label>
-													</div>
-											 </div>
-										</div>
-								 </div>
-							</div>
-					 </div>
-				</div>
-				<div id="cards" class="songs-grid row gy-5 gx-0"></div>
-		 </div>
-		 
-		 
-		 
-		 
-		
-			
-			<div class="songs_container container py-5 overflow-hidden">
-				<!-- <div id="select"></div> -->
-					<div id="cards" class="songs-grid row gy-5 gx-0">
-
-					</div>
-		</div>
-
+		 <div class="songs_container container py-5 overflow-hidden">
+			<div class="row p-3">
+				 <div class="col-md-12 mb-3 text-center">
+						<div class="dropdown">
+							 <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							 Filters
+							 </button>
+							 <div class="dropdown-menu filter-dropdown-menu ps-2" aria-labelledby="filterDropdown">
+									<div class="row">
+										 <div class="col-md-4 col-sm-12">
+												<label class="form-label">Genre</label>
+												<div id="genreDropdownMenu">
+												</div>
+										 </div>
+										 <div class="col-md-4 col-sm-12">
+											<label class="form-label">Price Range</label>
+											<div id="priceDropdownMenu">
+											</div>
+										 </div>
+										 <div class="col-md-4 col-sm-12">
+												<div class="form-check">
+													 <input class="form-check-input" type="checkbox" id="previewFilter">
+													 <label class="form-check-label" for="previewFilter">
+													 Has Preview
+													 </label>
+												</div>
+										 </div>
+									</div>
+							 </div>
+						</div>
+				 </div>
+			</div>
+			<div id="cards" class="songs-grid row gy-5 gx-0"></div>
+	 </div>
 
     <div id="footer"></div>
 

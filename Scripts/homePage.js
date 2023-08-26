@@ -13,6 +13,7 @@ $(document).ready(function () {
 			$("#cards").html(LoadCardData(AllData));
 			$("#bigCarousel").html(carousel(AllData));
 			$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
+			$("#priceDropdownMenu").html(generatePricesDropdownOptions);
 		},
 		error: function (err) {
 				console.log(err);
@@ -22,15 +23,20 @@ $(document).ready(function () {
 });
 
 // Event listener to filter selected genres, price range, and has preview
-$(document).on("click change", "#genreDropdownMenu .genre-checkbox, #priceRangeFilter, #previewFilter", function() {
+$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewFilter", function() {
 	const selectedGenres = $("#genreDropdownMenu .genre-checkbox:checked").map(function() {
 			return $(this).val();
 	}).get();
-	
-	const selectedPriceRange = $("#priceRangeFilter").val();
+
+	const selectedPriceRange = $("#priceDropdownMenu .price-checkbox:checked").map(function() {
+			return $(this).val();
+	}).get();
+
+
 	const hasPreview = $("#previewFilter").is(":checked");
 
 	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, hasPreview);
+
 	$("#cards").html(LoadCardData(filteredData));
 });
 
@@ -48,6 +54,11 @@ function getGenres(data) {
 
 // Loads the cards
 const LoadCardData = (data) => {
+	if (data.length == 0)
+	return `
+			<div style="display: flex; ; align-items: center; height: 100vh; flex-direction: column;">
+					<h1 style="margin-top: 50px; text-align: center;">No results found</h1>
+			</div>`;
   let html = "";
   for (let item of data) {
     html += `
@@ -108,6 +119,31 @@ const generateGenreDropdownOptions = (data) => {
 };
 
 
+const generatePricesDropdownOptions = () => {
+	let html = '';
+	let i = 0
+	for (i; i <= 30; i += 10) {
+			html += `
+					<div class="form-check">
+							<input class="form-check-input price-checkbox" type="checkbox" value="$${i}-$${i+10}" id="priceCheckBox_${i}">
+							<label class="form-check-label" for="price-checkbox">
+								$${i}-$${i+10}
+							</label>
+					</div>
+			`;
+	}
+	html += `
+	<div class="form-check">
+			<input class="form-check-input price-checkbox" type="checkbox" value="$${i}+">
+			<label class="form-check-label" for="genreCheckbox">
+				$${i}+
+			</label>
+	</div>
+`;
+	return html;
+};
+
+
 // Function to filter data based on genres, price range, and has preview
 function filterByGenresPriceRangeAndPreview(data, genres, priceRange, hasPreview) {
 
@@ -126,29 +162,41 @@ const filterByGenres = (data, selectedGenres) => {
   if (selectedGenres.length === 0) {
     return data; // If no genres selected, return all data
   }
-	console.log(data.filter(item => item.genre.some(genre => selectedGenres.includes(genre))));
   return data.filter(item => item.genre.some(genre => selectedGenres.includes(genre)));
 };
 
 const filterByPriceRange = (data, selectedPriceRange) => {
-	if (selectedPriceRange === "") {
+	console.log(selectedPriceRange);
+	if (selectedPriceRange.length === 0) {
 			return data; // If no price range selected, return all data
 	}
 
-	const [minPrice, maxPrice] = selectedPriceRange.split("-").map(parseFloat);
-
-	return data.filter(item => {
-			const price = parseFloat(item.price);
-			if (!isNaN(price)) {
-					if (selectedPriceRange === "20+") {
-							return price >= 20;
+	let filteredData = [];
+	
+	selectedPriceRange.forEach(item => {
+			try {
+					let min, max;
+					if (item.includes('+')) {
+							min = item.slice(1,3);
+							max = Infinity;
 					} else {
-							return price >= minPrice && price <= maxPrice;
+							const rangeValues = item.split(' - ');
+							min = parseInt(rangeValues[0].trim().slice(1));
+							max = parseInt(rangeValues[1].trim().slice(1));
 					}
+					data.forEach(item => {
+							if (item.price >= min && item.price <= max) {
+									filteredData.push(item);
+							}
+					});
+			} catch (error) {
+					console.error(error);
 			}
-			return false;
 	});
+	
+	return filteredData;
 };
+
 
 const carousel = (data) => {
 	const carouselData = [...data];
@@ -204,4 +252,5 @@ function initSocket() {
 		}
 	  });
 }
+
 
