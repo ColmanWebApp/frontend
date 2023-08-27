@@ -37,3 +37,9 @@
   margin-left: 0.5rem;
   opacity: 1;
 }
+
+.row-list {
+  max-height: 19rem !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
