@@ -475,4 +475,4 @@ const navbarWrapper = () => {
 };
 
 window.onload = function() { navbarWrapper() };
-window.onunload = function(){};
+window.onunload = function(){ navbarWrapper() };
