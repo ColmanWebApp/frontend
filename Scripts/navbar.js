@@ -43,32 +43,20 @@ const createNavbar = () => {
           </div>
         </div>
       </form>
-      <ul class="navbar-nav ms-auto my-2 my-lg-0 col-12 col-lg-6 d-flex justify-content-end">
-        <li class="not-connected-nav-item nav-item">
-          <a
-            class="nav-link active"
-            aria-current="page"
-            href="#"
-            data-bs-toggle="modal"
-            data-bs-target="#login-modal"
-            onclick="resetModalsInputs()"
-            >Login</a
+      <ul class="navbar-nav ms-auto my-2 my-lg-0 col-12 col-lg-6 d-flex flex-row justify-content-lg-end justify-content-center align-items-center">
+        <li class="not-connected-nav-item nav-item text-center me-3  me-lg-0">
+          <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="modal" data-bs-target="#login-modal" onclick="resetModalsInputs()" >Login</a
           >
         </li>
-        <li class="not-connected-nav-item nav-item">
-          <button
-            class="btn btn-outline-light rounded-pill px-4 ms-lg-2"
-            data-bs-toggle="modal"
-            data-bs-target="#signup-modal"
-            onclick="resetModalsInputs()"
-          >
+        <li class="not-connected-nav-item nav-item text-center">
+          <button class="btn btn-outline-light rounded-pill px-4 ms-lg-2" data-bs-toggle="modal" data-bs-target="#signup-modal" onclick="resetModalsInputs()">
             Signup
           </button>
         </li>
-        <li class="connected-nav-item nav-item mt-4 mt-lg-0 me-lg-3">
+        <li class="connected-nav-item nav-item d-flex align-items-center justify-content-center mt-3 mt-lg-0 me-3">
           <a href="./orderPage.html" class="text-decoration-none">
             <div
-              class="icon-wrapper position-relative d-flex align-items-center justify-content-center rounded-circle"
+              class="icon-wrapper position-relative d-flex align-items-center justify-content-center rounded-circle  mx-auto"
             >
               <i class="fa-solid fa-cart-shopping"></i>
               <span
@@ -80,21 +68,21 @@ const createNavbar = () => {
             </div>
           </a>
         </li>
-        <div class="connected-nav-item nav-item mt-2 mt-lg-0 me-lg-3">
+        <div class="connected-nav-item nav-item mt-3 mt-lg-0 me-3">
           <a
             href="./profile.html"
             class="text-decoration-none"
           >
             <div
-              class="icon-wrapper d-flex align-items-center justify-content-center rounded-circle"
+              class="icon-wrapper d-flex align-items-center justify-content-center rounded-circle mx-auto"
             >
               <i class="fa-solid fa-user"></i>
             </div>
           </a>
         </div>
-        <li class="connected-nav-item nav-item mt-2 mt-lg-0">
+        <li class="connected-nav-item nav-item mt-3 mt-lg-0">
           <a
-            class="nav-link active"
+            class="nav-link active text-center"
             aria-current="page"
             href="#"
             onclick="onLogout()"
