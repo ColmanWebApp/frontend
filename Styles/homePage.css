@@ -82,16 +82,7 @@
 	position: relative;
 }
 
-.form-check{
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
 
 .dropdown {
-	position: relative;
-}
-
-.filter-btn {
-	width: 100%;
 	position: relative;
 }

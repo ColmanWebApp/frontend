@@ -63,7 +63,7 @@ const LoadCardData = (data) => {
 	if (data.length == 0)
 	return `
 			<div style="display: flex; ; align-items: center; height: 100vh; flex-direction: column;">
-					<h1 style="margin-top: 50px; text-align: center;">No results found</h1>
+					<h1 style="margin-top: 150px; text-align: center;">No results found</h1>
 			</div>`;
   let html = "";
   for (let item of data) {
