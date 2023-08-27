@@ -157,8 +157,18 @@ const publishToFacebook = async () => {
   //count how many li items there are in #songs-list-modal
   const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
   const message = `${user.name} has just bought ${numOfSongs} new songs from Moozika! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
-  postToFacebook(message);
-  
+  const success=await postToFacebook(message);
+  const toastPublish = document.getElementById('facebook-publish-toast')
+  const toast = new bootstrap.Toast(toastPublish)
+  if(success){
+    $("#publish-toast-text").text("You successfully published in our facebook page!");
+  }
+  else
+  {
+    $("#publish-toast-text").text("An error occured while publishing on facebook");
+  }
+  toast.show();
+  $(".btn-facebook").addClass("d-none");
 }
 
 const removeItemFromCart = async (itemID, removeAll = false) => {
