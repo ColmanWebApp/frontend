@@ -443,7 +443,7 @@ const unshowModalError = () => {
 
 const navbarWrapper = () => {
   createNavbar();
-  let ALL_SONGS = [];
+  
   $.ajax({
     url: "http://localhost:6969/songs",
     type: "GET",
@@ -476,3 +476,4 @@ const navbarWrapper = () => {
 
 window.onload = function() { navbarWrapper() };
 window.onunload = function(){ navbarWrapper() };
+let ALL_SONGS = [];
