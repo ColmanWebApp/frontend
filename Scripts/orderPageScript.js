@@ -30,7 +30,7 @@ const onDeleteFromCart = (event) => {
   // console.log("item id:", event.getAttribute("attr_id"));
   removeItemFromCart(event.getAttribute("attr_id"));
   handleCheckoutBtnStyle();
-  setIls()
+  setIls();
 };
 
 const onCheckout = () => {
@@ -72,13 +72,12 @@ const onCheckout = () => {
     .done(function () {
       localStorage.removeItem("cart");
       updateNavbar();
-      const checkoutModalSongsListElement =
-        document.querySelector("#songs-list-modal");
+      const checkoutModalSongsListElement = document.querySelector("#songs-list-modal");
+      checkoutModalSongsListElement.innerHTML = "";
       songsFromDB.forEach((element) => {
         checkoutModalSongsListElement.innerHTML += `<li>${element.title}</li>`;
       });
       $("#checkout-modal").modal("show");
-      console.log("finish success");
     });
 
   //   removeItemFromCart(null, true);
@@ -154,12 +153,12 @@ const publishToFacebook = async () => {
     data: {
       token: localStorage.getItem("user"),
     },
-  }).done((res)=>user = res)
+  }).done((res) => (user = res));
   //count how many li items there are in #songs-list-modal
   const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
   const message = `${user.name} has just bought ${numOfSongs} new songs from Moozika! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
   postToFacebook(message);
-}
+};
 
 const removeItemFromCart = async (itemID, removeAll = false) => {
   if (!removeAll) {
@@ -174,7 +173,7 @@ const removeItemFromCart = async (itemID, removeAll = false) => {
   }
   await createCartList();
   updateNavbar();
-  setIls()
+  setIls();
 };
 
 const addToLocalStorage = () => {
@@ -191,18 +190,19 @@ const handlePermissions = () => {
   if (!localStorage.getItem("user")) window.location.replace("./index.html");
 };
 
-const getUsdToIls = async()=> {
+const getUsdToIls = async () => {
   await $.ajax({
     url: `https://v6.exchangerate-api.com/v6/d49e704b01ca5fa2a23ed2cc/latest/USD`,
     type: "GET",
     secure: true,
     cors: true,
-  }).done((res)=>{
-    ilsBool = true
-    usdInIls = res.conversion_rates.ILS
-})
-.fail(error => console.log(error))
-}
+  })
+    .done((res) => {
+      ilsBool = true;
+      usdInIls = res.conversion_rates.ILS;
+    })
+    .fail((error) => console.log(error));
+};
 
 const handleCheckoutBtnStyle = () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -211,39 +211,35 @@ const handleCheckoutBtnStyle = () => {
   }
 };
 
-const setIls = ()=> {
-  if(ilsBool)
-  {
-    const totalPrice = $("#total").text()
-    $("#ils").text(`~ ${(usdInIls * totalPrice).toFixed(2)}₪`)
-    const subtotalPrice = $("#subtotal").text()
-    $("#subtotal-ils").text(`~ ${(usdInIls * subtotalPrice).toFixed(2)}₪`)
+const setIls = () => {
+  if (ilsBool) {
+    const totalPrice = $("#total").text();
+    $("#ils").text(`~ ${(usdInIls * totalPrice).toFixed(2)}₪`);
+    const subtotalPrice = $("#subtotal").text();
+    $("#subtotal-ils").text(`~ ${(usdInIls * subtotalPrice).toFixed(2)}₪`);
   }
-}
+};
 
 const handleBack = () => {
   window.history.back();
 };
-$(document).ready(async ()=> {
+$(document).ready(async () => {
   handlePermissions();
   handleCheckoutBtnStyle();
   await createCartList();
   console.log("before getUsdToIls");
   await getUsdToIls();
   console.log("after getUsdToIls", ilsBool, usdInIls);
-  setIls()
+  setIls();
   console.log("after setILS");
-  
-  
-  $("#navbar").removeClass("d-none")
-  $("#content").removeClass("d-none")
-  $("#footer").removeClass("d-none")
-  $("#loader").addClass("d-none")
 
-})
-
+  $("#navbar").removeClass("d-none");
+  $("#content").removeClass("d-none");
+  $("#footer").removeClass("d-none");
+  $("#loader").addClass("d-none");
+});
 
 // --- GLOBAL VARS ---
 let songsFromDB;
-let ilsBool = false
+let ilsBool = false;
 let usdInIls = 1;
