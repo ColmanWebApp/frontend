@@ -41,17 +41,32 @@ async function fetchLastTenDaysSales(){
 
 async function lastTenDaysSalesStatistics(){
   await fetchLastTenDaysSales();
+  let lastTenDays = new Map();
+  // add the last 10 days in format dd-mm-yyyy
+  for (let i = 0; i < 10; i++) {
+    let date = new Date();
+    date.setDate(date.getDate() - i);
+    lastTenDays.set(`${date.getDate()}-${(date.getMonth() + 1>9) ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)}-${date.getFullYear()}`,0);
+  }
+  lastTenDaysCountSales.forEach(date=>{
+    lastTenDays.set(date._id, date.count)
+  });
   const xValues = [];
   const yValues = [];
-    lastTenDaysCountSales.forEach(date=>{
-      xValues.push(date._id);
-      yValues.push(date.count);
+  lastTenDays.forEach((value,key)=>{
+    xValues.push(key);
+    yValues.push(value);
   });
+  xValues.reverse();
+  yValues.reverse();
+  
+  console.log(lastTenDays);
   let max=yValues[0];
   for (let i=1;i<yValues.length;i++){
     if(max<yValues[i])
       max=yValues[i];
   }
+  
     const barColors = [
     '#FF5733', '#FFBD33', '#FFD633', '#FFEE33', '#D9FF33',
     '#7DFF33', '#33FF7E', '#33FFB9', '#33FFE5', '#33E5FF',

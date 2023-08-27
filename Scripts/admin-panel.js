@@ -618,7 +618,7 @@ const getAllOrders = async () => {
     },
   })
     .done(function (res) {
-      adminPanel_ALL_ORDERS = res;
+      adminPanel_ALL_ORDERS = res.reverse();
       console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {
