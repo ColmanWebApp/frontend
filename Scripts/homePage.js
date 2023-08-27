@@ -68,18 +68,19 @@ const LoadCardData = (data) => {
   let html = "";
   for (let item of data) {
     html += `
-    <div onclick="getId('${item._id}')" id="${item._id}" class="card col-sm-12 col-md-6 col-lg-3 mx-4">
+    <div onclick="getId('${item._id}')" id="${item._id}" class="card col-sm-12 col-md-6 col-lg-3 mx-4 rounded-3">
       <img class="card-img-top" src="${item.album_image}" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">${item.title}</h5>
-        <p class="card-text">${item.album}
-				<br>${item.artist}
-				<br>${getGenres(item.genre)}
-				<br>${item.year}
-				<br>${millisecondsToMMSS(item.duration)}
-				<br>Price: $${item.price}
-				</p>
-				<div class="ms-auto w-auto text-end num-of-purchases-and-icon"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+        <h5 class="card-title p-0 px-1">${item.title}</h5>
+				<div class="row px-3">
+					<p class="card-text col-12 m-0 p-0">${item.album}</p>
+					<p class="card-text col-12 m-0 p-0">${item.artist}</p>
+					<p class="card-text col-12 m-0 p-0">${getGenres(item.genre)}</p>
+					<p class="card-text col-12 m-0 p-0">${item.year}</p>
+					<p class="card-text col-12 m-0 p-0">${millisecondsToMMSS(item.duration)}</p>
+					<p class="card-text col-6 m-0 p-0">Price: $${item.price}</p>
+				<div class="ms-auto w-auto text-end num-of-purchases-and-icon col-6 text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+				</div>
       </div>
     </div>
     `;

@@ -1,5 +1,6 @@
 .songs-grid {
 	justify-content: center;
+
 }
 
 .card {
@@ -72,9 +73,25 @@
 
 
 .dropdown-menu {
-	display: none; /* Initially hide the menu */
+	display: none; 
+	width: 100%;
 }
 
 .dropdown.show .dropdown-menu {
-	display: block; /* Display the menu when the button is pressed */
+	display: inline-block; 
+	position: relative;
+}
+
+.form-check{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.dropdown {
+	position: relative;
+}
+
+.filter-btn {
+	width: 100%;
+	position: relative;
 }
