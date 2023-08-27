@@ -159,6 +159,7 @@ const publishToFacebook = async () => {
   const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
   const message = `${user.name} has just bought ${numOfSongs} new songs from Moozika! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
   postToFacebook(message);
+  
 }
 
 const removeItemFromCart = async (itemID, removeAll = false) => {
