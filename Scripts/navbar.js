@@ -441,33 +441,38 @@ const unshowModalError = () => {
   });
 };
 
-createNavbar();
-let ALL_SONGS = [];
-$.ajax({
-  url: "http://localhost:6969/songs",
-  type: "GET",
-  contentType: "application/json",
-  secure: true,
-  cors: true,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-  },
-  success: function (res) {
-    ALL_SONGS = res;
-  },
-}).fail(function () {
-  return;
-});
-
-document.querySelectorAll(".modal-input").forEach((element) => {
-  element.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-      // Cancel the default action, if needed
-      event.preventDefault();
-      // Trigger the button element with a click
-      console.log(
-        element.parentElement.parentElement.querySelector("button").click()
-      );
-    }
+const navbarWrapper = () => {
+  createNavbar();
+  let ALL_SONGS = [];
+  $.ajax({
+    url: "http://localhost:6969/songs",
+    type: "GET",
+    contentType: "application/json",
+    secure: true,
+    cors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    success: function (res) {
+      ALL_SONGS = res;
+    },
+  }).fail(function () {
+    return;
   });
-});
+
+  document.querySelectorAll(".modal-input").forEach((element) => {
+    element.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        console.log(
+          element.parentElement.parentElement.querySelector("button").click()
+        );
+      }
+    });
+  });
+};
+
+window.onload = function() { navbarWrapper() };
+window.onunload = function(){};
