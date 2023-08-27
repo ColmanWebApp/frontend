@@ -157,7 +157,7 @@ const publishToFacebook = async () => {
   }).done((res)=>user = res)
   //count how many li items there are in #songs-list-modal
   const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
-  const message = `${user.name} has just bought ${numOfSongs} new songs from (NAME_OF_APP)! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
+  const message = `${user.name} has just bought ${numOfSongs} new songs from Moozika! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
   postToFacebook(message);
 }
 
