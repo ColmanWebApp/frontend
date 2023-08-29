@@ -332,7 +332,7 @@ const carousel = (data) => {
           <br>${item.artist}
           <br>${getGenres(item.genre)}
           <br>${item.year}
-          <br>Price: $${item.price.toFixed(2)}</p>
+          <br>Price: $${item.price1}</p>
         </div>
       </a>
     `;
