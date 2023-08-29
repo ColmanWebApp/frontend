@@ -116,7 +116,7 @@ const LoadCardData = (data) => {
 					<p class="card-text col-12 m-0 p-0">${getGenres(item.genre)}</p>
 					<p class="card-text col-12 m-0 p-0">${item.year}</p>
 					<p class="card-text col-12 m-0 p-0">${millisecondsToMMSS(item.duration)}</p>
-					<p class="card-text col-6 m-0 p-0">Price: $${item.price}</p>
+					<p class="card-text col-6 m-0 p-0">Price: $${item.price.toFixed(2)}</p>
 				<div class="ms-auto w-auto text-end num-of-purchases-and-icon col-6 text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
 				</div>
       </div>
@@ -332,7 +332,7 @@ const carousel = (data) => {
           <br>${item.artist}
           <br>${getGenres(item.genre)}
           <br>${item.year}
-          <br>Price: $${item.price}</p>
+          <br>Price: $${item.price.toFixed(2)}</p>
         </div>
       </a>
     `;
