@@ -148,8 +148,8 @@ const onOrderClicked = (element) => {
     order.songs.includes(song._id)
   );
 
-  $("#orders-modal-title").text(`${orderDate} | ${user.name}`);
-  $("#order-edit-user").val(`${user.name} (${user.email})`);
+  $("#orders-modal-title").text(`${orderDate} | ${user?user.name:"NoName"}`);
+  $("#order-edit-user").val(`${user?user.name:"NoName"} (${user?user.email:"DeletedUser"})`);
   $("#order-edit-time").val(`${orderDate}, ${orderTime}`);
   $("#order-edit-price").val(`${getOrderPrice(orderId).toFixed(2)}`);
 
