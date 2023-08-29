@@ -88,7 +88,6 @@ const onUserClicked = async (element) => {
       ? songsValue / current_user.orders.length
       : 0;
   $("#user-avg-per-order").text(avg.toFixed(2));
-  // console.log(document.querySelector("#user-edit-is-admin").checked)
   $("#users-modal").modal("show");
 };
 
@@ -97,7 +96,6 @@ const onSongClicked = (songElement) => {
   const song = adminPanel_ALL_SONGS.find(
     (s) => s._id === songElement.getAttribute("data-id")
   );
-  console.log(song);
   $("#song-modal-title").text(song.title);
   document.querySelector("#song-modal-delete-btn").classList.remove("d-none");
   document.querySelector("#song-edit-title").value = song.title;
@@ -303,11 +301,9 @@ const onSaveSongsChanges = () => {
       showModalError();
     });
 
-  console.log("updatedSong:", updatedSong);
 };
 
 const onSaveNewSong = () => {
-  console.log("onSaveNewSong");
   $.ajax({
     url: `http://localhost:6969/admin/songs/create`,
     type: "POST",
@@ -373,7 +369,6 @@ const onDeleteUser = () => {
 };
 
 const onDeleteSong = () => {
-  console.log("onDeleteSong");
   const songId = document
     .querySelector("#songs-modal")
     .getAttribute("data-song-id");
@@ -425,19 +420,13 @@ const onSaveUser = () => {
     },
   })
     .done(function () {
-      console.log("done");
       window.location.reload();
     })
     .fail(function () {
-      console.log("fail");
       showModalError();
     });
 
-  // console.log(
-  //   `user save: ${document
-  //     .querySelector("#users-modal")
-  //     .getAttribute("data-id")}`
-  // );
+  
 };
 
 const setNumberOfUsers = (numOfTotalUsers) => {
@@ -530,7 +519,6 @@ const onSearchSong = (element) => {
 const onSearchOrder = (element) => {
   setOrdersList(
     adminPanel_ALL_ORDERS.filter((order) => {
-      console.log(getOrderDateAsString(order._id));
       return (
         getOrderDateAsString(order.date)
           .toLowerCase()
@@ -541,7 +529,6 @@ const onSearchOrder = (element) => {
       );
     })
   );
-  console.log(element.value);
 };
 
 const onDeleteGenre = (listItem) => {
@@ -561,7 +548,6 @@ const onAddGenre = () => {
   document.querySelector("#genres-ul").appendChild(li);
   document.querySelector("#song-edit-genres").value = "";
 
-  console.log(genreValue);
 };
 
 // get all users
@@ -580,10 +566,8 @@ const getAllUsers = async () => {
   })
     .done(function (res) {
       adminPanel_ALL_USERS = res;
-      // console.log("users:", adminPanel_ALL_USERS);
     })
     .fail(function (err) {
-      console.log("err:", err)
       if (err.status === 403 || err.status === 401) window.location.replace("./404.html");
     });
 };
@@ -603,7 +587,6 @@ const getAllSongs = async () => {
   })
     .done(function (res) {
       adminPanel_ALL_SONGS = res;
-      // console.log("songs:", adminPanel_ALL_SONGS);
     })
     .fail(function (err) {
       if (err.status === 403 || err.status === 401) window.location.replace("./404.html");
@@ -626,7 +609,6 @@ const getAllOrders = async () => {
   })
     .done(function (res) {
       adminPanel_ALL_ORDERS = res.reverse();
-      console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {
       if (err.status === 403 || err.status === 401) window.location.replace("./404.html");

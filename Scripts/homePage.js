@@ -14,7 +14,6 @@ $(document).ready(function () {
 			init();
 		},
 		error: function (err) {
-				console.log(err);
 		}
 	});
 	initSocket();
@@ -342,7 +341,6 @@ const carousel = (data) => {
 }
 
 function initSocket() {
-	console.log("initSocket")
 	const socket = io("http://localhost:7070", {
 	  transports: ["websocket"],
 	});
@@ -353,11 +351,9 @@ function initSocket() {
 	});
   
 	socket.on("message", function (message) {
-	  console.log("Received message:", message);
 	});
 
 	socket.on("updateSongNumOfPurchases", function (message) {
-		console.log("Received message:", message);
 		for(let i = 0; i < message.length; i++){
 			$(`#${message[i].songId} .num-of-purchases-and-icon`).html(`<i class="fa-solid fa-bag-shopping"></i> ${message[i].numOfPurchases}`);
 		}

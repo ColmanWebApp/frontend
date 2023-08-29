@@ -27,6 +27,5 @@ async function postToFacebook(message) {
       boolean=false;
     },
   });
-  console.log(boolean);
   return boolean;
 }
