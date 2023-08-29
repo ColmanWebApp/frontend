@@ -88,6 +88,7 @@ const onUserClicked = async (element) => {
       ? songsValue / current_user.orders.length
       : 0;
   $("#user-avg-per-order").text(avg.toFixed(2));
+  unshowModalError()
   $("#users-modal").modal("show");
 };
 
@@ -130,6 +131,7 @@ const onSongClicked = (songElement) => {
     .querySelector("#song-modal-save-btn")
     .setAttribute("onclick", "onSaveSongsChanges()");
   $("#song-modal-save-btn").text("Save Changes");
+  unshowModalError()
   $("#songs-modal").modal("show");
 };
 
@@ -166,6 +168,7 @@ const onOrderClicked = (element) => {
   const orderModal = $("#orders-modal");
 
   orderModal.attr("data-id", orderId);
+  unshowModalError()
   orderModal.modal("show");
 };
 
