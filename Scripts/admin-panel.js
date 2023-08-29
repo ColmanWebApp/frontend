@@ -240,6 +240,13 @@ const onAddSong = () => {
 };
 
 const getSongFromForm = () => {
+  const durationFromInput = $("#song-edit-duration").val();
+  const pattern = /^\d+:\d+$/;
+  if(!pattern.test(durationFromInput) || ( parseInt(durationFromInput.split(":")[1]) < 0 || parseInt(durationFromInput.split(":")[1]) > 59 )) {
+    showModalError()
+    return
+  }
+
   const durationMinSec = $("#song-edit-duration").val().split(":");
   const durationInMiliSeconds =
     (durationMinSec[0] * 60 - 0 + (durationMinSec[1] - 0)) * 1000;
@@ -618,7 +625,7 @@ const getAllOrders = async () => {
     },
   })
     .done(function (res) {
-      adminPanel_ALL_ORDERS = res;
+      adminPanel_ALL_ORDERS = res.reverse();
       console.log("orders:", adminPanel_ALL_ORDERS);
     })
     .fail(function (err) {

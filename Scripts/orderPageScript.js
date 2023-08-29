@@ -1,6 +1,5 @@
 const addListItem = (imgUrl, title, price, itemID) => {
   const list = document.querySelector("#cart-list");
-  price = parseFloat(price);
   price = price.toFixed(2);
   list.innerHTML += `<div class="col-12 list-item rounded-2 overflow-hidden position-relative mb-3">
         <div class="row d-flex align-items-center">
@@ -10,7 +9,7 @@ const addListItem = (imgUrl, title, price, itemID) => {
             <div class="col-9 px-4 d-flex h-100 align-items-center justify-content-between">
                 <span class="list-item-title fw-semibold text-light col-6 col-md-7 col-lg-9">${title}</span>
                 <span>
-                    <span class="price me-3">${price}$</span>
+                    <span class="price me-3">$${price}</span>
                     <i class="fa-solid fa-trash" attr_id=${itemID} onclick="onDeleteFromCart(this)"></i>
                 </span>
             </div>
@@ -20,17 +19,18 @@ const addListItem = (imgUrl, title, price, itemID) => {
 
 const fillOrderSummary = (totalItems, subtotal, shipping, total) => {
   document.querySelector("#num-of-items").innerHTML = `${totalItems}`;
-  document.querySelector("#subtotal").innerHTML = `${subtotal}$`;
+  document.querySelector("#subtotal").innerHTML = `${subtotal}`;
   document.querySelector("#shipping").innerHTML = `${shipping}${
     shipping !== "Free" ? "$" : ""
   }`;
-  document.querySelector("#total").innerHTML = `${total.toFixed(2)}$`;
+  document.querySelector("#total").innerHTML = `${total.toFixed(2)}`;
 };
 
 const onDeleteFromCart = (event) => {
   // console.log("item id:", event.getAttribute("attr_id"));
   removeItemFromCart(event.getAttribute("attr_id"));
   handleCheckoutBtnStyle();
+  setIls();
 };
 
 const onCheckout = () => {
@@ -72,20 +72,19 @@ const onCheckout = () => {
     .done(function () {
       localStorage.removeItem("cart");
       updateNavbar();
-      const checkoutModalSongsListElement =
-        document.querySelector("#songs-list-modal");
+      const checkoutModalSongsListElement = document.querySelector("#songs-list-modal");
+      checkoutModalSongsListElement.innerHTML = "";
       songsFromDB.forEach((element) => {
         checkoutModalSongsListElement.innerHTML += `<li>${element.title}</li>`;
       });
       $("#checkout-modal").modal("show");
-      console.log("finish success");
     });
 
   //   removeItemFromCart(null, true);
   // todo: redirect to home page
 };
 
-const createCartList = () => {
+const createCartList = async () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
   // console.log(cart);
   const list = document.querySelector("#cart-list");
@@ -101,7 +100,7 @@ const createCartList = () => {
     var subtotal = 0.0;
     let discount = 0.0;
     let shipping = 0.0;
-    $.ajax({
+    await $.ajax({
       url: `http://localhost:6969/songs/get-songs`,
       type: "POST",
       secure: true,
@@ -154,14 +153,25 @@ const publishToFacebook = async () => {
     data: {
       token: localStorage.getItem("user"),
     },
-  }).done((res)=>user = res)
+  }).done((res) => (user = res));
   //count how many li items there are in #songs-list-modal
   const numOfSongs = document.querySelectorAll("#songs-list-modal li").length;
   const message = `${user.name} has just bought ${numOfSongs} new songs from Moozika! 🎵🎶 \nTry it yourself! \nhttp://www.localhost:5500/Pages/`;
-  postToFacebook(message);
+  const success=await postToFacebook(message);
+  const toastPublish = document.getElementById('facebook-publish-toast')
+  const toast = new bootstrap.Toast(toastPublish)
+  if(success){
+    $("#publish-toast-text").text("You successfully published in our facebook page!");
+  }
+  else
+  {
+    $("#publish-toast-text").text("An error occured while publishing on facebook");
+  }
+  toast.show();
+  $(".btn-facebook").addClass("d-none");
 }
 
-const removeItemFromCart = (itemID, removeAll = false) => {
+const removeItemFromCart = async (itemID, removeAll = false) => {
   if (!removeAll) {
     cart = JSON.parse(localStorage.getItem("cart"));
     cart = cart.filter((id) => id != itemID);
@@ -172,8 +182,9 @@ const removeItemFromCart = (itemID, removeAll = false) => {
   } else {
     localStorage.removeItem("cart");
   }
-  createCartList();
+  await createCartList();
   updateNavbar();
+  setIls();
 };
 
 const addToLocalStorage = () => {
@@ -190,6 +201,20 @@ const handlePermissions = () => {
   if (!localStorage.getItem("user")) window.location.replace("./index.html");
 };
 
+const getUsdToIls = async () => {
+  await $.ajax({
+    url: `https://v6.exchangerate-api.com/v6/d49e704b01ca5fa2a23ed2cc/latest/USD`,
+    type: "GET",
+    secure: true,
+    cors: true,
+  })
+    .done((res) => {
+      ilsBool = true;
+      usdInIls = res.conversion_rates.ILS;
+    })
+    .fail((error) => console.log(error));
+};
+
 const handleCheckoutBtnStyle = () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
   if (!cart || cart.length == 0) {
@@ -197,15 +222,35 @@ const handleCheckoutBtnStyle = () => {
   }
 };
 
+const setIls = () => {
+  if (ilsBool) {
+    const totalPrice = $("#total").text();
+    $("#ils").text(`~ ${(usdInIls * totalPrice).toFixed(2)}₪`);
+    const subtotalPrice = $("#subtotal").text();
+    $("#subtotal-ils").text(`~ ${(usdInIls * subtotalPrice).toFixed(2)}₪`);
+  }
+};
+
 const handleBack = () => {
   window.history.back();
 };
+$(document).ready(async () => {
+  handlePermissions();
+  handleCheckoutBtnStyle();
+  await createCartList();
+  console.log("before getUsdToIls");
+  await getUsdToIls();
+  console.log("after getUsdToIls", ilsBool, usdInIls);
+  setIls();
+  console.log("after setILS");
 
-// addToLocalStorage();
-handlePermissions();
-handleCheckoutBtnStyle();
-// localStorage.clear()
-createCartList();
+  $("#navbar").removeClass("d-none");
+  $("#content").removeClass("d-none");
+  $("#footer").removeClass("d-none");
+  $("#loader").addClass("d-none");
+});
 
 // --- GLOBAL VARS ---
 let songsFromDB;
+let ilsBool = false;
+let usdInIls = 1;
