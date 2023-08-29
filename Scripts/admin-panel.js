@@ -39,7 +39,7 @@ const getUserById = (userId) => {
     }
   }
 
-  return { name: "NoName" };
+  return { name: "Deleted User" };
 };
 
 const getOrderPrice = (orderId) => {
@@ -148,8 +148,8 @@ const onOrderClicked = (element) => {
     order.songs.includes(song._id)
   );
 
-  $("#orders-modal-title").text(`${orderDate} | ${user?user.name:"NoName"}`);
-  $("#order-edit-user").val(`${user?user.name:"NoName"} (${user?user.email:"DeletedUser"})`);
+  $("#orders-modal-title").text(`${orderDate} | ${user?user.name:"Deleted User"}`);
+  $("#order-edit-user").val(`${user?user.name:"Deleted User"} (${user?user.email:"Deleted User"})`);
   $("#order-edit-time").val(`${orderDate}, ${orderTime}`);
   $("#order-edit-price").val(`${getOrderPrice(orderId).toFixed(2)}`);
 
