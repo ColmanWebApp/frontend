@@ -1,4 +1,5 @@
 let AllData =  [];
+let userOwnedSongs = [];
 
 $(document).ready(function () {
 	$.ajax({
@@ -20,7 +21,7 @@ $(document).ready(function () {
 });
 
 // Event listener to filter selected genres, price range, and has preview
-$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewDropdownMenu .preview-checkbox", function() {
+$(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu .price-checkbox, #previewDropdownMenu .preview-checkbox, #ownershipDropdownMenu .ownership-checkbox", function() {
 	const selectedGenres = $("#genreDropdownMenu .genre-checkbox:checked").map(function() {
 			return $(this).val();
 	}).get();
@@ -33,10 +34,15 @@ $(document).on("change", "#genreDropdownMenu .genre-checkbox, #priceDropdownMenu
 		return $(this).val();
 	}).get();
 
-	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, selectedPreviewOptions);
+	const selectedOwnershipOptions = $("#ownershipDropdownMenu .ownership-checkbox:checked").map(function() {
+		return $(this).val();
+	}).get();
+
+	const filteredData = filterByGenresPriceRangeAndPreview(AllData, selectedGenres, selectedPriceRange, selectedPreviewOptions, selectedOwnershipOptions);
 
 	$("#cards").html(LoadCardData(filteredData));
 });
+
 
 function init() {
 	$("#cards").html(LoadCardData(AllData));
@@ -44,8 +50,41 @@ function init() {
 	$("#genreDropdownMenu").html(generateGenreDropdownOptions(AllData));
 	$("#priceDropdownMenu").html(generatePricesDropdownOptions);
 	$("#previewDropdownMenu").html(generatePreviewDropdownOptions);
-}
 
+
+	// if a user is logged in, add the ownership status filter, and save the user's owned songs.
+	const userToken = localStorage.getItem("user");
+	if (userToken) {
+		$("#ownershipFilter").html(generateOwnershipStatusDropdownOptions);
+		$.ajax({
+			url: "http://localhost:6969/users/user-details",
+			type: "POST",
+			secure: true,
+			cors: true,
+			headers: {
+				 "Access-Control-Allow-Origin": "*",
+			},
+			data: {
+				 token: userToken,
+			},
+			success: function(response) {
+				const songIds = [];
+				response.orders.forEach(order => {
+						order.songs.forEach(song => {
+								userOwnedSongs.push(song._id);
+						});
+				});
+			}
+		});
+	}
+	else {
+		var filterElements = document.querySelectorAll('.dropdown');
+		filterElements.forEach(function(element) {
+			element.classList.remove('col-md-3');
+			element.classList.add('col-md-4');
+	});
+	}
+}
 
 // This funciton is used to get all the genres of a specific card. used with LoadCardData function.
 function getGenres(data) {
@@ -57,29 +96,29 @@ function getGenres(data) {
 	return html;
 }
 
-
 // Loads the cards
 const LoadCardData = (data) => {
 	if (data.length == 0)
 	return `
 			<div style="display: flex; ; align-items: center; height: 100vh; flex-direction: column;">
-					<h1 style="margin-top: 50px; text-align: center;">No results found</h1>
+					<h1 style="margin-top: 150px; text-align: center;">No results found</h1>
 			</div>`;
   let html = "";
   for (let item of data) {
     html += `
-    <div onclick="getId('${item._id}')" id="${item._id}" class="card col-sm-12 col-md-6 col-lg-3 mx-4">
+    <div onclick="getId('${item._id}')" id="${item._id}" class="card col-sm-12 col-md-6 col-lg-3 mx-4 rounded-3">
       <img class="card-img-top" src="${item.album_image}" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">${item.title}</h5>
-        <p class="card-text">${item.album}
-				<br>${item.artist}
-				<br>${getGenres(item.genre)}
-				<br>${item.year}
-				<br>${millisecondsToMMSS(item.duration)}
-				<br>Price: $${item.price}
-				</p>
-				<div class="ms-auto w-auto text-end num-of-purchases-and-icon"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+        <h5 class="card-title p-0 px-1">${item.title}</h5>
+				<div class="row px-3">
+					<p class="card-text col-12 m-0 p-0">${item.album}</p>
+					<p class="card-text col-12 m-0 p-0">${item.artist}</p>
+					<p class="card-text col-12 m-0 p-0">${getGenres(item.genre)}</p>
+					<p class="card-text col-12 m-0 p-0">${item.year}</p>
+					<p class="card-text col-12 m-0 p-0">${millisecondsToMMSS(item.duration)}</p>
+					<p class="card-text col-6 m-0 p-0">Price: $${item.price}</p>
+				<div class="ms-auto w-auto text-end num-of-purchases-and-icon col-6 text-end"><i class="fa-solid fa-bag-shopping"></i> ${item.numOfPurchases}</div>
+				</div>
       </div>
     </div>
     `;
@@ -149,6 +188,7 @@ const generatePricesDropdownOptions = () => {
 	return html;
 };
 
+
 const generatePreviewDropdownOptions = () => {
 	let html = '';
 	html += `
@@ -168,14 +208,44 @@ html += `
 	</div>
 	`;
 	return html;
-};
+}
+
+
+const generateOwnershipStatusDropdownOptions = () => {
+	let html = '';
+		html += `
+		<button class="btn btn-secondary dropdown-toggle w-100" type="button" id="ownershipDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa-solid fa-filter"></i>
+			Ownership Status
+		</button>
+		<div class="dropdown-menu px-2" aria-labelledby="ownershipDropdown" id="ownershipDropdownMenu">
+
+		<div class="form-check">
+			<input class="form-check-input ownership-checkbox" type="checkbox" value="owned" id="owned">
+			<label class="form-check-label" for="owned">
+					Owned
+			</label>
+		</div>
+
+		<div class="form-check">
+			<input class="form-check-input ownership-checkbox" type="checkbox" value="Unowned" id="Unowned">
+			<label class="form-check-label" for="Unowned">
+					Unowned
+			</label>
+		</div>
+		</div>`;
+
+
+	return html;
+}
 
 
 // Function to filter data based on genres, price range, and has preview
-function filterByGenresPriceRangeAndPreview(data, genres, priceRange, previewSelections) {
+function filterByGenresPriceRangeAndPreview(data, genres, priceRange, previewSelections, selectedOwnershipOptions) {
 	const filteredByGenres = filterByGenres(data, genres);
 	const filteredByGenresAndPrice = filterByPriceRange(filteredByGenres, priceRange);
-	const filteredData = filterByPreview(filteredByGenresAndPrice, previewSelections)
+	const filteredByGenresAndPriceAndPreview = filterByPreview(filteredByGenresAndPrice, previewSelections)
+	const filteredData = filterByOwnershipStatus(filteredByGenresAndPriceAndPreview, selectedOwnershipOptions);
 	return filteredData;
 }
 
@@ -184,7 +254,7 @@ const filterByGenres = (data, selectedGenres) => {
     return data; // If no genres selected, return all data
   }
   return data.filter(item => item.genre.some(genre => selectedGenres.includes(genre)));
-};
+}
 
 const filterByPriceRange = (data, selectedPriceRange) => {
 	if (selectedPriceRange.length === 0) {
@@ -215,7 +285,7 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 	});
 	
 	return filteredData;
-};
+}
 
 const filterByPreview = (data, selectedPreviewOptions) => {
 	if (selectedPreviewOptions.length == 2 || selectedPreviewOptions.length == 0) {
@@ -230,6 +300,18 @@ const filterByPreview = (data, selectedPreviewOptions) => {
 			return item.preview_url !== "" && item.preview_url !== null ? false : true;
 	});
 	}
+}
+
+const filterByOwnershipStatus = (data, selectedOwnershipOptions) => {
+	if (selectedOwnershipOptions.length == 2 || selectedOwnershipOptions.length == 0)
+		return data;
+
+	if (selectedOwnershipOptions[0] == 'owned')
+		return data.filter(item => userOwnedSongs.includes(item._id));
+
+	else
+		return data.filter(item => !userOwnedSongs.includes(item._id));
+
 }
 
 const carousel = (data) => {
@@ -257,9 +339,7 @@ const carousel = (data) => {
   }
 
   return html;
-};
-
-
+}
 
 function initSocket() {
 	console.log("initSocket")
@@ -312,5 +392,14 @@ document.addEventListener("DOMContentLoaded", function() {
 					event.stopPropagation();
 			});
 	});
+});
+
+
+// Prevent propagation of click event from inner dropdown buttons to outer dropdown button
+const innerDropdownButtons = document.querySelectorAll('.dropdown-menu button.dropdown-toggle');
+innerDropdownButtons.forEach(button => {
+	 button.addEventListener('click', (event) => {
+			event.stopPropagation();
+	 });
 });
 

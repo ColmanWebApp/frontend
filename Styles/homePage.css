@@ -1,14 +1,13 @@
 .songs-grid {
 	justify-content: center;
+
 }
 
 .card {
 	position: relative;
 	overflow: hidden;
-}
-
-.card-img-top {
-	transition: transform 0.5s, filter 0.5s;
+	transition: transform 0.5s, 200ms ease-in-out;
+	border: none;
 }
 
 .card:hover {
@@ -74,9 +73,16 @@
 
 
 .dropdown-menu {
-	display: none; /* Initially hide the menu */
+	display: none; 
+	width: 100%;
 }
 
 .dropdown.show .dropdown-menu {
-	display: block; /* Display the menu when the button is pressed */
+	display: inline-block; 
+	position: relative;
+}
+
+
+.dropdown {
+	position: relative;
 }
