@@ -227,7 +227,6 @@ function initMap() {
 
 
       marker.addListener("click", () => {
-        console.log(i);
         infoWindow.close();
         infoWindow.setContent(marker.getTitle());
         infoWindow.open(marker.getMap(), marker);

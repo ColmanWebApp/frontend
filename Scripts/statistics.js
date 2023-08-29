@@ -60,7 +60,6 @@ async function lastTenDaysSalesStatistics(){
   xValues.reverse();
   yValues.reverse();
   
-  console.log(lastTenDays);
   let max=yValues[0];
   for (let i=1;i<yValues.length;i++){
     if(max<yValues[i])

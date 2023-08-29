@@ -110,7 +110,6 @@ async function setAddToCart(songId) {
   <div onclick="addToCart('${songId}')" class="px-5 add-to-cart-button btn btn-outline-light rounded-pill fs-5 col-auto ">Add to cart </div>`);
       })
       .fail(function (error) {
-        alert("error:fail", error);
         return;
       });
   } else {

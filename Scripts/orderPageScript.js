@@ -27,7 +27,6 @@ const fillOrderSummary = (totalItems, subtotal, shipping, total) => {
 };
 
 const onDeleteFromCart = (event) => {
-  // console.log("item id:", event.getAttribute("attr_id"));
   removeItemFromCart(event.getAttribute("attr_id"));
   handleCheckoutBtnStyle();
   setIls();
@@ -66,7 +65,6 @@ const onCheckout = () => {
       );
       checkoutModalContent.innerHTML = `Something went wrong!<br>Try again later...`;
       $("#checkout-modal").modal("show");
-      console.log("something when wront");
       return;
     })
     .done(function () {
@@ -86,7 +84,6 @@ const onCheckout = () => {
 
 const createCartList = async () => {
   const cart = JSON.parse(localStorage.getItem("cart"));
-  // console.log(cart);
   const list = document.querySelector("#cart-list");
   list.innerHTML = "";
   if (cart === null || cart.length === 0) {
@@ -113,7 +110,6 @@ const createCartList = async () => {
       },
     })
       .fail(function (err) {
-        console.log(`failed: ${err}`);
         window.location.replace("./404.html");
         return;
       })
@@ -212,7 +208,7 @@ const getUsdToIls = async () => {
       ilsBool = true;
       usdInIls = res.conversion_rates.ILS;
     })
-    .fail((error) => console.log(error));
+    .fail();
 };
 
 const handleCheckoutBtnStyle = () => {
@@ -238,11 +234,8 @@ $(document).ready(async () => {
   handlePermissions();
   handleCheckoutBtnStyle();
   await createCartList();
-  console.log("before getUsdToIls");
   await getUsdToIls();
-  console.log("after getUsdToIls", ilsBool, usdInIls);
   setIls();
-  console.log("after setILS");
 
   $("#navbar").removeClass("d-none");
   $("#content").removeClass("d-none");

@@ -352,9 +352,6 @@ const onSignup = () => {
     return;
   });
 
-  console.log("full name: " + fullnameInput.value);
-  console.log("email: " + emailInput.value);
-  console.log("password:" + passwordInput.value);
 };
 
 const onSearch = (event) => {
@@ -392,7 +389,6 @@ const setSuggestions = (inputValue) => {
   });
 
   document.querySelector("#serach-total-result").innerHTML = suggestions.length;
-  // console.log("suggestions:",suggestions);
 };
 
 const getSuggestion = (imgUrl, title, artist, id) => {
