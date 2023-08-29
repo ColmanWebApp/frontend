@@ -14,7 +14,7 @@ const createSongItem = (songTitle, artist, songId) => {
   a.href = `./SongPage.html?songId=${songId}`; // todo: add correct link to song page
   a.classList +=
     "text-decoration-none song-item row p-2 d-flex align-items-center justify-content-between rounded-2";
-  a.innerHTML = `<div class="col-9">
+  a.innerHTML = `<div class="col-auto">
                         <p class="m-0 p-0 fw-medium text-light">${songTitle}</p>
                     </div>
                     <div class="col-auto">
