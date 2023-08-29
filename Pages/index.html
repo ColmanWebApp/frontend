@@ -9,15 +9,6 @@
          crossorigin="anonymous"
          ></script>
       <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
-      <script>
-         // Prevent propagation of click event from inner dropdown buttons to outer dropdown button
-         const innerDropdownButtons = document.querySelectorAll('.dropdown-menu button.dropdown-toggle');
-         innerDropdownButtons.forEach(button => {
-         	 button.addEventListener('click', (event) => {
-         			event.stopPropagation();
-         	 });
-         });
-      </script>
       <link
          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
          rel="stylesheet"

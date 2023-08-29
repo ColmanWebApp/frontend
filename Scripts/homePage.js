@@ -163,6 +163,7 @@ const generateGenreDropdownOptions = (data) => {
 	return html;
 };
 
+
 const generatePricesDropdownOptions = () => {
 	let html = '';
 	let i = 0
@@ -187,6 +188,7 @@ const generatePricesDropdownOptions = () => {
 	return html;
 };
 
+
 const generatePreviewDropdownOptions = () => {
 	let html = '';
 	html += `
@@ -206,7 +208,8 @@ html += `
 	</div>
 	`;
 	return html;
-};
+}
+
 
 const generateOwnershipStatusDropdownOptions = () => {
 	let html = '';
@@ -234,7 +237,7 @@ const generateOwnershipStatusDropdownOptions = () => {
 
 
 	return html;
-};
+}
 
 
 // Function to filter data based on genres, price range, and has preview
@@ -251,7 +254,7 @@ const filterByGenres = (data, selectedGenres) => {
     return data; // If no genres selected, return all data
   }
   return data.filter(item => item.genre.some(genre => selectedGenres.includes(genre)));
-};
+}
 
 const filterByPriceRange = (data, selectedPriceRange) => {
 	if (selectedPriceRange.length === 0) {
@@ -282,7 +285,7 @@ const filterByPriceRange = (data, selectedPriceRange) => {
 	});
 	
 	return filteredData;
-};
+}
 
 const filterByPreview = (data, selectedPreviewOptions) => {
 	if (selectedPreviewOptions.length == 2 || selectedPreviewOptions.length == 0) {
@@ -336,9 +339,7 @@ const carousel = (data) => {
   }
 
   return html;
-};
-
-
+}
 
 function initSocket() {
 	console.log("initSocket")
@@ -391,5 +392,14 @@ document.addEventListener("DOMContentLoaded", function() {
 					event.stopPropagation();
 			});
 	});
+});
+
+
+// Prevent propagation of click event from inner dropdown buttons to outer dropdown button
+const innerDropdownButtons = document.querySelectorAll('.dropdown-menu button.dropdown-toggle');
+innerDropdownButtons.forEach(button => {
+	 button.addEventListener('click', (event) => {
+			event.stopPropagation();
+	 });
 });
 
