@@ -77,7 +77,7 @@ async function setAddToCart(songId) {
   const addToCart = $("#add-to-cart");
   if (localStorage.getItem("user")) {
     await $.ajax({
-      url: `http://localhost:6969/users/check-song/${songId}/`,
+      url: `https://moozika.onrender.com/users/check-song/${songId}/`,
       type: "POST",
       secure: true,
       cors: true,
@@ -129,7 +129,7 @@ $(document).ready(async function () {
   else {
     const songId = searchParams.get("songId");
     const myJson = {
-      url: `http://localhost:6969/songs/${songId}/`,
+      url: `https://moozika.onrender.com/songs/${songId}/`,
       type: "GET",
       contentType: "application/json",
       secure: true,

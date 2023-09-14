@@ -3,7 +3,7 @@ let userOwnedSongs = [];
 
 $(document).ready(function () {
 	$.ajax({
-		url: "http://localhost:6969/songs",
+		url: "https://moozika.onrender.com/songs",
 		type: "GET",
 		dataType: "json",
 		success: function (data) {
@@ -56,7 +56,7 @@ function init() {
 	if (userToken) {
 		$("#ownershipFilter").html(generateOwnershipStatusDropdownOptions);
 		$.ajax({
-			url: "http://localhost:6969/users/user-details",
+			url: "https://moozika.onrender.com/users/user-details",
 			type: "POST",
 			secure: true,
 			cors: true,
@@ -77,7 +77,7 @@ function init() {
 		});
 	}
 	else {
-		var filterElements = document.querySelectorAll('.dropdown');
+		const filterElements = document.querySelectorAll('.dropdown');
 		filterElements.forEach(function(element) {
 			element.classList.remove('col-md-3');
 			element.classList.add('col-md-4');
@@ -363,7 +363,7 @@ function initSocket() {
 
 document.addEventListener("DOMContentLoaded", function() {
 	// Get all the inner dropdown buttons
-	var innerDropdownButtons = document.querySelectorAll(".dropdown-menu .dropdown-toggle");
+	const innerDropdownButtons = document.querySelectorAll(".dropdown-menu .dropdown-toggle");
 
 	// Hide other inner dropdowns when an inner dropdown is clicked
 	innerDropdownButtons.forEach(function(button) {
@@ -372,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					// Close other inner dropdowns
 					innerDropdownButtons.forEach(function(innerButton) {
 							if (innerButton !== button) {
-									var dropdownMenu = innerButton.nextElementSibling;
+									const dropdownMenu = innerButton.nextElementSibling;
 									if (dropdownMenu.classList.contains("show")) {
 											dropdownMenu.classList.remove("show");
 									}
@@ -382,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Prevent dropdown menus from closing when clicking inside
-	var dropdownMenus = document.querySelectorAll(".dropdown-menu");
+	const dropdownMenus = document.querySelectorAll(".dropdown-menu");
 	dropdownMenus.forEach(function(menu) {
 			menu.addEventListener("click", function(event) {
 					event.stopPropagation();

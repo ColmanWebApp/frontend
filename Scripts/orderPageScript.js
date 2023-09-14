@@ -46,7 +46,7 @@ const onCheckout = () => {
 
   // todo: Ajax -> create order
   $.ajax({
-    url: "http://localhost:6969/orders",
+    url: "https://moozika.onrender.com/orders",
     type: "POST",
     // contentType: "application/json",
     secure: true,
@@ -94,11 +94,11 @@ const createCartList = async () => {
     fillOrderSummary(0, 0, "Free", 0);
   } else {
     // const cartList = cart.split(",");
-    var subtotal = 0.0;
+    let subtotal = 0.0;
     let discount = 0.0;
     let shipping = 0.0;
     await $.ajax({
-      url: `http://localhost:6969/songs/get-songs`,
+      url: `https://moozika.onrender.com/songs/get-songs`,
       type: "POST",
       secure: true,
       cors: true,
@@ -139,7 +139,7 @@ const createCartList = async () => {
 const publishToFacebook = async () => {
   let user;
   await $.ajax({
-    url: `http://localhost:6969/users/user-details`,
+    url: `https://moozika.onrender.com/users/user-details`,
     type: "POST",
     secure: true,
     cors: true,
@@ -182,6 +182,7 @@ const removeItemFromCart = async (itemID, removeAll = false) => {
   updateNavbar();
   setIls();
 };
+
 
 const addToLocalStorage = () => {
   const cart = [

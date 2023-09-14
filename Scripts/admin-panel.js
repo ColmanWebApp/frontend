@@ -176,7 +176,7 @@ const onDeleteOrder = () => {
   const orderId = $("#orders-modal").attr("data-id");
 
   $.ajax({
-    url: `http://localhost:6969/admin/orders/${orderId}`,
+    url: `https://moozika.onrender.com/admin/orders/${orderId}`,
     type: "DELETE",
     secure: true,
     cors: true,
@@ -207,7 +207,7 @@ const onSaveOrder = () => {
   };
 
   $.ajax({
-    url: `http://localhost:6969/admin/orders/${orderId}`,
+    url: `https://moozika.onrender.com/admin/orders/${orderId}`,
     type: "PUT",
     secure: true,
     cors: true,
@@ -285,7 +285,7 @@ const onSaveSongsChanges = () => {
   const updatedSong = getSongFromForm();
 
   $.ajax({
-    url: `http://localhost:6969/admin/songs/${songId}`,
+    url: `https://moozika.onrender.com/admin/songs/${songId}`,
     type: "PUT",
     secure: true,
     cors: true,
@@ -308,7 +308,7 @@ const onSaveSongsChanges = () => {
 
 const onSaveNewSong = () => {
   $.ajax({
-    url: `http://localhost:6969/admin/songs/create`,
+    url: `https://moozika.onrender.com/admin/songs/create`,
     type: "POST",
     secure: true,
     cors: true,
@@ -352,7 +352,7 @@ const onDeleteUser = () => {
   );
 
   $.ajax({
-    url: `http://localhost:6969/admin/users/${current_user._id}`,
+    url: `https://moozika.onrender.com/admin/users/${current_user._id}`,
     type: "DELETE",
     secure: true,
     cors: true,
@@ -376,7 +376,7 @@ const onDeleteSong = () => {
     .querySelector("#songs-modal")
     .getAttribute("data-song-id");
   $.ajax({
-    url: `http://localhost:6969/admin/songs/${songId}`,
+    url: `https://moozika.onrender.com/admin/songs/${songId}`,
     type: "DELETE",
     secure: true,
     cors: true,
@@ -410,7 +410,7 @@ const onSaveUser = () => {
     isAdmin: document.querySelector("#user-edit-is-admin").checked,
   };
   $.ajax({
-    url: `http://localhost:6969/admin/users/${current_user._id}`,
+    url: `https://moozika.onrender.com/admin/users/${current_user._id}`,
     type: "PUT",
     secure: true,
     cors: true,
@@ -556,7 +556,7 @@ const onAddGenre = () => {
 // get all users
 const getAllUsers = async () => {
   await $.ajax({
-    url: `http://localhost:6969/admin/users/`,
+    url: `https://moozika.onrender.com/admin/users/`,
     type: "POST",
     secure: true,
     cors: true,
@@ -577,7 +577,7 @@ const getAllUsers = async () => {
 // get all songs
 const getAllSongs = async () => {
   await $.ajax({
-    url: `http://localhost:6969/admin/songs/`,
+    url: `https://moozika.onrender.com/admin/songs/`,
     type: "POST",
     secure: true,
     cors: true,
@@ -599,7 +599,7 @@ const getAllSongs = async () => {
 
 const getAllOrders = async () => {
   await $.ajax({
-    url: `http://localhost:6969/admin/orders/`,
+    url: `https://moozika.onrender.com/admin/orders/`,
     type: "POST",
     secure: true,
     cors: true,

@@ -2,7 +2,7 @@
  let lastTenDaysCountSales=[];
 async function fetchSalesPerGenre(){
     await $.ajax({
-    url: `http://localhost:6969/statistics/salesPerGenre`,
+    url: `https://moozika.onrender.com/statistics/salesPerGenre`,
       type: "GET",
       contentType: "application/json",
       secure: true,
@@ -21,7 +21,7 @@ async function fetchSalesPerGenre(){
 
 async function fetchLastTenDaysSales(){
   await $.ajax({
-  url: `http://localhost:6969/statistics/lastTenDaysSales`,
+  url: `https://moozika.onrender.com/statistics/lastTenDaysSales`,
     type: "GET",
     contentType: "application/json",
     secure: true,

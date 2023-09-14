@@ -110,7 +110,7 @@ const onSaveEdit = () => {
   };
 
   $.ajax({
-    url: `http://localhost:6969/users/`,
+    url: `https://moozika.onrender.com/users/`,
     type: "PUT",
     secure: true,
     cors: true,
@@ -154,7 +154,7 @@ const setProfilePage = () => {
 
 const setUserDetails = async () => {
   await $.ajax({
-    url: `http://localhost:6969/users/user-details`,
+    url: `https://moozika.onrender.com/users/user-details`,
     type: "POST",
     secure: true,
     cors: true,
@@ -193,7 +193,7 @@ const setPage = async () => {
 };
 
 function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 32.178124, lng: 34.915441 }, // Center the map
       zoom: 10 // Adjust the zoom level as needed
   });
@@ -201,7 +201,7 @@ function initMap() {
   const image = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
   let points = [];
   $.ajax({
-    url: `http://localhost:6969/locations/`,
+    url: `https://moozika.onrender.com/locations/`,
     type: "GET",
     secure: true,
     cors: true,

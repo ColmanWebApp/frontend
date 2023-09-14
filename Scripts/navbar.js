@@ -299,7 +299,7 @@ const onLogin = () => {
 
 const loginRequest = (email, password) => {
   $.ajax({
-    url: "http://localhost:6969/auth/login",
+    url: "https://moozika.onrender.com/auth/login",
     type: "POST",
     contentType: "application/json",
     secure: true,
@@ -329,7 +329,7 @@ const onSignup = () => {
   const passwordInput = document.querySelector("#signup-password");
   // todo: signup request to backend -> if true: redirect to home page and connect, else: show an error to the user
   $.ajax({
-    url: "http://localhost:6969/auth/register",
+    url: "https://moozika.onrender.com/auth/register",
     type: "POST",
     contentType: "application/json",
     secure: true,
@@ -441,7 +441,7 @@ const navbarWrapper = () => {
   createNavbar();
   
   $.ajax({
-    url: "http://localhost:6969/songs",
+    url: "https://moozika.onrender.com/songs",
     type: "GET",
     contentType: "application/json",
     secure: true,
