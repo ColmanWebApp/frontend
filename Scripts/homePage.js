@@ -341,7 +341,7 @@ const carousel = (data) => {
 }
 
 function initSocket() {
-	const socket = io("https://moozika.onrender.com/", {
+	const socket = io("http://localhost:7070", {
 	  transports: ["websocket"],
 	});
   
